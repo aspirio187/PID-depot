@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "depot.bll", "depot.bll\depo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{82191E83-FA8D-44C0-8890-83088773C13C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api.depot.dal", "api.depot.dal\api.depot.dal.csproj", "{79D3DAAE-2568-4329-9EA3-99F730FE582C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{641E3E6F-0CBE-4925-92EA-1F9090DF1C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{641E3E6F-0CBE-4925-92EA-1F9090DF1C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{641E3E6F-0CBE-4925-92EA-1F9090DF1C45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D3DAAE-2568-4329-9EA3-99F730FE582C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D3DAAE-2568-4329-9EA3-99F730FE582C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D3DAAE-2568-4329-9EA3-99F730FE582C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D3DAAE-2568-4329-9EA3-99F730FE582C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{46BB949A-2AD2-4933-91F0-2AE50B039E7D} = {87A26BF9-82D9-45CC-BEF4-38350293AD70}
 		{D9C8DE57-BEE9-4D6B-AA77-CE8798AA9436} = {82191E83-FA8D-44C0-8890-83088773C13C}
 		{641E3E6F-0CBE-4925-92EA-1F9090DF1C45} = {82191E83-FA8D-44C0-8890-83088773C13C}
+		{79D3DAAE-2568-4329-9EA3-99F730FE582C} = {87A26BF9-82D9-45CC-BEF4-38350293AD70}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43030AE3-261F-4E88-8F02-8984B6E0A9F8}
