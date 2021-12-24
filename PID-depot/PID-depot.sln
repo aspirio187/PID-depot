@@ -7,15 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{87A26BF9-82D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{82191E83-FA8D-44C0-8890-83088773C13C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api.depot.bll", "PID-depot\api.depot.bll\api.depot.bll.csproj", "{8A3D2E56-DE35-405F-BE33-451869F49431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Depot.BLL", "PID-depot\api.depot.bll\Api.Depot.BLL.csproj", "{8A3D2E56-DE35-405F-BE33-451869F49431}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api.depot.dal", "PID-depot\api.depot.dal\api.depot.dal.csproj", "{FEFAB730-5558-45A5-9554-937CBDB092F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Depot.DAL", "PID-depot\api.depot.dal\Api.Depot.DAL.csproj", "{FEFAB730-5558-45A5-9554-937CBDB092F7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api.depot.uil", "PID-depot\api.depot.uil\api.depot.uil.csproj", "{7D8B2942-238E-4671-9856-E698AF6E97B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Depot.UIL", "PID-depot\api.depot.uil\Api.Depot.UIL.csproj", "{7D8B2942-238E-4671-9856-E698AF6E97B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "depot.bll", "PID-depot\depot.bll\depot.bll.csproj", "{836099AD-3B8C-4163-9050-CB7F6B9FCF49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Depot.BLL", "PID-depot\depot.bll\Depot.BLL.csproj", "{836099AD-3B8C-4163-9050-CB7F6B9FCF49}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "depot.uil", "PID-depot\depot.uil\depot.uil.csproj", "{9B246018-CD95-48AC-9113-DA1EA9295CB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Depot.UIL", "PID-depot\depot.uil\Depot.UIL.csproj", "{9B246018-CD95-48AC-9113-DA1EA9295CB0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 DAL", "10 DAL", "{083938DF-D4DA-446D-93B0-61C4E087C60C}"
 EndProject
