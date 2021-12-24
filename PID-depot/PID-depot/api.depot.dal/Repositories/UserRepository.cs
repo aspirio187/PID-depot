@@ -26,9 +26,9 @@ namespace api.depot.dal.Repositories
             command.AddParameter("password", data.Password);
             command.AddParameter("firstname", data.Firstname);
             command.AddParameter("lastname", data.Lastname);
-            command.AddParameter("birth_date", data.Birthdate);
+            command.AddParameter("birth_date", data.Birthdate.ToString("yyyy-MM-dd"));
             command.AddParameter("registration_number", data.RegistrationNumber);
-
+            
             return Guid.Parse(_connection.ExecuteScalar(command).ToString());
         }
 
