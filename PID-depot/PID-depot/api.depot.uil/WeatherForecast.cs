@@ -1,6 +1,6 @@
 using System;
 
-namespace api.depot.uil
+namespace Api.Depot.UIL
 {
     public class WeatherForecast
     {

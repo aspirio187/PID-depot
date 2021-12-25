@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.depot.uil
+namespace Api.Depot.UIL
 {
     public class Startup
     {

@@ -1,5 +1,5 @@
-﻿using api.depot.dal.Entities;
-using api.depot.dal.IRepositories;
+﻿using Api.Depot.DAL.Entities;
+using Api.Depot.DAL.IRepositories;
 using DevHopTools.Connection;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace api.depot.dal.Repositories
+namespace Api.Depot.DAL.Repositories
 {
     public class UserRepository : IUserRepository
     {
@@ -28,28 +28,37 @@ namespace api.depot.dal.Repositories
             command.AddParameter("lastname", data.Lastname);
             command.AddParameter("birth_date", data.Birthdate.ToString("yyyy-MM-dd"));
             command.AddParameter("registration_number", data.RegistrationNumber);
-            
+
             return Guid.Parse(_connection.ExecuteScalar(command).ToString());
         }
 
         public bool Delete(Guid key)
         {
-            throw new NotImplementedException();
+            Command command = new Command("spDeleteUser", true);
+            command.AddParameter("user_id", key);
+            return _connection.ExecuteNonQuery(command) > 0;
         }
 
         public IEnumerable<UserEntity> GetAll()
         {
-            throw new NotImplementedException();
+            Command command = new Command("spGetUsers", true);
+            return _connection.ExecuteReader(command, r => new UserEntity(r));
         }
 
         public UserEntity GetById(Guid key)
         {
-            throw new NotImplementedException();
+            Command command = new Command("spGetUser", true);
+            return _connection.ExecuteReader(command, r => new UserEntity(r)).FirstOrDefault();
         }
 
         public bool Update(Guid key, UserEntity data)
         {
-            throw new NotImplementedException();
+            Command command = new Command("spUpdateUser", true);
+            command.AddParameter("user_id", key);
+            command.AddParameter("firstname", data.Firstname);
+            command.AddParameter("lastname", data.Lastname);
+            command.AddParameter("birth_date", data.Birthdate.ToString("yyyy-MM-dd"));
+            return _connection.ExecuteNonQuery(command) > 0;
         }
     }
 }

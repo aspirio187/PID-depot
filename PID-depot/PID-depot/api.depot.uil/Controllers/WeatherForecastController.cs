@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.depot.uil.Controllers
+namespace Api.Depot.UIL.Controllers
 {
     [ApiController]
     [Route("[controller]")]

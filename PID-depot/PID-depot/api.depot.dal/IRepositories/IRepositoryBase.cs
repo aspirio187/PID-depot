@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace api.depot.dal.IRepositories
+namespace Api.Depot.DAL.IRepositories
 {
     public interface IRepositoryBase<TKey, TEntity> 
         where TEntity : class
