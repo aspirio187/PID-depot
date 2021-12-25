@@ -21,127 +21,6 @@ SET time_zone = "+00:00";
 -- Base de données : `pid-depot`
 --
 
-DELIMITER $$
---
--- Procédures
---
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateLesson` (IN `name` TINYTEXT, IN `description` TEXT)  INSERT INTO lessons (`name`, `description`)
-VALUES (name, description)$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateLessonDetail` (IN `title` TINYTEXT, IN `details` LONGTEXT, IN `timetable_id` INT)  INSERT INTO lesson_details (`title`, `details`, `lesson_timetable_id`)
-VALUES (title, details, timetable_id)$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateLessonFile` (IN `filepath` TEXT, IN `lesson_detail_id` INT)  INSERT INTO lesson_files (`file_path`, `lesson_detail_id`)
-VALUES (filepath, lesson_detail_id)$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateLessonTimetable` (IN `lesson_id` INT, IN `starts_at` DATETIME, IN `ends_at` DATETIME)  INSERT INTO lesson_timetables (`starts_at`, `ends_at`, `lesson_id`)
-VALUES (starts_at, ends_at, lesson_id)$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateRole` (IN `name` TINYTEXT)  BEGIN
-	DECLARE new_id CHAR(36) DEFAULT UUID();
-	INSERT INTO roles (`id`,`name`)
-	VALUES (new_id, name);
-    SELECT new_id AS 'id';
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateUser` (IN `email` MEDIUMTEXT, IN `password` TEXT, IN `firstname` TINYTEXT, IN `lastname` TINYTEXT, IN `birth_date` DATETIME, IN `registration_number` CHAR(10))  BEGIN
-	DECLARE new_id CHAR(36) DEFAULT UUID();
-    
-	INSERT INTO users (`id`, `email`, `normalized_email`,
-		`password`, `firstname`, `lastname`, `birth_date`, 
-                       `registration_number`)
-	VALUES 
-    (new_id, email, UPPER(email), SHA2(password, 256), 		firstname, lastname, birth_date, registration_number);
-    SELECT new_id AS 'id';
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteLesson` (IN `lesson_id` INT)  DELETE FROM lessons
-WHERE lessons.id = lesson_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteLessonDetail` (IN `detail_id` INT)  DELETE FROM lesson_details
-WHERE lesson_details.id = detail_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteLessonFile` (IN `file_id` INT)  DELETE FROM lesson_files
-WHERE lesson_files.id = file_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteLessonTimetable` (IN `timetable_id` INT)  DELETE FROM lesson_timetables
-WHERE lesson_timetables.id = timetable_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteUser` (IN `user_id` CHAR(36))  DELETE FROM users
-WHERE users.id = user_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLesson` (IN `id` INT)  READS SQL DATA
-SELECT * FROM lessons WHERE lessons.id = id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessonDetail` (IN `lesson_id` INT, IN `timetable_id` INT)  READS SQL DATA
-SELECT lesson_details.id, lesson_details.title, lesson_details.details, timetable.starts_at, timetable.ends_at, lessons.id AS 'lesson_id', lessons.name, lessons.description
-FROM lesson_details
-LEFT JOIN lesson_timetables AS timetable ON timetable.id = lesson_details.lesson_timetable_id 
-LEFT JOIN lessons ON lessons.id = timetable.lesson_id
-WHERE lessons.id = lesson_id && timetable.id = timetable_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessonDetails` (IN `lesson_id` INT)  READS SQL DATA
-SELECT lesson_details.id, lesson_details.title, lesson_details.details, timetable.starts_at, timetable.ends_at, lessons.id AS 'lesson_id', lessons.name, lessons.description
-FROM lesson_details
-LEFT JOIN lesson_timetables AS timetable ON timetable.id = lesson_details.lesson_timetable_id 
-LEFT JOIN lessons ON lessons.id = timetable.lesson_id
-WHERE lessons.id = lesson_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessonFiles` (IN `lesson_id` INT)  READS SQL DATA
-SELECT lessons.id AS 'lesson_id', lesson_files.file_path
-FROM lesson_files
-LEFT JOIN lesson_details ON lesson_details.id = lesson_files.lesson_detail_id
-LEFT JOIN lesson_timetables ON lesson_timetables.id = lesson_details.lesson_timetable_id
-LEFT JOIN lessons ON lessons.id = lesson_timetables.lesson_id
-WHERE lessons.id = lesson_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessons` ()  READS SQL DATA
-SELECT * FROM lessons$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessonTimetables` (IN `lesson_id` INT)  READS SQL DATA
-SELECT lesson_timetables.id, starts_at, ends_at, lesson.id as 'lesson_id', lesson.name, lessons.description 
-FROM class_timetable 
-LEFT JOIN lessons ON lesson_timetables.lesson_id = lessons.id
-WHERE lessons.id = lesson_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetRole` (IN `id` CHAR(36))  READS SQL DATA
-SELECT * FROM roles WHERE roles.id = id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetRoles` ()  READS SQL DATA
-SELECT * FROM roles$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetUser` (IN `user_id` VARCHAR(255))  READS SQL DATA
-SELECT * FROM users WHERE users.id = user_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetUsers` ()  READS SQL DATA
-SELECT * FROM users$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateLesson` (IN `lesson_id` INT, IN `name` TINYTEXT, IN `description` TEXT)  UPDATE lessons
-SET lessons.name = name, lessons.description = description
-WHERE lessons.id = lesson_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateLessonDetail` (IN `detail_id` INT, IN `title` TINYTEXT, IN `details` LONGTEXT)  UPDATE lesson_details
-SET lesson_details.title = title, lesson_details.details = details
-WHERE lesson_details.id = detail_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateLessonFile` (IN `file_id` INT, IN `filepath` TEXT)  UPDATE lesson_files
-SET lesson_files.file_path = filepath
-WHERE lesson_files.id = file_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateLessonTimetable` (IN `timetable_id` INT, IN `starts_at` DATETIME, IN `ends_at` DATETIME)  UPDATE lesson_timetables
-SET lesson_timetables.starts_at = starts_at, lesson_timetables.ends_at = ends_at
-WHERE lesson_timetables.id = timetable_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateRole` (IN `role_id` CHAR(36), IN `name` TINYTEXT)  UPDATE roles
-SET roles.name = name
-WHERE roles.id = role_id$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateUser` (IN `user_id` CHAR(36), IN `firstname` TINYTEXT, IN `lastname` TINYTEXT, IN `birth_date` DATE)  UPDATE users
-SET users.firstname = firstname, users.lastname = lastname, users.birth_date = birth_date
-WHERE users.id = user_id$$
-
-DELIMITER ;
-
 -- --------------------------------------------------------
 
 --
@@ -226,25 +105,6 @@ CREATE TABLE `users` (
   `birth_date` date NOT NULL,
   `registration_number` char(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `normalized_email`, `password`, `firstname`, `lastname`, `birth_date`, `registration_number`) VALUES
-('05d73de1-6199-11ec-b0b6-8c1645b816b6', 'zdjfzoif', 'ZDFJOIDFJ', '04d5d1a6113c0ff38b4fd0beacdf51ad6a9f71efe9abf95bef5f4d4982046620', 'isiusiu', 'isjijijs', '2012-12-12', 'u123456789'),
-('1d5848b4-6199-11ec-b0b6-8c1645b816b6', 'zdjfzoif', 'ZDFJOIDFJ', '04d5d1a6113c0ff38b4fd0beacdf51ad6a9f71efe9abf95bef5f4d4982046620', 'isiusiu', 'isjijijs', '2012-12-12', 'u123456789'),
-('28ef9f1f-6199-11ec-b0b6-8c1645b816b6', 'zdjfzoif', 'ZDFJOIDFJ', '04d5d1a6113c0ff38b4fd0beacdf51ad6a9f71efe9abf95bef5f4d4982046620', 'isiusiu', 'isjijijs', '2012-12-12', 'u123456789'),
-('4111492e-6134-11ec-bb4c-8c1645b816b6', 'soultan@hotmail.com', 'SOULTAN@HOTMAIL.COM', '967520ae23e8ee14888bae72809031b98398ae4a636773e18fff917d77679334', 'soultan', 'hatsijev', '2012-12-12', 'u123456789'),
-('44a3e9fc-6197-11ec-b0b6-8c1645b816b6', 'soultan@hotmail.com', 'SOULTAN@HOTMAIL.COM', 'dfb74ab040ba547de9fbb292b1a3284715aa6bd88047940247d6655e9a266754', 'soultan1', 'soultan2', '2012-12-12', 'u123456789'),
-('5f60bc4a-6197-11ec-b0b6-8c1645b816b6', 'soultan@hotmail.com', 'SOULTAN@HOTMAIL.COM', 'dfb74ab040ba547de9fbb292b1a3284715aa6bd88047940247d6655e9a266754', 'soultan1', 'soultan2', '2012-12-12', 'u123456789'),
-('61751d87-6198-11ec-b0b6-8c1645b816b6', 'soultan', 'SOULTEN', '0170851cb81053c07ccd5a7b940786cf3c6ba0440283688709325ef31972e3b1', 'soultan', 'soultan', '2012-12-12', 'u123456789'),
-('6db42251-6196-11ec-b0b6-8c1645b816b6', 'soultan@hotmail.be', 'SOULTAN@HOTMAIL.BE', 'f9fe11b0e0caa066ab1771333205596f601534940ccdfe5183c0407c8c1d954d', 'soultan', 'hatsijev', '2012-12-12', 'u123456789'),
-('72a5872f-6196-11ec-b0b6-8c1645b816b6', 'soultan@hotmail.be', 'SOULTAN@HOTMAIL.BE', 'f9fe11b0e0caa066ab1771333205596f601534940ccdfe5183c0407c8c1d954d', 'soultan', 'hatsijev', '2012-12-12', 'u123456789'),
-('7a22117f-6196-11ec-b0b6-8c1645b816b6', 'soultan@hotmail.be', 'SOULTAN@HOTMAIL.BE', 'f9fe11b0e0caa066ab1771333205596f601534940ccdfe5183c0407c8c1d954d', 'soultan', 'hatsijev', '2012-12-12', 'u123456789'),
-('80907592-6196-11ec-b0b6-8c1645b816b6', 'soultan@hotmail.be', 'SOULTAN@HOTMAIL.BE', 'f9fe11b0e0caa066ab1771333205596f601534940ccdfe5183c0407c8c1d954d', 'soultan', 'hatsijev', '2012-12-12', 'u123456789'),
-('9f774462-619b-11ec-b0b6-8c1645b816b6', 'soultan@hotmle', 'SOULTAN@HOTMLE', 'ab1e6be2000a7c9c3d390282749f531bbcf6a377c41a5fe0261481e1911d8fce', 'soultan', 'hatsijev', '2012-12-12', 'u123456789'),
-('a9eeee0d-6196-11ec-b0b6-8c1645b816b6', 'soultan@hotmail.be', 'SOULTAN@HOTMAIL.BE', 'f9fe11b0e0caa066ab1771333205596f601534940ccdfe5183c0407c8c1d954d', 'soultan', 'hatsijev', '2012-12-12', 'u123456789');
 
 -- --------------------------------------------------------
 
@@ -404,3 +264,124 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+DELIMITER $$
+--
+-- Procédures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateLesson` (IN `name` TINYTEXT, IN `description` TEXT)  INSERT INTO lessons (`name`, `description`)
+VALUES (name, description)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateLessonDetail` (IN `title` TINYTEXT, IN `details` LONGTEXT, IN `timetable_id` INT)  INSERT INTO lesson_details (`title`, `details`, `lesson_timetable_id`)
+VALUES (title, details, timetable_id)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateLessonFile` (IN `filepath` TEXT, IN `lesson_detail_id` INT)  INSERT INTO lesson_files (`file_path`, `lesson_detail_id`)
+VALUES (filepath, lesson_detail_id)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateLessonTimetable` (IN `lesson_id` INT, IN `starts_at` DATETIME, IN `ends_at` DATETIME)  INSERT INTO lesson_timetables (`starts_at`, `ends_at`, `lesson_id`)
+VALUES (starts_at, ends_at, lesson_id)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateRole` (IN `name` TINYTEXT)  BEGIN
+	DECLARE new_id CHAR(36) DEFAULT UUID();
+	INSERT INTO roles (`id`,`name`)
+	VALUES (new_id, name);
+    SELECT new_id AS 'id';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spCreateUser` (IN `email` MEDIUMTEXT, IN `password` TEXT, IN `firstname` TINYTEXT, IN `lastname` TINYTEXT, IN `birth_date` DATETIME, IN `registration_number` CHAR(10))  BEGIN
+	DECLARE new_id CHAR(36) DEFAULT UUID();
+    
+	INSERT INTO users (`id`, `email`, `normalized_email`,
+		`password`, `firstname`, `lastname`, `birth_date`, 
+                       `registration_number`)
+	VALUES 
+    (new_id, email, UPPER(email), SHA2(password, 256), 		firstname, lastname, birth_date, registration_number);
+    SELECT new_id AS 'id';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteLesson` (IN `lesson_id` INT)  DELETE FROM lessons
+WHERE lessons.id = lesson_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteLessonDetail` (IN `detail_id` INT)  DELETE FROM lesson_details
+WHERE lesson_details.id = detail_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteLessonFile` (IN `file_id` INT)  DELETE FROM lesson_files
+WHERE lesson_files.id = file_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteLessonTimetable` (IN `timetable_id` INT)  DELETE FROM lesson_timetables
+WHERE lesson_timetables.id = timetable_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDeleteUser` (IN `user_id` CHAR(36))  DELETE FROM users
+WHERE users.id = user_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLesson` (IN `id` INT)  READS SQL DATA
+SELECT * FROM lessons WHERE lessons.id = id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessonDetail` (IN `lesson_id` INT, IN `timetable_id` INT)  READS SQL DATA
+SELECT lesson_details.id, lesson_details.title, lesson_details.details, timetable.starts_at, timetable.ends_at, lessons.id AS 'lesson_id', lessons.name, lessons.description
+FROM lesson_details
+LEFT JOIN lesson_timetables AS timetable ON timetable.id = lesson_details.lesson_timetable_id 
+LEFT JOIN lessons ON lessons.id = timetable.lesson_id
+WHERE lessons.id = lesson_id && timetable.id = timetable_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessonDetails` (IN `lesson_id` INT)  READS SQL DATA
+SELECT lesson_details.id, lesson_details.title, lesson_details.details, timetable.starts_at, timetable.ends_at, lessons.id AS 'lesson_id', lessons.name, lessons.description
+FROM lesson_details
+LEFT JOIN lesson_timetables AS timetable ON timetable.id = lesson_details.lesson_timetable_id 
+LEFT JOIN lessons ON lessons.id = timetable.lesson_id
+WHERE lessons.id = lesson_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessonFiles` (IN `lesson_id` INT)  READS SQL DATA
+SELECT lessons.id AS 'lesson_id', lesson_files.file_path
+FROM lesson_files
+LEFT JOIN lesson_details ON lesson_details.id = lesson_files.lesson_detail_id
+LEFT JOIN lesson_timetables ON lesson_timetables.id = lesson_details.lesson_timetable_id
+LEFT JOIN lessons ON lessons.id = lesson_timetables.lesson_id
+WHERE lessons.id = lesson_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessons` ()  READS SQL DATA
+SELECT * FROM lessons$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetLessonTimetables` (IN `lesson_id` INT)  READS SQL DATA
+SELECT lesson_timetables.id, starts_at, ends_at, lesson.id as 'lesson_id', lesson.name, lessons.description 
+FROM class_timetable 
+LEFT JOIN lessons ON lesson_timetables.lesson_id = lessons.id
+WHERE lessons.id = lesson_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetRole` (IN `id` CHAR(36))  READS SQL DATA
+SELECT * FROM roles WHERE roles.id = id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetRoles` ()  READS SQL DATA
+SELECT * FROM roles$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetUser` (IN `user_id` VARCHAR(255))  READS SQL DATA
+SELECT * FROM users WHERE users.id = user_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetUsers` ()  READS SQL DATA
+SELECT * FROM users$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateLesson` (IN `lesson_id` INT, IN `name` TINYTEXT, IN `description` TEXT)  UPDATE lessons
+SET lessons.name = name, lessons.description = description
+WHERE lessons.id = lesson_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateLessonDetail` (IN `detail_id` INT, IN `title` TINYTEXT, IN `details` LONGTEXT)  UPDATE lesson_details
+SET lesson_details.title = title, lesson_details.details = details
+WHERE lesson_details.id = detail_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateLessonFile` (IN `file_id` INT, IN `filepath` TEXT)  UPDATE lesson_files
+SET lesson_files.file_path = filepath
+WHERE lesson_files.id = file_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateLessonTimetable` (IN `timetable_id` INT, IN `starts_at` DATETIME, IN `ends_at` DATETIME)  UPDATE lesson_timetables
+SET lesson_timetables.starts_at = starts_at, lesson_timetables.ends_at = ends_at
+WHERE lesson_timetables.id = timetable_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateRole` (IN `role_id` CHAR(36), IN `name` TINYTEXT)  UPDATE roles
+SET roles.name = name
+WHERE roles.id = role_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spUpdateUser` (IN `user_id` CHAR(36), IN `firstname` TINYTEXT, IN `lastname` TINYTEXT, IN `birth_date` DATE)  UPDATE users
+SET users.firstname = firstname, users.lastname = lastname, users.birth_date = birth_date
+WHERE users.id = user_id$$
+
+DELIMITER ;
