@@ -9,5 +9,6 @@ namespace Api.Depot.DAL.IRepositories
 {
     public interface ILessonTimetableRepository : IRepositoryBase<int, LessonTimetableEntity>
     {
+        IEnumerable<LessonTimetableEntity> GetLessonTimetables(int lessonId);
     }
 }
