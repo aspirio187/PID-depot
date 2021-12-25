@@ -1,6 +1,6 @@
 ﻿using Api.Depot.DAL.Entities;
 using Api.Depot.DAL.IRepositories;
-using DevHopTools.Connection;
+using Api.Depot.DAL.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -12,9 +12,9 @@ namespace Api.Depot.BLL
 {
     public static class Configuration
     {
-        public static IServiceCollection InjectBLL(this IServiceCollection services)
+        public static IServiceCollection InjectBLL(this IServiceCollection services, string connectionString)
         {
-            services.InjectDAL();
+            services.InjectDAL(connectionString);
 
             services.AddScoped<IUserService, UserService>();
 
