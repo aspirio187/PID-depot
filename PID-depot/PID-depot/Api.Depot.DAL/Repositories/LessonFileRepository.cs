@@ -54,6 +54,22 @@ namespace Api.Depot.DAL.Repositories
             return _connection.ExecuteReader(command, lf => new LessonFileEntity(lf)).FirstOrDefault();
         }
 
+        public IEnumerable<LessonFileEntity> GetLessonDetailFiles(int lessonDetailId)
+        {
+            Command command = new Command("spGetLessonDetailFiles", true);
+            command.AddParameter("details_id", lessonDetailId);
+
+            return _connection.ExecuteReader(command, lf => new LessonFileEntity(lf));
+        }
+
+        public IEnumerable<LessonFileEntity> GetLessonFiles(int lessonId)
+        {
+            Command command = new Command("spGetLessonFiles", true);
+            command.AddParameter("lesson_id", lessonId);
+
+            return _connection.ExecuteReader(command, lf => new LessonFileEntity(lf));
+        }
+
         public bool Update(int key, LessonFileEntity data)
         {
             if (data is null) throw new ArgumentNullException(nameof(data));

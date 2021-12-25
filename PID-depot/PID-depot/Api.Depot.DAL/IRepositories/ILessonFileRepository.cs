@@ -9,5 +9,7 @@ namespace Api.Depot.DAL.IRepositories
 {
     public interface ILessonFileRepository : IRepositoryBase<int, LessonFileEntity>
     {
+        IEnumerable<LessonFileEntity> GetLessonFiles(int lessonId);
+        IEnumerable<LessonFileEntity> GetLessonDetailFiles(int lessonDetailId);
     }
 }
