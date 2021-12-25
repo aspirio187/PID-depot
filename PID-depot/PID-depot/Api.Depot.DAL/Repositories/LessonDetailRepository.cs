@@ -39,7 +39,8 @@ namespace Api.Depot.DAL.Repositories
 
         public IEnumerable<LessonDetailEntity> GetAll()
         {
-            Command command = new Command("spGetLessonDetails", true);
+            string query = "SELECT * FROM lesson_details";
+            Command command = new Command(query);
 
             return _connection.ExecuteReader(command, ld => new LessonDetailEntity(ld));
         }
