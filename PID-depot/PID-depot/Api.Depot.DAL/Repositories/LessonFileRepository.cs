@@ -21,6 +21,8 @@ namespace Api.Depot.DAL.Repositories
 
         public int Create(LessonFileEntity data)
         {
+            if (data is null) throw new ArgumentNullException(nameof(data));
+
             Command command = new Command("spCreateLessonFile", true);
             command.AddParameter("filepath", data.FilePath);
             command.AddParameter("lesson_detail_id", data.LessonDetailId);
@@ -54,6 +56,8 @@ namespace Api.Depot.DAL.Repositories
 
         public bool Update(int key, LessonFileEntity data)
         {
+            if (data is null) throw new ArgumentNullException(nameof(data));
+
             Command command = new Command("spUpdateLessonFile", true);
             command.AddParameter("file_id", key);
             command.AddParameter("filepath", data.FilePath);
