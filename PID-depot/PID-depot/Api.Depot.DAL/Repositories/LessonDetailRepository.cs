@@ -21,6 +21,8 @@ namespace Api.Depot.DAL.Repositories
 
         public int Create(LessonDetailEntity data)
         {
+            if (data is null) throw new ArgumentNullException(nameof(data));
+
             Command command = new Command("spCreateLessonDetail", true);
             command.AddParameter("title", data.Title);
             command.AddParameter("details", data.Details);
@@ -56,6 +58,8 @@ namespace Api.Depot.DAL.Repositories
 
         public bool Update(int key, LessonDetailEntity data)
         {
+            if (data is null) throw new ArgumentNullException(nameof(data));
+
             Command command = new Command("spUpdateLessonDetail", true);
             command.AddParameter("detail_id", key);
             command.AddParameter("title", data.Title);
