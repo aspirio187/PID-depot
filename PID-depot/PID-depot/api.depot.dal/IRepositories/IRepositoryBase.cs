@@ -11,7 +11,7 @@ namespace Api.Depot.DAL.IRepositories
     {
         IEnumerable<TEntity> GetAll();
         TKey Create(TEntity data);
-        TEntity? GetById(TKey key);
+        TEntity GetById(TKey key);
         bool Update(TKey key, TEntity data);
         bool Delete(TKey key);
     }
