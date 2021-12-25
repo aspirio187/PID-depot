@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Api.Depot.BLL.Dtos
+namespace Api.Depot.BLL.Dtos.UserDtos
 {
     public class UserDto
     {

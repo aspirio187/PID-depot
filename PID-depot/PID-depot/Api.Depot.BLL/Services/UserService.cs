@@ -1,4 +1,4 @@
-﻿using Api.Depot.BLL.Dtos;
+﻿using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.DAL.Entities;
 using Api.Depot.DAL.IRepositories;
@@ -35,6 +35,12 @@ namespace Api.Depot.BLL.Services
         {
             IEnumerable<UserEntity> usersFromRepo = _userRepository.GetAll();
             return usersFromRepo.Select(u => new UserDto(u)).ToList();
+        }
+
+        public UserDto CreateUser(UserCreationDto user)
+        {
+            Guid createId = _userRepository.Create(user.MapDAL());
+            return new UserDto(_userRepository.GetById(createId));
         }
     }
 }
