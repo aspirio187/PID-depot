@@ -21,6 +21,8 @@ namespace Api.Depot.DAL.Repositories
 
         public Guid Create(UserEntity data)
         {
+            if(data is null) throw new ArgumentNullException(nameof(data));
+
             Command command = new Command("spCreateUser", true);
             command.AddParameter("email", data.Email);
             command.AddParameter("password", data.Password);
@@ -53,6 +55,8 @@ namespace Api.Depot.DAL.Repositories
 
         public bool Update(Guid key, UserEntity data)
         {
+            if(data is null) throw new ArgumentNullException(nameof(data));
+
             Command command = new Command("spUpdateUser", true);
             command.AddParameter("user_id", key);
             command.AddParameter("firstname", data.Firstname);
