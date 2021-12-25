@@ -42,5 +42,10 @@ namespace Api.Depot.BLL.Services
             Guid createId = _userRepository.Create(user.MapDAL());
             return new UserDto(_userRepository.GetById(createId));
         }
+
+        public UserDto UserLogin(string email, string password)
+        {
+            Guid? userId = _userRepository.
+        }
     }
 }

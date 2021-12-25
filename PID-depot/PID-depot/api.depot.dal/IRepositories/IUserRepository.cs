@@ -9,6 +9,6 @@ namespace Api.Depot.DAL.IRepositories
 {
     public interface IUserRepository : IRepositoryBase<Guid, UserEntity>
     {
-
+        UserEntity LogIn(string email, string password);
     }
 }
