@@ -45,7 +45,9 @@ namespace Api.Depot.BLL.Services
 
         public UserDto UserLogin(string email, string password)
         {
-            Guid? userId = _userRepository.
+            UserEntity userFromRepo = _userRepository.LogIn(email, password);
+            if (userFromRepo is null) return null;
+            return new UserDto(userFromRepo);
         }
     }
 }
