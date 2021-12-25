@@ -18,12 +18,12 @@ namespace Api.Depot.BLL.Dtos
 
         public UserDto(UserEntity userEntity)
         {
-            Id = userEntity.Id;
-            Email = userEntity.Email;
-            Firstname = userEntity.Firstname;
-            Lastname = userEntity.Lastname;
-            Birthdate = userEntity.Birthdate;
-            RegistrationNumber = userEntity.RegistrationNumber;
+            Id = (Guid)userEntity?.Id;
+            Email = userEntity?.Email;
+            Firstname = userEntity?.Firstname;
+            Lastname = userEntity?.Lastname;
+            Birthdate = (DateTime)userEntity?.Birthdate;
+            RegistrationNumber = userEntity?.RegistrationNumber;
         }
     }
 }

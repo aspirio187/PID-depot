@@ -1,4 +1,6 @@
-﻿using Api.Depot.DAL;
+﻿using Api.Depot.BLL.IServices;
+using Api.Depot.BLL.Services;
+using Api.Depot.DAL;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,8 @@ namespace Api.Depot.BLL
         public static IServiceCollection InjectBLL(this IServiceCollection services)
         {
             services.InjectDAL();
+
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

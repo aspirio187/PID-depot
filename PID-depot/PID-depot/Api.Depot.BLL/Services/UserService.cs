@@ -28,13 +28,13 @@ namespace Api.Depot.BLL.Services
         public UserDto GetUser(Guid id)
         {
             UserEntity userFromRepo = _userRepository.GetById(id);
-            return new UserDto(userFromRepo);
+            return userFromRepo is not null ? new UserDto(userFromRepo) : null;
         }
 
         public IEnumerable<UserDto> GetUsers()
         {
             IEnumerable<UserEntity> usersFromRepo = _userRepository.GetAll();
-            return usersFromRepo.Select(u => new UserDto(u));
+            return usersFromRepo.Select(u => new UserDto(u)).ToList();
         }
     }
 }
