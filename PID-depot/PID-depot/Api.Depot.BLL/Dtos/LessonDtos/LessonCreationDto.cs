@@ -11,14 +11,5 @@ namespace Api.Depot.BLL.Dtos.LessonDtos
     {
         public string Name { get; set; }
         public string Description { get; set; }
-
-        public LessonEntity MapDAL()
-        {
-            return new LessonEntity()
-            {
-                Name = Name,
-                Description = Description,
-            };
-        }
     }
 }

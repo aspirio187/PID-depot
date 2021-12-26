@@ -1,4 +1,5 @@
-﻿using Api.Depot.BLL.Dtos.RoleDtos;
+﻿using Api.Depot.BLL.Dtos.LessonDtos;
+using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.DAL.Entities;
 using System;
@@ -86,6 +87,43 @@ namespace Api.Depot.BLL
                 : new RoleEntity()
                 {
                     Name = role.Name
+                };
+        }
+        #endregion
+
+        #region Lesson mapping
+        public static LessonDto MapFromDAL(this LessonEntity lesson)
+        {
+            return lesson is null
+                ? null
+                : new LessonDto()
+                {
+                    Id = lesson.Id,
+                    Description = lesson.Description,
+                    Name = lesson.Name,
+                };
+        }
+
+        public static LessonEntity MapToDAL(this LessonDto lesson)
+        {
+            return lesson is null
+                ? null
+                : new LessonEntity()
+                {
+                    Id = lesson.Id,
+                    Description = lesson.Description,
+                    Name = lesson.Name
+                };
+        }
+
+        public static LessonEntity MapToDAL(this LessonCreationDto lesson)
+        {
+            return lesson is null
+                ? null
+                : new LessonEntity()
+                {
+                    Description = lesson.Description,
+                    Name = lesson.Name
                 };
         }
         #endregion

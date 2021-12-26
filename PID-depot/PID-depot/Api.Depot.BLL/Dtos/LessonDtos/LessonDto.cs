@@ -17,22 +17,5 @@ namespace Api.Depot.BLL.Dtos.LessonDtos
         {
 
         }
-
-        public LessonDto(LessonEntity lesson)
-        {
-            Id = lesson.Id;
-            Name = lesson.Name;
-            Description = lesson.Description;
-        }
-
-        public LessonEntity MapDAL()
-        {
-            return new LessonEntity()
-            {
-                Id = Id,
-                Name = Name,
-                Description = Description
-            };
-        }
     }
 }
