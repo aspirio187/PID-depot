@@ -12,7 +12,7 @@ namespace Api.Depot.BLL.IServices
         IEnumerable<LessonTimetableDto> GetTimetables();
         IEnumerable<LessonTimetableDto> GetLessonTimetables(int lessonId);
         LessonTimetableDto GetTimetable(int id);
-        LessonTimetableDto GetLessonTimetable(int lessonId);
+        LessonTimetableDto GetLessonTimetable(int lessonId, DateTime startsAt);
         bool DeleteLessonTimetable(int id);
         LessonTimetableDto CreateLessonTimetable(LessonTimetableCreationDto lessonTimetable);
         LessonTimetableDto UpdateLessonTimetable(LessonTimetableDto lessonTimetable);

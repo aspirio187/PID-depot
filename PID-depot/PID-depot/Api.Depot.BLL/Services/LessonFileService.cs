@@ -18,9 +18,9 @@ namespace Api.Depot.BLL.Services
         {
             if (lessonFile is null) throw new ArgumentNullException(nameof(lessonFile));
 
-            LessonFileEntity fileToCreate = lessonFile;
+            LessonFileEntity fileToCreate = lessonFile.MapDAL();
             int fileCreatedId = _lessonFileRepository.Create(fileToCreate);
-            return _lessonFileRepository.GetById(fileCreatedId);
+            return new LessonFileDto(_lessonFileRepository.GetById(fileCreatedId));
         }
 
         public bool DeleteLessonFile(int id)
@@ -30,7 +30,7 @@ namespace Api.Depot.BLL.Services
 
         public LessonFileDto GetFile(int id)
         {
-            return _lessonFileRepository.GetById(id);
+            return new LessonFileDto(_lessonFileRepository.GetById(id));
         }
 
         public IEnumerable<LessonFileDto> GetFiles()
@@ -52,7 +52,7 @@ namespace Api.Depot.BLL.Services
         {
             if (lessonFile is null) throw new ArgumentNullException(nameof(lessonFile));
 
-            LessonFileEntity fileToUpdate = lessonFile;
+            LessonFileEntity fileToUpdate = lessonFile.MapDAL();
             return _lessonFileRepository.Update(lessonFile.Id, fileToUpdate) ? lessonFile : null;
         }
     }

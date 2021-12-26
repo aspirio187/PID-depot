@@ -18,9 +18,9 @@ namespace Api.Depot.BLL.Services
         {
             if (lessonDetail is null) throw new ArgumentNullException(nameof(lessonDetail));
 
-            LessonDetailEntity detailToCreate = lessonDetail;
+            LessonDetailEntity detailToCreate = lessonDetail.MapDAL();
             int detailCreatedId = _lessonDetailRepository.Create(detailToCreate);
-            return _lessonDetailRepository.GetById(detailCreatedId);
+            return new LessonDetailDto(_lessonDetailRepository.GetById(detailCreatedId));
 
         }
 
@@ -36,7 +36,8 @@ namespace Api.Depot.BLL.Services
 
         public LessonDetailDto GetLessonDetail(int lessonTimetableId)
         {
-            return _lessonDetailRepository.GetLessonTimetableDetails(lessonTimetableId).FirstOrDefault();
+            return new LessonDetailDto(_lessonDetailRepository.GetLessonTimetableDetails(lessonTimetableId)
+                .FirstOrDefault());
         }
 
         public IEnumerable<LessonDetailDto> GetLessonDetails(int lessonId)
@@ -48,7 +49,7 @@ namespace Api.Depot.BLL.Services
         {
             if (lessonDetail is null) throw new ArgumentNullException(nameof(lessonDetail));
 
-            LessonDetailEntity detailToUpdate = lessonDetail;
+            LessonDetailEntity detailToUpdate = lessonDetail.MapDAL();
             return _lessonDetailRepository.Update(lessonDetail.Id, detailToUpdate) ? lessonDetail : null;
         }
     }

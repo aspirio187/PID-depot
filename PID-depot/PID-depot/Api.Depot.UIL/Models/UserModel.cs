@@ -1,4 +1,4 @@
-﻿using Api.Depot.BLL.Dtos;
+﻿using Api.Depot.BLL.Dtos.UserDtos;
 using System;
 
 namespace Api.Depot.UIL.Models
