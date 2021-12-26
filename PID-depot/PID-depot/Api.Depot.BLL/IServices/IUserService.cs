@@ -14,5 +14,6 @@ namespace Api.Depot.BLL.IServices
         bool DeleteUser(Guid id);
         UserDto CreateUser(UserCreationDto user);
         UserDto UserLogin(string email, string password);
+        UserDto UpdateUser(UserUpdateDto user);
     }
 }

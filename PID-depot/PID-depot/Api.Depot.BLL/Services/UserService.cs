@@ -49,5 +49,12 @@ namespace Api.Depot.BLL.Services
             if (userFromRepo is null) return null;
             return new UserDto(userFromRepo);
         }
+
+        public UserDto UpdateUser(UserUpdateDto user)
+        {
+            if (user is null) throw new ArgumentNullException(nameof(user));
+
+            return _userRepository.Update(user.Id, user.MapDAL()) ? new UserDto(_userRepository.GetById(user.Id)) : null;
+        }
     }
 }
