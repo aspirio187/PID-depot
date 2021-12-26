@@ -24,9 +24,9 @@ namespace Api.Depot.BLL.Services
         {
             if (role is null) throw new ArgumentNullException(nameof(role));
 
-            RoleEntity roleToCreate = role.MapDAL();
+            RoleEntity roleToCreate = role.MapToDAL();
             Guid createRoleId = _roleRepository.Create(roleToCreate);
-            return new RoleDto(_roleRepository.GetById(createRoleId));
+            return _roleRepository.GetById(createRoleId).MapFromDAL();
         }
 
         public bool DeleteRole(Guid id)
@@ -36,19 +36,19 @@ namespace Api.Depot.BLL.Services
 
         public RoleDto GetRole(Guid id)
         {
-            return new RoleDto(_roleRepository.GetById(id));
+            return _roleRepository.GetById(id).MapFromDAL();
         }
 
         public IEnumerable<RoleDto> GetRoles()
         {
-            return _roleRepository.GetAll().Select(r => new RoleDto(r));
+            return _roleRepository.GetAll().Select(r => r.MapFromDAL());
         }
 
         public RoleDto UpdateRole(RoleDto role)
         {
             if(role is null) throw new ArgumentNullException(nameof(role));
 
-            return _roleRepository.Update(role.Id, role.MapDAL()) ? role : null;
+            return _roleRepository.Update(role.Id, role.MapToDAL()) ? role : null;
         }
     }
 }

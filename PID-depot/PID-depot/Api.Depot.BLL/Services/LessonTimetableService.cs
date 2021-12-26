@@ -24,9 +24,9 @@ namespace Api.Depot.BLL.Services
         {
             if (lessonTimetable is null) throw new ArgumentNullException(nameof(lessonTimetable));
 
-            LessonTimetableEntity timetableToCreate = lessonTimetable.MapDAL();
+            LessonTimetableEntity timetableToCreate = lessonTimetable.MapToDAL();
             int timetableCreatedId = _lessonTimetableRepository.Create(timetableToCreate);
-            return new LessonTimetableDto(_lessonTimetableRepository.GetById(timetableCreatedId));
+            return _lessonTimetableRepository.GetById(timetableCreatedId).MapFromDAL();
         }
 
         public bool DeleteLessonTimetable(int id)
@@ -36,30 +36,29 @@ namespace Api.Depot.BLL.Services
 
         public LessonTimetableDto GetLessonTimetable(int lessonId, DateTime startsAt)
         {
-            return new LessonTimetableDto(_lessonTimetableRepository.GetLessonTimetables(lessonId)
-                .FirstOrDefault(lt => lt.StartsAt == startsAt));
+            return _lessonTimetableRepository.GetLessonTimetables(lessonId).FirstOrDefault(lt => lt.StartsAt == startsAt).MapFromDAL();
         }
 
         public IEnumerable<LessonTimetableDto> GetLessonTimetables(int lessonId)
         {
-            return _lessonTimetableRepository.GetLessonTimetables(lessonId).Select(lt => new LessonTimetableDto(lt));
+            return _lessonTimetableRepository.GetLessonTimetables(lessonId).Select(lt => lt.MapFromDAL());
         }
 
         public LessonTimetableDto GetTimetable(int id)
         {
-            return new LessonTimetableDto(_lessonTimetableRepository.GetById(id));
+            return _lessonTimetableRepository.GetById(id).MapFromDAL();
         }
 
         public IEnumerable<LessonTimetableDto> GetTimetables()
         {
-            return _lessonTimetableRepository.GetAll().Select(lt => new LessonTimetableDto(lt));
+            return _lessonTimetableRepository.GetAll().Select(lt => lt.MapFromDAL());
         }
 
         public LessonTimetableDto UpdateLessonTimetable(LessonTimetableDto lessonTimetable)
         {
             if (lessonTimetable is null) throw new ArgumentNullException(nameof(lessonTimetable));
 
-            LessonTimetableEntity timetableToUpdate = lessonTimetable.MapDAL();
+            LessonTimetableEntity timetableToUpdate = lessonTimetable.MapToDAL();
             return _lessonTimetableRepository.Update(lessonTimetable.Id, timetableToUpdate) ? lessonTimetable : null;
         }
     }

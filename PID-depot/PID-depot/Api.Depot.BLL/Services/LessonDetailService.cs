@@ -24,9 +24,9 @@ namespace Api.Depot.BLL.Services
         {
             if (lessonDetail is null) throw new ArgumentNullException(nameof(lessonDetail));
 
-            LessonDetailEntity detailToCreate = lessonDetail.MapDAL();
+            LessonDetailEntity detailToCreate = lessonDetail.MapToDAL();
             int detailCreatedId = _lessonDetailRepository.Create(detailToCreate);
-            return new LessonDetailDto(_lessonDetailRepository.GetById(detailCreatedId));
+            return _lessonDetailRepository.GetById(detailCreatedId).MapFromDAL();
 
         }
 
@@ -37,25 +37,24 @@ namespace Api.Depot.BLL.Services
 
         public IEnumerable<LessonDetailDto> GetDetails()
         {
-            return _lessonDetailRepository.GetAll().Select(ld => new LessonDetailDto(ld));
+            return _lessonDetailRepository.GetAll().Select(ld => ld.MapFromDAL());
         }
 
         public LessonDetailDto GetLessonDetail(int lessonTimetableId)
         {
-            return new LessonDetailDto(_lessonDetailRepository.GetLessonTimetableDetails(lessonTimetableId)
-                .FirstOrDefault());
+            return _lessonDetailRepository.GetLessonTimetableDetails(lessonTimetableId).FirstOrDefault().MapFromDAL();
         }
 
         public IEnumerable<LessonDetailDto> GetLessonDetails(int lessonId)
         {
-            return _lessonDetailRepository.GetLessonDetails(lessonId).Select(ld => new LessonDetailDto(ld));
+            return _lessonDetailRepository.GetLessonDetails(lessonId).Select(ld => ld.MapFromDAL());
         }
 
         public LessonDetailDto UpdateLessonDetail(LessonDetailDto lessonDetail)
         {
             if (lessonDetail is null) throw new ArgumentNullException(nameof(lessonDetail));
 
-            LessonDetailEntity detailToUpdate = lessonDetail.MapDAL();
+            LessonDetailEntity detailToUpdate = lessonDetail.MapToDAL();
             return _lessonDetailRepository.Update(lessonDetail.Id, detailToUpdate) ? lessonDetail : null;
         }
     }

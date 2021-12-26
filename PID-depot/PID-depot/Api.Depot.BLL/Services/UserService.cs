@@ -27,34 +27,31 @@ namespace Api.Depot.BLL.Services
 
         public UserDto GetUser(Guid id)
         {
-            UserEntity userFromRepo = _userRepository.GetById(id);
-            return userFromRepo is not null ? new UserDto(userFromRepo) : null;
+            return _userRepository.GetById(id).MapFromDAL();
         }
 
         public IEnumerable<UserDto> GetUsers()
         {
             IEnumerable<UserEntity> usersFromRepo = _userRepository.GetAll();
-            return usersFromRepo.Select(u => new UserDto(u));
+            return usersFromRepo.Select(u => u.MapFromDAL());
         }
 
         public UserDto CreateUser(UserCreationDto user)
         {
-            Guid createId = _userRepository.Create(user.MapDAL());
-            return new UserDto(_userRepository.GetById(createId));
+            Guid createId = _userRepository.Create(user.MapToDAL());
+            return _userRepository.GetById(createId).MapFromDAL();
         }
 
         public UserDto UserLogin(string email, string password)
         {
-            UserEntity userFromRepo = _userRepository.LogIn(email, password);
-            if (userFromRepo is null) return null;
-            return new UserDto(userFromRepo);
+            return _userRepository.LogIn(email, password).MapFromDAL();
         }
 
         public UserDto UpdateUser(UserUpdateDto user)
         {
             if (user is null) throw new ArgumentNullException(nameof(user));
 
-            return _userRepository.Update(user.Id, user.MapDAL()) ? new UserDto(_userRepository.GetById(user.Id)) : null;
+            return _userRepository.Update(user.Id, user.MapToDAL()) ? _userRepository.GetById(user.Id).MapFromDAL() : null;
         }
     }
 }

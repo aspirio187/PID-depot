@@ -24,9 +24,9 @@ namespace Api.Depot.BLL.Services
         {
             if (lessonFile is null) throw new ArgumentNullException(nameof(lessonFile));
 
-            LessonFileEntity fileToCreate = lessonFile.MapDAL();
+            LessonFileEntity fileToCreate = lessonFile.MapToDAL();
             int fileCreatedId = _lessonFileRepository.Create(fileToCreate);
-            return new LessonFileDto(_lessonFileRepository.GetById(fileCreatedId));
+            return _lessonFileRepository.GetById(fileCreatedId).MapFromDAL();
         }
 
         public bool DeleteLessonFile(int id)
@@ -36,29 +36,29 @@ namespace Api.Depot.BLL.Services
 
         public LessonFileDto GetFile(int id)
         {
-            return new LessonFileDto(_lessonFileRepository.GetById(id));
+            return _lessonFileRepository.GetById(id).MapFromDAL();
         }
 
         public IEnumerable<LessonFileDto> GetFiles()
         {
-            return _lessonFileRepository.GetAll().Select(lf => new LessonFileDto(lf));
+            return _lessonFileRepository.GetAll().Select(lf => lf.MapFromDAL());
         }
 
         public IEnumerable<LessonFileDto> GetLessonDetailFiles(int lessonDetailId)
         {
-            return _lessonFileRepository.GetLessonDetailFiles(lessonDetailId).Select(lf => new LessonFileDto(lf));
+            return _lessonFileRepository.GetLessonDetailFiles(lessonDetailId).Select(lf => lf.MapFromDAL());
         }
 
         public IEnumerable<LessonFileDto> GetLessonFiles(int lessonId)
         {
-            return _lessonFileRepository.GetLessonFiles(lessonId).Select(lf => new LessonFileDto(lf));
+            return _lessonFileRepository.GetLessonFiles(lessonId).Select(lf => lf.MapFromDAL());
         }
 
         public LessonFileDto UpdateLessonFile(LessonFileDto lessonFile)
         {
             if (lessonFile is null) throw new ArgumentNullException(nameof(lessonFile));
 
-            LessonFileEntity fileToUpdate = lessonFile.MapDAL();
+            LessonFileEntity fileToUpdate = lessonFile.MapToDAL();
             return _lessonFileRepository.Update(lessonFile.Id, fileToUpdate) ? lessonFile : null;
         }
     }
