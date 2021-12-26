@@ -17,12 +17,5 @@ namespace Api.Depot.DAL.Entities
         {
 
         }
-
-        public LessonEntity(IDataRecord data)
-        {
-            Id = (int)data["id"];
-            Name = (string)data["name"];
-            Description = (string)data["description"];
-        }
     }
 }

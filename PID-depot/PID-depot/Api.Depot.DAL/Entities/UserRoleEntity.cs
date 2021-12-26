@@ -16,11 +16,5 @@ namespace Api.Depot.DAL.Entities
         {
 
         }
-
-        public UserRoleEntity(IDataRecord data)
-        {
-            UserId = (Guid)data["user_id"];
-            RoleId = (Guid)data["role_id"];
-        }
     }
 }

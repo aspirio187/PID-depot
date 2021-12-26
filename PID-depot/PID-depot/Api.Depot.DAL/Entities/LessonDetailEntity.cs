@@ -18,13 +18,5 @@ namespace Api.Depot.DAL.Entities
         {
 
         }
-
-        public LessonDetailEntity(IDataRecord data)
-        {
-            Id = (int)data["id"];
-            Title = (string)data["title"];
-            Details = (string)data["details"];
-            LessonTimetableId = (int)data["lesson_timetable_id"];
-        }
     }
 }

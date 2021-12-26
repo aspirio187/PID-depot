@@ -22,18 +22,5 @@ namespace Api.Depot.DAL.Entities
         {
 
         }
-
-        public UserEntity(IDataRecord data)
-        {
-
-            Id = (Guid)data["id"];
-            Email = (string)data["email"];
-            NormalizedEmail = (string)data["normalized_email"];
-            Password = (string)data["password"];
-            Firstname = (string)data["firstname"];
-            Lastname = (string)data["lastname"];
-            Birthdate = (DateTime)data["birth_date"];
-            RegistrationNumber = (string)data["registration_number"];
-        }
     }
 }

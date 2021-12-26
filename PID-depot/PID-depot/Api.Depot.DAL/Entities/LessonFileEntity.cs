@@ -17,12 +17,5 @@ namespace Api.Depot.DAL.Entities
         {
 
         }
-
-        public LessonFileEntity(IDataRecord data)
-        {
-            Id = (int)data["id"];
-            FilePath = (string)data["file_path"];
-            LessonDetailId = (int)data["lesson_detail_id"];
-        }
     }
 }
