@@ -43,7 +43,7 @@ namespace Api.Depot.DAL.Repositories
             string query = "SELECT * FROM lesson_files";
             Command command = new Command(query);
 
-            return _connection.ExecuteReader(command, lf => new LessonFileEntity(lf));
+            return _connection.ExecuteReader(command, lf => lf.MapLessonFile());
         }
 
         public LessonFileEntity GetById(int key)
@@ -51,7 +51,7 @@ namespace Api.Depot.DAL.Repositories
             string query = "SELECT * FROM lesson_files WHERE id = @id";
             Command command = new Command(query);
 
-            return _connection.ExecuteReader(command, lf => new LessonFileEntity(lf)).FirstOrDefault();
+            return _connection.ExecuteReader(command, lf => lf.MapLessonFile()).FirstOrDefault();
         }
 
         public IEnumerable<LessonFileEntity> GetLessonDetailFiles(int lessonDetailId)
@@ -59,7 +59,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command("spGetLessonDetailFiles", true);
             command.AddParameter("details_id", lessonDetailId);
 
-            return _connection.ExecuteReader(command, lf => new LessonFileEntity(lf));
+            return _connection.ExecuteReader(command, lf => lf.MapLessonFile());
         }
 
         public IEnumerable<LessonFileEntity> GetLessonFiles(int lessonId)
@@ -67,7 +67,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command("spGetLessonFiles", true);
             command.AddParameter("lesson_id", lessonId);
 
-            return _connection.ExecuteReader(command, lf => new LessonFileEntity(lf));
+            return _connection.ExecuteReader(command, lf => lf.MapLessonFile());
         }
 
         public bool Update(int key, LessonFileEntity data)

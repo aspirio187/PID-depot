@@ -44,7 +44,7 @@ namespace Api.Depot.DAL.Repositories
             string query = "SELECT * FROM lesson_timetables";
             Command command = new Command(query);
 
-            return _connection.ExecuteReader(command, lt => new LessonTimetableEntity(lt));
+            return _connection.ExecuteReader(command, lt => lt.MapLessonTimetable());
         }
 
         public LessonTimetableEntity GetById(int key)
@@ -52,7 +52,7 @@ namespace Api.Depot.DAL.Repositories
             string query = "SELECT * FROM lesson_timetables WHERE id = @id";
             Command command = new Command(query);
 
-            return _connection.ExecuteReader(command, lt => new LessonTimetableEntity(lt)).FirstOrDefault();
+            return _connection.ExecuteReader(command, lt => lt.MapLessonTimetable()).FirstOrDefault();
         }
 
         public IEnumerable<LessonTimetableEntity> GetLessonTimetables(int lessonId)
@@ -60,7 +60,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command("spGetLessonTimetables", true);
             command.AddParameter("lesson_id", lessonId);
 
-            return _connection.ExecuteReader(command, lt => new LessonTimetableEntity(lt));
+            return _connection.ExecuteReader(command, lt => lt.MapLessonTimetable());
         }
 
         public bool Update(int key, LessonTimetableEntity data)

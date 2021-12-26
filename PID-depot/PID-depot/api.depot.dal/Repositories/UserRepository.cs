@@ -44,13 +44,13 @@ namespace Api.Depot.DAL.Repositories
         public IEnumerable<UserEntity> GetAll()
         {
             Command command = new Command("spGetUsers", true);
-            return _connection.ExecuteReader(command, r => new UserEntity(r));
+            return _connection.ExecuteReader(command, r => r.MapUser());
         }
 
         public UserEntity GetById(Guid key)
         {
             Command command = new Command("spGetUser", true);
-            return _connection.ExecuteReader(command, r => new UserEntity(r)).FirstOrDefault();
+            return _connection.ExecuteReader(command, r => r.MapUser()).FirstOrDefault();
         }
 
         public UserEntity LogIn(string email, string password)
@@ -59,7 +59,7 @@ namespace Api.Depot.DAL.Repositories
             command.AddParameter("auth_email", email);
             command.AddParameter("auth_password", password);
 
-            return _connection.ExecuteReader(command, u => new UserEntity(u)).FirstOrDefault();
+            return _connection.ExecuteReader(command, u => u.MapUser()).FirstOrDefault();
         }
 
         public bool Update(Guid key, UserEntity data)

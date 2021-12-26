@@ -41,7 +41,7 @@ namespace Api.Depot.DAL.Repositories
         {
             Command command = new Command("spGetRoles", true);
 
-            return _connection.ExecuteReader(command, r => new RoleEntity(r));
+            return _connection.ExecuteReader(command, r => r.MapRole());
         }
 
         public RoleEntity GetById(Guid key)
@@ -49,7 +49,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command("spGetRole", true);
             command.AddParameter("id", key);
 
-            return _connection.ExecuteReader(command, r => new RoleEntity(r)).FirstOrDefault();
+            return _connection.ExecuteReader(command, r => r.MapRole()).FirstOrDefault();
         }
 
         public bool Update(Guid key, RoleEntity data)

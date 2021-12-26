@@ -42,7 +42,7 @@ namespace Api.Depot.DAL.Repositories
         {
             Command command = new Command("spGetLessons", true);
 
-            return _connection.ExecuteReader(command, l => new LessonEntity(l));
+            return _connection.ExecuteReader(command, l => l.MapLesson());
         }
 
         public LessonEntity GetById(int key)
@@ -50,7 +50,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command("spGetLesson", true);
             command.AddParameter("id", key);
 
-            return _connection.ExecuteReader(command, l => new LessonEntity(l)).FirstOrDefault();
+            return _connection.ExecuteReader(command, l => l.MapLesson()).FirstOrDefault();
         }
 
         public bool Update(int key, LessonEntity data)

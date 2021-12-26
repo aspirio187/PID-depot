@@ -44,7 +44,7 @@ namespace Api.Depot.DAL.Repositories
             string query = "SELECT * FROM lesson_details";
             Command command = new Command(query);
 
-            return _connection.ExecuteReader(command, ld => new LessonDetailEntity(ld));
+            return _connection.ExecuteReader(command, ld => ld.MapLessonDetail());
         }
 
         public LessonDetailEntity GetById(int key)
@@ -53,7 +53,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command(query);
             command.AddParameter("id", key);
 
-            return _connection.ExecuteReader(command, ld => new LessonDetailEntity(ld)).FirstOrDefault();
+            return _connection.ExecuteReader(command, ld => ld.MapLessonDetail()).FirstOrDefault();
         }
 
         public IEnumerable<LessonDetailEntity> GetLessonDetails(int lessonId)
@@ -61,7 +61,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command("spGetLessonDetails", true);
             command.AddParameter("lesson_id", lessonId);
 
-            return _connection.ExecuteReader(command, ld => new LessonDetailEntity(ld));
+            return _connection.ExecuteReader(command, ld => ld.MapLessonDetail());
         }
 
         public IEnumerable<LessonDetailEntity> GetLessonTimetableDetails(int lessonTimetableId)
@@ -69,7 +69,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command("spGetLessonDetail", true);
             command.AddParameter("timetable_id", lessonTimetableId);
 
-            return _connection.ExecuteReader(command, ld => new LessonDetailEntity(ld));
+            return _connection.ExecuteReader(command, ld => ld.MapLessonDetail());
         }
 
         public bool Update(int key, LessonDetailEntity data)
