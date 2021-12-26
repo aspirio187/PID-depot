@@ -15,5 +15,6 @@ namespace Api.Depot.BLL.IServices
         UserDto CreateUser(UserCreationDto user);
         UserDto UserLogin(string email, string password);
         UserDto UpdateUser(UserUpdateDto user);
+        bool AddUserRole(Guid userId, Guid roleId);
     }
 }

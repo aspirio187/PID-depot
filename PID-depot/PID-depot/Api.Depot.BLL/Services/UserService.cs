@@ -13,11 +13,14 @@ namespace Api.Depot.BLL.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository ??
                 throw new ArgumentNullException(nameof(userRepository));
+            _roleRepository = roleRepository ??
+                throw new ArgumentNullException(nameof(roleRepository));
         }
 
         public bool DeleteUser(Guid id)
@@ -52,6 +55,21 @@ namespace Api.Depot.BLL.Services
             if (user is null) throw new ArgumentNullException(nameof(user));
 
             return _userRepository.Update(user.Id, user.MapToDAL()) ? _userRepository.GetById(user.Id).MapFromDAL() : null;
+        }
+
+        public bool AddUserRole(Guid userId, Guid roleId)
+        {
+            UserEntity userFromRepo = _userRepository.GetById(userId);
+            if (userFromRepo is null) return false;
+            RoleEntity roleFromRepo = _roleRepository.GetById(roleId);
+            if (roleFromRepo is null) return false;
+
+            return _userRepository.AddRole(userId, roleId);
+        }
+
+        public bool UserExist(Guid userId)
+        {
+            return _userRepository.GetById(userId) is not null;
         }
     }
 }

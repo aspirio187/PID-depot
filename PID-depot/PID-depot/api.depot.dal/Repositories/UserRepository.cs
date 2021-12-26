@@ -73,5 +73,15 @@ namespace Api.Depot.DAL.Repositories
             command.AddParameter("birth_date", data.Birthdate.ToString("yyyy-MM-dd"));
             return _connection.ExecuteNonQuery(command) > 0;
         }
+
+        public bool AddRole(Guid userId, Guid roleId)
+        {
+            string query = "INSERT INTO users_roles ('user_role', 'role_id') VALUES (@user_id, @role_id)";
+            Command command = new Command(query);
+            command.AddParameter("user_id", userId);
+            command.AddParameter("role_id", roleId);
+
+            return _connection.ExecuteNonQuery(command) > 0;
+        }
     }
 }
