@@ -11,15 +11,5 @@ namespace Api.Depot.UIL.Models
         public string Lastname { get; set; }
         public DateTime Birthdate { get; set; }
         public string RegistrationNumber { get; set; }
-
-        public UserModel(UserDto userDto)
-        {
-            Id = (Guid)userDto?.Id;
-            Email = userDto?.Email;
-            Firstname = userDto?.Firstname;
-            Lastname = userDto?.Lastname;
-            Birthdate = (DateTime)userDto?.Birthdate;
-            RegistrationNumber = userDto?.RegistrationNumber;
-        }
     }
 }

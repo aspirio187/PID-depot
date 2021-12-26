@@ -19,16 +19,5 @@ namespace Api.Depot.UIL.Models.Forms
 
         [Required]
         public DateTime Birthdate { get; set; }
-
-        public UserUpdateDto MapBLL()
-        {
-            return new UserUpdateDto()
-            {
-                Birthdate = Birthdate,
-                Firstname = Firstname,
-                Id = Id,
-                Lastname = Lastname
-            };
-        }
     }
 }
