@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Api.Depot.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,13 @@ namespace Api.Depot.BLL.Dtos.RoleDtos
     public class RoleCreationDto
     {
         public string Name { get; set; }
+
+        public RoleEntity MapDAL()
+        {
+            return new RoleEntity()
+            {
+                Name = Name,
+            };
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace Api.Depot.BLL.Services
         public IEnumerable<UserDto> GetUsers()
         {
             IEnumerable<UserEntity> usersFromRepo = _userRepository.GetAll();
-            return usersFromRepo.Select(u => new UserDto(u)).ToList();
+            return usersFromRepo.Select(u => new UserDto(u));
         }
 
         public UserDto CreateUser(UserCreationDto user)
