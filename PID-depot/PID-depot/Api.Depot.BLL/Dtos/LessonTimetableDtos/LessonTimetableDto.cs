@@ -18,24 +18,5 @@ namespace Api.Depot.BLL.Dtos.LessonTimetableDtos
         {
 
         }
-
-        public LessonTimetableDto(LessonTimetableEntity lessonTimetable)
-        {
-            Id = lessonTimetable.Id;
-            StartsAt = lessonTimetable.StartsAt;
-            EndsAt = lessonTimetable.EndsAt;
-            LessonId = lessonTimetable.LessonId;
-        }
-
-        public LessonTimetableEntity MapDAL()
-        {
-            return new LessonTimetableEntity()
-            {
-                Id = Id,
-                StartsAt = StartsAt,
-                EndsAt = EndsAt,
-                LessonId = LessonId,
-            };
-        }
     }
 }

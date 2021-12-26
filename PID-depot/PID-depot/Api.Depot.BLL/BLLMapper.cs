@@ -1,4 +1,5 @@
 ﻿using Api.Depot.BLL.Dtos.LessonDtos;
+using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.DAL.Entities;
@@ -124,6 +125,46 @@ namespace Api.Depot.BLL
                 {
                     Description = lesson.Description,
                     Name = lesson.Name
+                };
+        }
+        #endregion
+
+        #region LessonTimetable mapping
+        public static LessonTimetableDto MapFromDAL(this LessonTimetableEntity lessonTimetable)
+        {
+            return lessonTimetable is null
+                ? null
+                : new LessonTimetableDto()
+                {
+                    Id = lessonTimetable.Id,
+                    StartsAt = lessonTimetable.StartsAt,
+                    EndsAt = lessonTimetable.EndsAt,
+                    LessonId = lessonTimetable.LessonId,
+                };
+        }
+
+        public static LessonTimetableEntity MapToDAL(this LessonTimetableDto lessonTimetable)
+        {
+            return lessonTimetable is null
+                ? null
+                : new LessonTimetableEntity()
+                {
+                    Id = lessonTimetable.Id,
+                    StartsAt = lessonTimetable.StartsAt,
+                    EndsAt = lessonTimetable.EndsAt,
+                    LessonId = lessonTimetable.LessonId
+                };
+        }
+
+        public static LessonTimetableEntity MapToDAL(this LessonTimetableCreationDto lessonTimetable)
+        {
+            return lessonTimetable is null
+                ? null
+                : new LessonTimetableEntity()
+                {
+                    StartsAt = lessonTimetable.StartsAt,
+                    EndsAt = lessonTimetable.EndsAt,
+                    LessonId = lessonTimetable.LessonId
                 };
         }
         #endregion
