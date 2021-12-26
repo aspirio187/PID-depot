@@ -1,4 +1,5 @@
-﻿using Api.Depot.BLL.Dtos.LessonDtos;
+﻿using Api.Depot.BLL.Dtos.LessonDetailDtos;
+using Api.Depot.BLL.Dtos.LessonDtos;
 using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
@@ -165,6 +166,46 @@ namespace Api.Depot.BLL
                     StartsAt = lessonTimetable.StartsAt,
                     EndsAt = lessonTimetable.EndsAt,
                     LessonId = lessonTimetable.LessonId
+                };
+        }
+        #endregion
+
+        #region LessonDetail mapping
+        public static LessonDetailDto MapFromDAL(this LessonDetailEntity lessonDetail)
+        {
+            return lessonDetail is null
+                ? null
+                : new LessonDetailDto()
+                {
+                    Id = lessonDetail.Id,
+                    Details = lessonDetail.Details,
+                    LessonTimetableId = lessonDetail.LessonTimetableId,
+                    Title = lessonDetail.Title,
+                };
+        }
+
+        public static LessonDetailEntity MapToDAL(this LessonDetailDto lessonDetail)
+        {
+            return lessonDetail is null
+                ? null
+                : new LessonDetailEntity()
+                {
+                    Id = lessonDetail.Id,
+                    Title = lessonDetail.Title,
+                    Details = lessonDetail.Details,
+                    LessonTimetableId = lessonDetail.LessonTimetableId,
+                };
+        }
+
+        public static LessonDetailEntity MapToDAL(this LessonDetailCreationDto lessonDetail)
+        {
+            return lessonDetail is null
+                ? null
+                : new LessonDetailEntity()
+                {
+                    Details = lessonDetail.Details,
+                    LessonTimetableId = lessonDetail.LessonTimetableId,
+                    Title = lessonDetail.Title
                 };
         }
         #endregion
