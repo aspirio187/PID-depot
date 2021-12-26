@@ -29,7 +29,7 @@ namespace Api.Depot.UIL.Controllers
         {
             UserDto userFromService = _userService.GetUser(userId);
             if (userFromService is null) return NotFound(userId);
-            return Ok(new UserModel(userFromService));
+            return Ok(userFromService.MapFromBLL());
         }
 
         [HttpGet]
@@ -37,7 +37,7 @@ namespace Api.Depot.UIL.Controllers
         public IActionResult GetUsers()
         {
             IEnumerable<UserDto> usersFromService = _userService.GetUsers();
-            return Ok(usersFromService.Select(u => new UserModel(u)));
+            return Ok(usersFromService.Select(u => u.MapFromBLL()));
         }
 
         [HttpPost]
@@ -46,9 +46,9 @@ namespace Api.Depot.UIL.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            UserDto updatedUser = _userService.UpdateUser(user.MapBLL());
+            UserDto updatedUser = _userService.UpdateUser(user.MapToBLL());
             if (updatedUser is null) return BadRequest(user);
-            return Ok(new UserModel(updatedUser));
+            return Ok(updatedUser.MapFromBLL());
         }
 
         // N'autoriser l'accès qu'aux administrateur
