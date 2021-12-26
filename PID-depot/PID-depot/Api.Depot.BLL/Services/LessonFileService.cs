@@ -14,6 +14,12 @@ namespace Api.Depot.BLL.Services
     {
         private readonly ILessonFileRepository _lessonFileRepository;
 
+        public LessonFileService(ILessonFileRepository lessonFileRepository)
+        {
+            _lessonFileRepository = lessonFileRepository ??
+                throw new ArgumentNullException(nameof(lessonFileRepository));
+        }
+
         public LessonFileDto CreateLessonFile(LessonFileCreationDto lessonFile)
         {
             if (lessonFile is null) throw new ArgumentNullException(nameof(lessonFile));

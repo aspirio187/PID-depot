@@ -14,6 +14,12 @@ namespace Api.Depot.BLL.Services
     {
         private readonly ILessonTimetableRepository _lessonTimetableRepository;
 
+        public LessonTimetableService(ILessonTimetableRepository lessonTimetableRepository)
+        {
+            _lessonTimetableRepository = lessonTimetableRepository ??
+                throw new ArgumentNullException(nameof(lessonTimetableRepository));
+        }
+
         public LessonTimetableDto CreateLessonTimetable(LessonTimetableCreationDto lessonTimetable)
         {
             if (lessonTimetable is null) throw new ArgumentNullException(nameof(lessonTimetable));

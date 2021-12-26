@@ -14,6 +14,12 @@ namespace Api.Depot.BLL.Services
     {
         private readonly ILessonRepository _lessonRepository;
 
+        public LessonService(ILessonRepository lessonRepository)
+        {
+            _lessonRepository = lessonRepository ??
+                throw new ArgumentNullException(nameof(lessonRepository));
+        }
+
         public LessonDto CreateLesson(LessonCreationDto lesson)
         {
             if (lesson is null) throw new ArgumentNullException(nameof(lesson));
