@@ -53,9 +53,10 @@ namespace Api.Depot.UIL.Controllers
 
         // N'autoriser l'accès qu'aux administrateur
         [HttpPost]
-        [Route("Users/{userId}/Roles/{roleId}")]
-        public IActionResult AddUserRole(Guid userId, Guid roleId)
+        [Route("Users/{userId}/Role")]
+        public IActionResult AddUserRole(Guid userId,[FromBody]Guid roleId)
         {
+            // TODO : Ajouter le role "roleId" à l'utilisateur "userId"
             return Ok();
         }
 
