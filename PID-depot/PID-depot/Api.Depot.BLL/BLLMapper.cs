@@ -1,5 +1,6 @@
 ﻿using Api.Depot.BLL.Dtos.LessonDetailDtos;
 using Api.Depot.BLL.Dtos.LessonDtos;
+using Api.Depot.BLL.Dtos.LessonFileDtos;
 using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
@@ -206,6 +207,43 @@ namespace Api.Depot.BLL
                     Details = lessonDetail.Details,
                     LessonTimetableId = lessonDetail.LessonTimetableId,
                     Title = lessonDetail.Title
+                };
+        }
+        #endregion
+
+        #region LessonFile mapping
+        public static LessonFileDto MapFromDAL(this LessonFileEntity lessonFile)
+        {
+            return lessonFile is null
+                ? null
+                : new LessonFileDto()
+                {
+                    Id = lessonFile.Id,
+                    FilePath = lessonFile.FilePath,
+                    LessonDetailId = lessonFile.LessonDetailId,
+                };
+        }
+
+        public static LessonFileEntity MapToDAL(this LessonFileDto lessonFile)
+        {
+            return lessonFile is null
+                ? null
+                : new LessonFileEntity()
+                {
+                    Id = lessonFile.Id,
+                    FilePath = lessonFile.FilePath,
+                    LessonDetailId = lessonFile.LessonDetailId,
+                };
+        }
+
+        public static LessonFileEntity MapToDAL(this LessonFileCreationDto lessonFile)
+        {
+            return lessonFile is null
+                ? null
+                : new LessonFileEntity()
+                {
+                    FilePath = lessonFile.FilePath,
+                    LessonDetailId = lessonFile.LessonDetailId
                 };
         }
         #endregion

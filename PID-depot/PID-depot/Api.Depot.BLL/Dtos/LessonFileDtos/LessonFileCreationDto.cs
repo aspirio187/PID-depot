@@ -11,14 +11,5 @@ namespace Api.Depot.BLL.Dtos.LessonFileDtos
     {
         public string FilePath { get; set; }
         public int LessonDetailId { get; set; }
-
-        public LessonFileEntity MapDAL()
-        {
-            return new LessonFileEntity()
-            {
-                FilePath = FilePath,
-                LessonDetailId = LessonDetailId,
-            };
-        }
     }
 }
