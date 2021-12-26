@@ -12,12 +12,12 @@ namespace Api.Depot.BLL.Dtos.LessonFileDtos
         public string FilePath { get; set; }
         public int LessonDetailId { get; set; }
 
-        public static implicit operator LessonFileEntity(LessonFileCreationDto lessonFile)
+        public LessonFileEntity MapDAL()
         {
             return new LessonFileEntity()
             {
-                FilePath = lessonFile.FilePath,
-                LessonDetailId = lessonFile.LessonDetailId,
+                FilePath = FilePath,
+                LessonDetailId = LessonDetailId,
             };
         }
     }

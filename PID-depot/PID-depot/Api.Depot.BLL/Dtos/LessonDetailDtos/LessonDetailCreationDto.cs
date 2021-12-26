@@ -23,14 +23,14 @@ namespace Api.Depot.BLL.Dtos.LessonDetailDtos
             };
         }
 
-        public static implicit operator LessonDetailEntity(LessonDetailCreationDto lessonDetail)
-        {
-            return new LessonDetailEntity()
-            {
-                Title = lessonDetail.Title,
-                Details = lessonDetail.Details,
-                LessonTimetableId = lessonDetail.LessonTimetableId
-            };
-        }
+        //public static implicit operator LessonDetailEntity(LessonDetailCreationDto lessonDetail)
+        //{
+        //    return new LessonDetailEntity()
+        //    {
+        //        Title = lessonDetail.Title,
+        //        Details = lessonDetail.Details,
+        //        LessonTimetableId = lessonDetail.LessonTimetableId
+        //    };
+        //}
     }
 }

@@ -25,18 +25,13 @@ namespace Api.Depot.BLL.Dtos.LessonFileDtos
             LessonDetailId = lessonFile.LessonDetailId;
         }
 
-        public static implicit operator LessonFileDto(LessonFileEntity lessonFile)
-        {
-            return new LessonFileDto(lessonFile);
-        }
-
-        public static implicit operator LessonFileEntity(LessonFileDto lessonFile)
+        public LessonFileEntity MapDAL()
         {
             return new LessonFileEntity()
             {
-                Id = lessonFile.Id,
-                FilePath = lessonFile.FilePath,
-                LessonDetailId = lessonFile.LessonDetailId
+                Id = Id,
+                FilePath = FilePath,
+                LessonDetailId = LessonDetailId,
             };
         }
     }
