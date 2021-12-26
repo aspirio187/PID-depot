@@ -37,5 +37,21 @@ namespace Api.Depot.BLL.Dtos.LessonDetailDtos
                 LessonTimetableId = LessonTimetableId
             };
         }
+
+        public static implicit operator LessonDetailDto(LessonDetailEntity lessonDetail)
+        {
+            return new LessonDetailDto(lessonDetail);
+        }
+
+        public static implicit operator LessonDetailEntity(LessonDetailDto lessonDetail)
+        {
+            return new LessonDetailEntity()
+            {
+                Id = lessonDetail.Id,
+                Title = lessonDetail.Title,
+                Details = lessonDetail.Details,
+                LessonTimetableId = lessonDetail.LessonTimetableId
+            };
+        }
     }
 }
