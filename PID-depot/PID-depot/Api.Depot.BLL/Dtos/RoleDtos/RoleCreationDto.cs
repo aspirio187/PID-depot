@@ -10,13 +10,5 @@ namespace Api.Depot.BLL.Dtos.RoleDtos
     public class RoleCreationDto
     {
         public string Name { get; set; }
-
-        public RoleEntity MapDAL()
-        {
-            return new RoleEntity()
-            {
-                Name = Name,
-            };
-        }
     }
 }

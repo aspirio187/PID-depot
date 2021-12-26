@@ -15,15 +15,5 @@ namespace Api.Depot.BLL.Dtos.UserDtos
         public string Lastname { get; set; }
         public DateTime Birthdate { get; set; }
         public string RegistrationNumber { get; set; }
-
-        public UserDto(UserEntity userEntity)
-        {
-            Id = (Guid)userEntity?.Id;
-            Email = userEntity?.Email;
-            Firstname = userEntity?.Firstname;
-            Lastname = userEntity?.Lastname;
-            Birthdate = (DateTime)userEntity?.Birthdate;
-            RegistrationNumber = userEntity?.RegistrationNumber;
-        }
     }
 }

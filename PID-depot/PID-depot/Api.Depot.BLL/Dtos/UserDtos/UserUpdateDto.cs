@@ -16,17 +16,7 @@ namespace Api.Depot.BLL.Dtos.UserDtos
 
         public UserUpdateDto()
         {
-        }
 
-        public UserEntity MapDAL()
-        {
-            return new UserEntity()
-            {
-                Id = Id,
-                Firstname = Firstname,
-                Lastname = Lastname,
-                Birthdate = Birthdate,
-            };
         }
     }
 }

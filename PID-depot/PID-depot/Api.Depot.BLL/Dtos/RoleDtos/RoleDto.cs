@@ -16,20 +16,5 @@ namespace Api.Depot.BLL.Dtos.RoleDtos
         {
 
         }
-
-        public RoleDto(RoleEntity role)
-        {
-            Id = role.Id;
-            Name = role.Name;
-        }
-
-        public RoleEntity MapDAL()
-        {
-            return new RoleEntity()
-            {
-                Id = Id,
-                Name = Name,
-            };
-        }
     }
 }
