@@ -22,6 +22,9 @@ namespace Api.Depot.DAL
                 Lastname = (string)data["lastname"],
                 Birthdate = (DateTime)data["birth_date"],
                 RegistrationNumber = (string)data["registration_number"],
+                SecurityStamp = (Guid)data["security_stamp"],
+                ConcurrencyStamp = (Guid)data["concurrency_stamp"],
+                IsActivated = Convert.ToBoolean((long)data["is_activated"])
             };
         }
 
