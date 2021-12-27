@@ -48,6 +48,9 @@ namespace Api.Depot.UIL.Controllers
         [Route(nameof(Login))]
         public IActionResult Login([FromBody] LoginForm login)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            UserModel loggedInUser = _userService.UserLogin(login.Email, login.Password).MapFromBLL();
+            if (loggedInUser is null) return BadRequest(login);
             return NoContent();
         }
     }

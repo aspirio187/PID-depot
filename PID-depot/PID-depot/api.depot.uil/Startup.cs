@@ -1,5 +1,7 @@
 using Api.Depot.BLL;
+using Api.Depot.UIL.Models;
 using DevHopTools.Connection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,11 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Api.Depot.UIL
@@ -31,12 +35,73 @@ namespace Api.Depot.UIL
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
 
+            ////////////////////////////////////////////////
+            /* Authorization using JwtToken configuration */
+            ////////////////////////////////////////////////
+            
+            services.Configure<JwtModel>(Configuration.GetSection("Jwt"));
+            JwtModel jwtModel = Configuration.GetSection("Jwt").Get<JwtModel>();
+
+
+            services.AddAuthorization()
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = jwtModel.Issuer,
+                        ValidAudience = jwtModel.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtModel.Secret)),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+            ///////////////////////////
+            /* Dependency injections */
+            ///////////////////////////
+
             services.InjectBLL(connectionString);
 
             services.AddControllers();
+
+            ///////////////////////////
+            /* Swagger configuration */
+            ///////////////////////////
+            
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "api.depot.uil", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "api.depot", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "Jwt containing user claims",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                OpenApiSecurityRequirement security = new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme()
+                        {
+                            Reference = new OpenApiReference()
+                            {
+                                Id = "Bearer",
+                                Type= ReferenceType.SecurityScheme
+                            },
+                            UnresolvedReference = true
+                        },
+                        new List<string>()
+                    }
+                };
+
+                c.AddSecurityRequirement(security);
             });
         }
 
@@ -47,12 +112,14 @@ namespace Api.Depot.UIL
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api.depot.uil v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api.depot v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

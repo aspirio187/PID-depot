@@ -52,6 +52,15 @@ namespace Api.Depot.DAL.Repositories
             return _connection.ExecuteReader(command, r => r.MapRole()).FirstOrDefault();
         }
 
+        public IEnumerable<RoleEntity> GetUserRoles(Guid userId)
+        {
+            string query = "SELECT roles.id, roles.name FROM roles INNER JOIN users_roles ON users.roles.user_id = @user_id";
+            Command command = new Command(query);
+            command.AddParameter("user_id", userId);
+
+            return _connection.ExecuteReader(command, r => r.MapRole());
+        }
+
         public bool Update(Guid key, RoleEntity data)
         {
             if (data is null) throw new ArgumentNullException(nameof(data));

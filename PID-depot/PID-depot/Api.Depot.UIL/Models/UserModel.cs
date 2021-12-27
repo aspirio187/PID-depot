@@ -1,5 +1,6 @@
 ﻿using Api.Depot.BLL.Dtos.UserDtos;
 using System;
+using System.Collections.Generic;
 
 namespace Api.Depot.UIL.Models
 {
@@ -11,5 +12,6 @@ namespace Api.Depot.UIL.Models
         public string Lastname { get; set; }
         public DateTime Birthdate { get; set; }
         public string RegistrationNumber { get; set; }
+        public IEnumerable<RoleModel> Roles { get; set; }
     }
 }

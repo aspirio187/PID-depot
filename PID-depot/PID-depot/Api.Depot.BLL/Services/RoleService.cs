@@ -44,9 +44,15 @@ namespace Api.Depot.BLL.Services
             return _roleRepository.GetAll().Select(r => r.MapFromDAL());
         }
 
+        public IEnumerable<RoleDto> GetUserRoles(Guid userId)
+        {
+            if (userId == Guid.Empty) throw new ArgumentException($"{nameof(userId)} can not be empty!");
+            return _roleRepository.GetUserRoles(userId).Select(r => r.MapFromDAL());
+        }
+
         public RoleDto UpdateRole(RoleDto role)
         {
-            if(role is null) throw new ArgumentNullException(nameof(role));
+            if (role is null) throw new ArgumentNullException(nameof(role));
 
             return _roleRepository.Update(role.Id, role.MapToDAL()) ? role : null;
         }
