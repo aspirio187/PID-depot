@@ -21,7 +21,13 @@ namespace Api.Depot.DAL.Repositories
 
         public int Create(UserTokenEntity data)
         {
-            throw new NotImplementedException();
+            if (data is null) throw new ArgumentNullException(nameof(data));
+
+            Command command = new Command("spCreateUserToken", true);
+            command.AddParameter("user_id", data.UserId);
+            command.AddParameter("token_type", data.TokenType);
+
+            return int.Parse(_connection.ExecuteScalar(command).ToString());
         }
 
         public bool Delete(int key)
