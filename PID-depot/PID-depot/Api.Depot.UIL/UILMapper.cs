@@ -48,6 +48,20 @@ namespace Api.Depot.UIL
                     Lastname = user.Lastname,
                 };
         }
+
+        public static UserCreationDto MapToBLL(this RegisterForm register)
+        {
+            return register is null
+                ? null
+                : new UserCreationDto()
+                {
+                    Birthdate = register.Birthdate,
+                    Email = register.Email,
+                    Firstname = register.Firstname,
+                    Lastname = register.Lastname,
+                    Password = register.Password,
+                };
+        }
         #endregion
     }
 }

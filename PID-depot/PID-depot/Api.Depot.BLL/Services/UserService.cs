@@ -71,5 +71,12 @@ namespace Api.Depot.BLL.Services
         {
             return _userRepository.GetById(userId) is not null;
         }
+
+        public bool EmailExist(string email)
+        {
+            if (email is null) throw new ArgumentNullException(nameof(email));
+            if (email.Length == 0) throw new ArgumentException($"{nameof(email)} can not be empty string!");
+            return _userRepository.EmailExist(email);
+        }
     }
 }

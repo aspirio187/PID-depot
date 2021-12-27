@@ -11,5 +11,6 @@ namespace Api.Depot.DAL.IRepositories
     {
         UserEntity LogIn(string email, string password);
         bool AddRole(Guid userId, Guid roleId);
+        bool EmailExist(string email);
     }
 }

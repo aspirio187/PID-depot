@@ -68,5 +68,14 @@ namespace Api.Depot.UIL.Controllers
             if (userFromRepo is null) return NotFound(id);
             return Ok(_userService.DeleteUser(id));
         }
+
+        [HttpGet]
+        [Route("Users/{email}")]
+        public IActionResult IsEmailAvailable([FromBody] string email)
+        {
+            if (string.IsNullOrEmpty(email)) return BadRequest("Email can't be null or empty!");
+
+            return Ok(!_userService.EmailExist(email));
+        }
     }
 }

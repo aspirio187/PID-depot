@@ -83,5 +83,13 @@ namespace Api.Depot.DAL.Repositories
 
             return _connection.ExecuteNonQuery(command) > 0;
         }
+
+        public bool EmailExist(string email)
+        {
+            Command command = new Command("spEmailExist", true);
+            command.AddParameter("email", email);
+
+            return (bool)_connection.ExecuteScalar(command);
+        }
     }
 }
