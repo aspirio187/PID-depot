@@ -18,6 +18,11 @@ namespace Api.Depot.DAL
         {
             services.AddSingleton(sp => new Connection(connectionString, MySqlConnectorFactory.Instance));
 
+            services.AddScoped<ILessonDetailRepository, LessonDetailRepository>();
+            services.AddScoped<ILessonFileRepository, LessonFileRepository>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
+            services.AddScoped<ILessonTimetableRepository, LessonTimetableRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
