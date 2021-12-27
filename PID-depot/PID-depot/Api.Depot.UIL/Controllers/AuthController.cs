@@ -1,9 +1,12 @@
 ﻿using Api.Depot.BLL.IServices;
+using Api.Depot.UIL.Managers;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Api.Depot.UIL.Controllers
 {
@@ -12,11 +15,17 @@ namespace Api.Depot.UIL.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
+        private readonly IAuthManager _authManager;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, IAuthManager authManager, IRoleService roleService)
         {
             _userService = userService ??
                 throw new ArgumentNullException(nameof(userService));
+            _authManager = authManager ??
+                throw new ArgumentNullException(nameof(authManager));
+            _roleService = roleService ??
+                throw new ArgumentNullException(nameof(roleService));
         }
 
         [HttpPost]
@@ -48,10 +57,22 @@ namespace Api.Depot.UIL.Controllers
         [Route(nameof(Login))]
         public IActionResult Login([FromBody] LoginForm login)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            UserModel loggedInUser = _userService.UserLogin(login.Email, login.Password).MapFromBLL();
-            if (loggedInUser is null) return BadRequest(login);
-            return NoContent();
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+                UserModel loggedInUser = _userService.UserLogin(login.Email, login.Password).MapFromBLL();
+                if (loggedInUser is null) return BadRequest(login);
+
+                loggedInUser.Roles = _roleService.GetUserRoles(loggedInUser.Id).Select(ur => ur.MapFromBLL());
+                string generatedToken = _authManager.GenerateJwtToken(loggedInUser);
+
+                return Ok(generatedToken);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return BadRequest(login);
+            }
         }
     }
 }
