@@ -1,4 +1,5 @@
 using Api.Depot.BLL;
+using Api.Depot.UIL.Managers;
 using Api.Depot.UIL.Models;
 using DevHopTools.Connection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,7 +39,7 @@ namespace Api.Depot.UIL
             ////////////////////////////////////////////////
             /* Authorization using JwtToken configuration */
             ////////////////////////////////////////////////
-            
+
             services.Configure<JwtModel>(Configuration.GetSection("Jwt"));
             JwtModel jwtModel = Configuration.GetSection("Jwt").Get<JwtModel>();
 
@@ -67,13 +68,14 @@ namespace Api.Depot.UIL
             ///////////////////////////
 
             services.InjectBLL(connectionString);
+            services.AddScoped<IAuthManager, AuthManager>();
 
             services.AddControllers();
 
             ///////////////////////////
             /* Swagger configuration */
             ///////////////////////////
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "api.depot", Version = "v1" });
