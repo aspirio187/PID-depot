@@ -89,7 +89,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command("spEmailExist", true);
             command.AddParameter("email", email);
 
-            return (bool)_connection.ExecuteScalar(command);
+            return (long)_connection.ExecuteScalar(command) == 1;
         }
     }
 }

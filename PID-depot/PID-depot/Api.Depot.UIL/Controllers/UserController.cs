@@ -17,24 +17,25 @@ namespace Api.Depot.UIL.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IRoleService roleService)
         {
             _userService = userService ??
                 throw new ArgumentNullException(nameof(userService));
+            _roleService = roleService ??
+                throw new ArgumentNullException(nameof(roleService));
         }
 
-        [HttpGet]
-        [Route("Users/{id}")]
-        public IActionResult GetUser(Guid userId)
+        [HttpGet("{id}")]
+        public IActionResult GetUser(Guid id)
         {
-            UserDto userFromService = _userService.GetUser(userId);
-            if (userFromService is null) return NotFound(userId);
+            UserDto userFromService = _userService.GetUser(id);
+            if (userFromService is null) return NotFound(id);
             return Ok(userFromService.MapFromBLL());
         }
 
         [HttpGet]
-        [Route("Users")]
         public IActionResult GetUsers()
         {
             IEnumerable<UserDto> usersFromService = _userService.GetUsers();
@@ -42,7 +43,6 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpPost]
-        [Route("Users")]
         public IActionResult UpdateUser([FromBody] UserForm user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -53,16 +53,14 @@ namespace Api.Depot.UIL.Controllers
         }
 
         // N'autoriser l'accès qu'aux administrateur
-        [HttpPost]
-        [Route("Users/{userId}/Role")]
-        public IActionResult AddUserRole(Guid userId, [FromBody] Guid roleId)
+        [HttpPost("{id}/Role")]
+        public IActionResult AddUserRole(Guid id, [FromBody] Guid roleId)
         {
-            return Ok(_userService.AddUserRole(userId, roleId));
+            return Ok(_userService.AddUserRole(id, roleId));
         }
 
         // N'autoriser l'accès qu'aux administrateurs
-        [HttpDelete]
-        [Route("Users/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteUser(Guid id)
         {
             UserDto userFromRepo = _userService.GetUser(id);
@@ -70,9 +68,8 @@ namespace Api.Depot.UIL.Controllers
             return Ok(_userService.DeleteUser(id));
         }
 
-        [HttpGet]
-        [Route("Users/{email}")]
-        public IActionResult IsEmailAvailable([FromBody] string email)
+        [HttpGet("EmailAvailable/{email}")]
+        public IActionResult IsEmailAvailable(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Email can't be null or empty!");
 
