@@ -3,6 +3,7 @@ using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
