@@ -16,6 +16,11 @@ namespace Api.Depot.BLL
         {
             services.InjectDAL(connectionString);
 
+            services.AddScoped<ILessonDetailService, LessonDetailService>();
+            services.AddScoped<ILessonFileService, LessonFileService>();
+            services.AddScoped<ILessonService, LessonService>();
+            services.AddScoped<ILessonTimetableService, LessonTimetableService>();
+            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
 
             return services;
