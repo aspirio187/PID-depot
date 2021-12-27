@@ -54,9 +54,9 @@ namespace Api.Depot.DAL.Repositories
 
         public IEnumerable<RoleEntity> GetUserRoles(Guid userId)
         {
-            string query = "SELECT roles.id, roles.name FROM roles INNER JOIN users_roles ON users.roles.user_id = @user_id";
+            string query = "SELECT roles.id, roles.name FROM roles INNER JOIN users_roles ON users_roles.role_id = roles.id WHERE users_roles.user_id = @user_id";
             Command command = new Command(query);
-            command.AddParameter("user_id", userId);
+            command.AddParameter("user_id", userId.ToString());
 
             return _connection.ExecuteReader(command, r => r.MapRole());
         }
