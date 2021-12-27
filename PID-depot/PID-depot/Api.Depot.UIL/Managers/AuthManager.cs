@@ -1,4 +1,5 @@
 ﻿using Api.Depot.UIL.Models;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,10 @@ namespace Api.Depot.UIL.Managers
     {
         private readonly JwtModel _jwtModel;
 
-        public AuthManager(JwtModel jwtModel)
+        public AuthManager(IOptions<JwtModel> jwtModel)
         {
-            _jwtModel = jwtModel ??
-                throw new ArgumentNullException(nameof(jwtModel));
+            _jwtModel = jwtModel.Value ??
+                throw new ArgumentNullException(nameof(jwtModel.Value));
         }
 
         public string GenerateJwtToken(UserModel user)
