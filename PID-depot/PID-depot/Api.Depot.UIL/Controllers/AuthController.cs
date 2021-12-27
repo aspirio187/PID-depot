@@ -48,7 +48,7 @@ namespace Api.Depot.UIL.Controllers
         [Route(nameof(Login))]
         public IActionResult Login([FromBody] LoginForm login)
         {
-
+            return NoContent();
         }
     }
 }
