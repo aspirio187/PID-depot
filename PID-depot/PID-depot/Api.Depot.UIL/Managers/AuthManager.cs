@@ -1,7 +1,9 @@
 ﻿using Api.Depot.UIL.Models;
+using Mailjet.Client;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -50,5 +52,16 @@ namespace Api.Depot.UIL.Managers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public void SendVerificationEmail(string email)
+        {
+            MailjetClient client = new MailjetClient()
+        }
+    }
+
+    internal class MailJetCredential
+    {
+        public string SecretKey { get; set; }
+        public string ApiKey { get; set; }
     }
 }
