@@ -4,6 +4,7 @@ using Api.Depot.BLL.Dtos.LessonFileDtos;
 using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
+using Api.Depot.BLL.Dtos.UserTokenDtos;
 using Api.Depot.DAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,34 @@ namespace Api.Depot.BLL
                     Firstname = user.Firstname,
                     Lastname = user.Lastname,
                     Birthdate = user.Birthdate,
+                };
+        }
+        #endregion
+
+        #region UserToken mapping
+        public static UserTokenDto MapFromDAL(this UserTokenEntity userToken)
+        {
+            return userToken is null
+                ? null
+                : new UserTokenDto()
+                {
+                    Id = userToken.Id,
+                    TokenType = (UserTokenType)Enum.Parse(typeof(UserTokenType), userToken.TokenType),
+                    Token = userToken.TokenValue,
+                    DeliveryDate = userToken.DeliveryDate,
+                    ExpirationDate = userToken.ExpirationDate,
+                    UserId = userToken.UserId,
+                };
+        }
+
+        public static UserTokenEntity MapToDAL(this UserTokenCreationDto userTokenCreation)
+        {
+            return userTokenCreation is null
+                ? null
+                : new UserTokenEntity()
+                {
+                    TokenType = userTokenCreation.TokenType.ToString(),
+                    UserId = userTokenCreation.UserId,
                 };
         }
         #endregion

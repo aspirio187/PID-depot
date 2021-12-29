@@ -45,7 +45,10 @@ namespace Api.Depot.DAL.Repositories
 
         public UserTokenEntity GetById(int key)
         {
-            throw new NotImplementedException();
+            Command command = new Command("spGetUserToken", true);
+            command.AddParameter("id", key);
+
+            return _connection.ExecuteReader(command, ut => ut.MapUserToken()).FirstOrDefault();
         }
 
         public IEnumerable<UserTokenEntity> GetUserTokens(Guid userId)
