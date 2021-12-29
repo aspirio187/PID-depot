@@ -28,6 +28,19 @@ namespace Api.Depot.DAL
             };
         }
 
+        public static UserTokenEntity MapUserToken(this IDataRecord data)
+        {
+            return new UserTokenEntity()
+            {
+                Id = (int)data["id"],
+                TokenType = (string)data["token_type"],
+                TokenValue = (string)data["token_value"],
+                DeliveryDate = (DateTime)data["delivery_date"],
+                ExpirationDate = (DateTime)data["expiration_date"],
+                UserId = (Guid)data["user_id"],
+            };
+        }
+
         public static RoleEntity MapRole(this IDataRecord data)
         {
             return new RoleEntity()

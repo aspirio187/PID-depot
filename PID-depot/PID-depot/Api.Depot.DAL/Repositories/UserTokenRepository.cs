@@ -32,7 +32,10 @@ namespace Api.Depot.DAL.Repositories
 
         public bool Delete(int key)
         {
-            throw new NotImplementedException();
+            Command command = new Command("spDeleteUserToken", true);
+            command.AddParameter("id", key);
+
+            return _connection.ExecuteNonQuery(command) > 0;
         }
 
         public IEnumerable<UserTokenEntity> GetAll()
@@ -42,7 +45,10 @@ namespace Api.Depot.DAL.Repositories
 
         public UserTokenEntity GetById(int key)
         {
-            throw new NotImplementedException();
+            Command command = new Command("spGetUserToken", true);
+            command.AddParameter("id", key);
+
+            return _connection.ExecuteReader(command, ut => ut.MapUserToken()).FirstOrDefault();
         }
 
         public bool Update(int key, UserTokenEntity data)
