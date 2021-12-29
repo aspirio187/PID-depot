@@ -9,6 +9,7 @@ namespace Api.Depot.DAL.IRepositories
 {
     public interface IUserTokenRepository : IRepositoryBase<int, UserTokenEntity>
     {
-
+        IEnumerable<UserTokenEntity> GetUserTokens(Guid userId);
+        bool TokenIsValid(Guid userId, string tokenValue);
     }
 }

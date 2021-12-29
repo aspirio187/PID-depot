@@ -51,6 +51,23 @@ namespace Api.Depot.DAL.Repositories
             return _connection.ExecuteReader(command, ut => ut.MapUserToken()).FirstOrDefault();
         }
 
+        public IEnumerable<UserTokenEntity> GetUserTokens(Guid userId)
+        {
+            Command command = new Command("spGetUserTokens", true);
+            command.AddParameter("user_id", userId);
+
+            return _connection.ExecuteReader(command, ut => ut.MapUserToken());
+        }
+
+        public bool TokenIsValid(Guid userId, string tokenValue)
+        {
+            Command command = new Command("spTokenIsValid", true);
+            command.AddParameter("user_id", userId);
+            command.AddParameter("token", tokenValue);
+
+            return Convert.ToBoolean((long)_connection.ExecuteScalar(command));
+        }
+
         public bool Update(int key, UserTokenEntity data)
         {
             throw new NotImplementedException();
