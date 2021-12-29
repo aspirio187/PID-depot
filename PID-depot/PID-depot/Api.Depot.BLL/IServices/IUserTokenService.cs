@@ -9,7 +9,7 @@ namespace Api.Depot.BLL.IServices
 {
     public interface IUserTokenService
     {
-        UserTokenDto GetUserToken(Guid userId);
+        bool TokenIsValid(Guid userId, string token);
         UserTokenDto CreateUserToken(UserTokenCreationDto userToken);
     }
 }
