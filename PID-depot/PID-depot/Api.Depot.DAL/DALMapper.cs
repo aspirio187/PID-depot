@@ -1,10 +1,6 @@
 ﻿using Api.Depot.DAL.Entities;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Api.Depot.DAL
 {

@@ -34,8 +34,9 @@ namespace Api.Depot.UIL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+#if DEBUG
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-
+#endif
             ////////////////////////////////////////////////
             /* Authorization using JwtToken configuration */
             ////////////////////////////////////////////////
