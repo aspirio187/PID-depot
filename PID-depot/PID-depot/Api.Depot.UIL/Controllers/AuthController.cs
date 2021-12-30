@@ -1,4 +1,5 @@
-﻿using Api.Depot.BLL.IServices;
+﻿using Api.Depot.BLL.Dtos.UserTokenDtos;
+using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Managers;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
@@ -16,9 +17,10 @@ namespace Api.Depot.UIL.Controllers
     {
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
+        private readonly IUserTokenService _userTokenService;
         private readonly IAuthManager _authManager;
 
-        public AuthController(IUserService userService, IAuthManager authManager, IRoleService roleService)
+        public AuthController(IUserService userService, IAuthManager authManager, IRoleService roleService, IUserTokenService userTokenService)
         {
             _userService = userService ??
                 throw new ArgumentNullException(nameof(userService));
@@ -26,6 +28,8 @@ namespace Api.Depot.UIL.Controllers
                 throw new ArgumentNullException(nameof(authManager));
             _roleService = roleService ??
                 throw new ArgumentNullException(nameof(roleService));
+            _userTokenService = userTokenService ??
+                throw new ArgumentNullException(nameof(userTokenService));
         }
 
         [HttpPost]
@@ -38,6 +42,16 @@ namespace Api.Depot.UIL.Controllers
                 if (_userService.EmailExist(register.Email)) return BadRequest(register.Email);
                 UserModel createdUser = _userService.CreateUser(register.MapToBLL()).MapFromBLL();
                 if (createdUser is null) return BadRequest(register);
+
+                UserTokenDto userToken = _userTokenService.CreateUserToken(new UserTokenCreationDto()
+                {
+                    TokenType = UserTokenType.EmailConfirmation,
+                    UserId = createdUser.Id
+                });
+
+                if (userToken is null) return BadRequest(register);
+
+                
 
                 // TODO : Envoyer un mail d'activation du compte
 
