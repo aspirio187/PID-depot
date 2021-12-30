@@ -54,7 +54,7 @@ namespace Api.Depot.UIL.Managers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public void SendVerificationEmail(string toMail, string token)
+        public bool SendVerificationEmail(string toMail, Guid userId, string token)
         {
             // TODO : Prévoir des urls pour la vérification
             // API .../Utilisateurs/{id}/Verify?token=token
