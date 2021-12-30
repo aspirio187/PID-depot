@@ -20,10 +20,5 @@ namespace Api.Depot.DAL.Entities
         public Guid SecurityStamp { get; set; }
         public Guid ConcurrencyStamp { get; set; }
         public bool IsActivated { get; set; }
-
-        public UserEntity()
-        {
-
-        }
     }
 }
