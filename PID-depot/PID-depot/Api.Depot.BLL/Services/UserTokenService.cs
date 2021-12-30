@@ -27,6 +27,11 @@ namespace Api.Depot.BLL.Services
             return _userTokenRepository.GetById(userTokenCreatedId).MapFromDAL();
         }
 
+        public IEnumerable<UserTokenDto> GetUserTokens(Guid userId)
+        {
+            return _userTokenRepository.GetUserTokens(userId).Select(ut => ut.MapFromDAL());
+        }
+
         public bool TokenIsValid(Guid userId, string token)
         {
             return _userTokenRepository.TokenIsValid(userId, token);

@@ -11,5 +11,6 @@ namespace Api.Depot.BLL.IServices
     {
         bool TokenIsValid(Guid userId, string token);
         UserTokenDto CreateUserToken(UserTokenCreationDto userToken);
+        IEnumerable<UserTokenDto> GetUserTokens(Guid userId);
     }
 }
