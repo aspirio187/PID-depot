@@ -90,5 +90,13 @@ namespace Api.Depot.DAL.Repositories
 
             return (long)_connection.ExecuteScalar(command) == 1;
         }
+
+        public bool ActivateAccount(Guid userId)
+        {
+            Command command = new Command("spActivateAccount", true);
+            command.AddParameter("user_id", userId);
+
+            return _connection.ExecuteNonQuery(command) > 0;
+        }
     }
 }
