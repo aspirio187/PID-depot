@@ -22,6 +22,9 @@ namespace Api.Depot.UIL
                 Firstname = user.Firstname,
                 Id = user.Id,
                 RegistrationNumber = user.RegistrationNumber,
+                SecurityStamp = user.SecurityStamp,
+                IsActivated = user.IsActivated,
+                ConcurrencyStamp = user.ConcurrencyStamp,
             };
 
             if (roles is null) return userModel;
@@ -41,6 +44,9 @@ namespace Api.Depot.UIL
                     Id = user.Id,
                     Lastname = user.Lastname,
                     RegistrationNumber = user.RegistrationNumber,
+                    ConcurrencyStamp=user.ConcurrencyStamp,
+                    IsActivated = user.IsActivated,
+                    SecurityStamp =user.SecurityStamp,
                 };
         }
 

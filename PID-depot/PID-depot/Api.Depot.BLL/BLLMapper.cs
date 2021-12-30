@@ -29,6 +29,9 @@ namespace Api.Depot.BLL
                     Lastname = user.Lastname,
                     Birthdate = user.Birthdate,
                     RegistrationNumber = user.RegistrationNumber,
+                    ConcurrencyStamp = user.ConcurrencyStamp,
+                    IsActivated = user.IsActivated,
+                    SecurityStamp = user.SecurityStamp,
                 };
         }
 
