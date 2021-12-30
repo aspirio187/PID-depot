@@ -94,9 +94,11 @@ namespace Api.Depot.UIL.Managers
                         smtp.Send(mail);
                     }
                 }
+                return true;
             }
             catch (Exception ex)
             {
+                return false;
                 throw new Exception(ex.Message);
             }
         }
