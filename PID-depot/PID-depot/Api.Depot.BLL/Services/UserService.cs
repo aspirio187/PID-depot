@@ -79,5 +79,10 @@ namespace Api.Depot.BLL.Services
             if (email.Length == 0) throw new ArgumentException($"{nameof(email)} can not be empty string!");
             return _userRepository.EmailExist(email);
         }
+
+        public bool ActivateAccount(Guid userId)
+        {
+            return _userRepository.ActivateAccount(userId);
+        }
     }
 }

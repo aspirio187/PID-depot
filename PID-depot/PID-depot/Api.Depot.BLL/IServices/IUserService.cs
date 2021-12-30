@@ -17,5 +17,6 @@ namespace Api.Depot.BLL.IServices
         UserDto UpdateUser(UserUpdateDto user);
         bool AddUserRole(Guid userId, Guid roleId);
         bool EmailExist(string email);
+        bool ActivateAccount(Guid userId);
     }
 }
