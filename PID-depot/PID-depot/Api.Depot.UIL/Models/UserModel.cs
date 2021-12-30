@@ -11,6 +11,9 @@ namespace Api.Depot.UIL.Models
         public string Lastname { get; set; }
         public DateTime Birthdate { get; set; }
         public string RegistrationNumber { get; set; }
+        public Guid SecurityStamp { get; set; }
+        public Guid ConcurrencyStamp { get; set; }
+        public bool IsActivated { get; set; }
         public IEnumerable<RoleModel> Roles { get; set; }
     }
 }
