@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Api.Depot.DAL.IRepositories
 {
-    public interface IRepositoryBase<TKey, TEntity> 
+    public interface IRepositoryBase<TKey, TEntity>
         where TEntity : class
     {
         IEnumerable<TEntity> GetAll();
