@@ -51,9 +51,7 @@ namespace Api.Depot.UIL.Controllers
 
                 if (userToken is null) return BadRequest(register);
 
-                
-
-                // TODO : Envoyer un mail d'activation du compte
+                if (!_authManager.SendVerificationEmail(createdUser.Email, createdUser.Id, userToken.Token)) return BadRequest(register);
 
                 return Ok(createdUser);
             }
@@ -87,6 +85,19 @@ namespace Api.Depot.UIL.Controllers
                 Debug.WriteLine(e.Message);
                 return BadRequest(login);
             }
+        }
+
+        [HttpPost("{id}")]
+        public IActionResult VerifyToken(Guid userId, [FromBody] string userToken)
+        {
+            if (userId == Guid.Empty) return BadRequest(userId);
+            if (string.IsNullOrEmpty(userToken)) return BadRequest(userToken);
+
+            if (!_userTokenService.TokenIsValid(userId, userToken)) return NotFound(userToken);
+
+
+
+            return Ok();
         }
     }
 }
