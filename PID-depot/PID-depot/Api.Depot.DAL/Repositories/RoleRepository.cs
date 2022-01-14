@@ -61,6 +61,15 @@ namespace Api.Depot.DAL.Repositories
             return _connection.ExecuteReader(command, r => r.MapRole());
         }
 
+        public bool RoleExist(string roleName)
+        {
+            string query = "SELECT * FROM roles WHERE roles.name = @role_name";
+            Command command = new Command(query);
+            command.AddParameter("role_name", roleName);
+
+            return _connection.ExecuteReader(command, r => r.MapRole()).FirstOrDefault() is not null;
+        }
+
         public bool Update(Guid key, RoleEntity data)
         {
             if (data is null) throw new ArgumentNullException(nameof(data));
