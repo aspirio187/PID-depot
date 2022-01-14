@@ -15,5 +15,6 @@ namespace Api.Depot.BLL.IServices
         bool DeleteRole(Guid id);
         RoleDto CreateRole(RoleCreationDto role);
         RoleDto UpdateRole(RoleDto role);
+        bool RoleExist(string roleName);
     }
 }

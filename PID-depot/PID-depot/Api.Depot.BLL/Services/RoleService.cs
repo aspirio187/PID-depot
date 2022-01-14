@@ -50,6 +50,14 @@ namespace Api.Depot.BLL.Services
             return _roleRepository.GetUserRoles(userId).Select(r => r.MapFromDAL());
         }
 
+        public bool RoleExist(string roleName)
+        {
+            if (roleName is null) throw new ArgumentNullException(nameof(roleName));
+            if (roleName.Length == 0) throw new ArgumentException($"{nameof(roleName)} cannot be empty string!");
+
+            return _roleRepository.GetRole(roleName) is not null;
+        }
+
         public RoleDto UpdateRole(RoleDto role)
         {
             if (role is null) throw new ArgumentNullException(nameof(role));
