@@ -106,7 +106,7 @@ namespace Api.Depot.DAL.Repositories
             Command command = new Command(query);
             command.AddParameter("user_id", userid);
 
-            return _connection.ExecuteReader(command, u => ((long)u["is_activated"] == 1)).FirstOrDefault();
+            return _connection.ExecuteReader(command, u => (bool)u["is_activated"]).FirstOrDefault();
         }
     }
 }
