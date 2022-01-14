@@ -49,7 +49,7 @@ namespace Api.Depot.UIL.Controllers
 
             UserDto updatedUser = _userService.UpdateUser(user.MapToBLL());
             if (updatedUser is null) return BadRequest(user);
-            return Ok(updatedUser.MapFromBLL());
+            return Ok(updatedUser.MapFromBLL(_roleService.GetUserRoles(updatedUser.Id)));
         }
 
         // N'autoriser l'accès qu'aux administrateur
