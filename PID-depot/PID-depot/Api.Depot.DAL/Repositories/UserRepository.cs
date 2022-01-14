@@ -49,6 +49,7 @@ namespace Api.Depot.DAL.Repositories
         public UserEntity GetById(Guid key)
         {
             Command command = new Command("spGetUser", true);
+            command.AddParameter("user_id", key);
             return _connection.ExecuteReader(command, r => r.MapUser()).FirstOrDefault();
         }
 
