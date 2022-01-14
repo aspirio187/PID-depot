@@ -1,8 +1,10 @@
-﻿using Api.Depot.BLL.Dtos.UserTokenDtos;
+﻿using Api.Depot.BLL.Dtos.RoleDtos;
+using Api.Depot.BLL.Dtos.UserTokenDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Managers;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
+using Api.Depot.UIL.Static_Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -42,6 +44,14 @@ namespace Api.Depot.UIL.Controllers
                 if (_userService.EmailExist(register.Email)) return BadRequest(register.Email);
                 UserModel createdUser = _userService.CreateUser(register.MapToBLL()).MapFromBLL();
                 if (createdUser is null) return BadRequest(register);
+
+                if (!_roleService.RoleExist(RolesData.USER_ROLE))
+                {
+                    _roleService.CreateRole(new RoleCreationDto()
+                    {
+                        Name = RolesData.USER_ROLE
+                    });
+                }
 
                 UserTokenDto userToken = _userTokenService.CreateUserToken(new UserTokenCreationDto()
                 {

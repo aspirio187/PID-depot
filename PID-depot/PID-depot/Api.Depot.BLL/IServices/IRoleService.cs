@@ -12,6 +12,7 @@ namespace Api.Depot.BLL.IServices
         IEnumerable<RoleDto> GetRoles();
         IEnumerable<RoleDto> GetUserRoles(Guid userId);
         RoleDto GetRole(Guid id);
+        RoleDto GetRole(string roleName);
         bool DeleteRole(Guid id);
         RoleDto CreateRole(RoleCreationDto role);
         RoleDto UpdateRole(RoleDto role);

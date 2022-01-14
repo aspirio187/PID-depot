@@ -39,6 +39,14 @@ namespace Api.Depot.BLL.Services
             return _roleRepository.GetById(id).MapFromDAL();
         }
 
+        public RoleDto GetRole(string roleName)
+        {
+            if (roleName is null) throw new ArgumentNullException(nameof(roleName));
+            if (roleName.Length == 0) throw new ArgumentException($"{nameof(roleName)} cannot be empty string!");
+
+            return _roleRepository.GetRole(roleName).MapFromDAL();
+        }
+
         public IEnumerable<RoleDto> GetRoles()
         {
             return _roleRepository.GetAll().Select(r => r.MapFromDAL());
