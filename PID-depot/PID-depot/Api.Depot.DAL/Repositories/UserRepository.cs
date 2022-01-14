@@ -99,5 +99,14 @@ namespace Api.Depot.DAL.Repositories
 
             return _connection.ExecuteNonQuery(command) > 0;
         }
+
+        public bool AccountIsActivated(Guid userid)
+        {
+            string query = "SELECT users.is_activated FROM users WHERE users.id = @user_id";
+            Command command = new Command(query);
+            command.AddParameter("user_id", userid);
+
+            return _connection.ExecuteReader(command, u => ((long)u["is_activated"] == 1)).FirstOrDefault();
+        }
     }
 }
