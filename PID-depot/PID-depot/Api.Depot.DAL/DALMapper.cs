@@ -20,7 +20,7 @@ namespace Api.Depot.DAL
                 RegistrationNumber = (string)data["registration_number"],
                 SecurityStamp = (Guid)data["security_stamp"],
                 ConcurrencyStamp = (Guid)data["concurrency_stamp"],
-                IsActivated = Convert.ToBoolean((long)data["is_activated"])
+                IsActivated = (bool)data["is_activated"]
             };
         }
 
