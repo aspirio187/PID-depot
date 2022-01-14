@@ -52,6 +52,15 @@ namespace Api.Depot.DAL.Repositories
             return _connection.ExecuteReader(command, r => r.MapRole()).FirstOrDefault();
         }
 
+        public RoleEntity GetRole(string roleName)
+        {
+            string query = "SELECT * FROM roles WHERE roles.name = @role_name";
+            Command command = new Command(query);
+            command.AddParameter("role_name", roleName);
+
+            return _connection.ExecuteReader(command, r => r.MapRole()).FirstOrDefault();
+        }
+
         public IEnumerable<RoleEntity> GetUserRoles(Guid userId)
         {
             string query = "SELECT roles.id, roles.name FROM roles INNER JOIN users_roles ON users_roles.role_id = roles.id WHERE users_roles.user_id = @user_id";
@@ -59,15 +68,6 @@ namespace Api.Depot.DAL.Repositories
             command.AddParameter("user_id", userId.ToString());
 
             return _connection.ExecuteReader(command, r => r.MapRole());
-        }
-
-        public bool RoleExist(string roleName)
-        {
-            string query = "SELECT * FROM roles WHERE roles.name = @role_name";
-            Command command = new Command(query);
-            command.AddParameter("role_name", roleName);
-
-            return _connection.ExecuteReader(command, r => r.MapRole()).FirstOrDefault() is not null;
         }
 
         public bool Update(Guid key, RoleEntity data)

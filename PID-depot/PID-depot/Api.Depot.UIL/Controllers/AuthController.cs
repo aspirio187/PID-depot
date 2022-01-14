@@ -43,8 +43,6 @@ namespace Api.Depot.UIL.Controllers
                 UserModel createdUser = _userService.CreateUser(register.MapToBLL()).MapFromBLL();
                 if (createdUser is null) return BadRequest(register);
 
-                
-
                 UserTokenDto userToken = _userTokenService.CreateUserToken(new UserTokenCreationDto()
                 {
                     TokenType = UserTokenType.EmailConfirmation,

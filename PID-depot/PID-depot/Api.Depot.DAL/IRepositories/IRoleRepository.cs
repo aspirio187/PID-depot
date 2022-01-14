@@ -10,6 +10,6 @@ namespace Api.Depot.DAL.IRepositories
     public interface IRoleRepository : IRepositoryBase<Guid, RoleEntity>
     {
         IEnumerable<RoleEntity> GetUserRoles(Guid userId);
-        bool RoleExist(string roleName);
+        RoleEntity GetRole(string roleName);
     }
 }
