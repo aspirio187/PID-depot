@@ -100,7 +100,7 @@ namespace Api.Depot.DAL.Repositories
             return _connection.ExecuteNonQuery(command) > 0;
         }
 
-        public bool AccountIsActivated(Guid userid)
+        public bool AccountIsActive(Guid userid)
         {
             string query = "SELECT users.is_activated FROM users WHERE users.id = @user_id";
             Command command = new Command(query);

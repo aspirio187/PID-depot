@@ -84,5 +84,10 @@ namespace Api.Depot.BLL.Services
         {
             return _userRepository.ActivateAccount(userId);
         }
+
+        public bool AccountIsActive(Guid userId)
+        {
+            return _userRepository.AccountIsActive(userId);
+        }
     }
 }

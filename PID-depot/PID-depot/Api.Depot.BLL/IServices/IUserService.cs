@@ -18,5 +18,6 @@ namespace Api.Depot.BLL.IServices
         bool AddUserRole(Guid userId, Guid roleId);
         bool EmailExist(string email);
         bool ActivateAccount(Guid userId);
+        bool AccountIsActive(Guid userId);
     }
 }

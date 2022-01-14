@@ -12,5 +12,6 @@ namespace Api.Depot.DAL.IRepositories
         bool AddRole(Guid userId, Guid roleId);
         bool EmailExist(string email);
         bool ActivateAccount(Guid userId);
+        bool AccountIsActive(Guid userid);
     }
 }

@@ -43,6 +43,8 @@ namespace Api.Depot.UIL.Controllers
                 UserModel createdUser = _userService.CreateUser(register.MapToBLL()).MapFromBLL();
                 if (createdUser is null) return BadRequest(register);
 
+                
+
                 UserTokenDto userToken = _userTokenService.CreateUserToken(new UserTokenCreationDto()
                 {
                     TokenType = UserTokenType.EmailConfirmation,
@@ -74,6 +76,7 @@ namespace Api.Depot.UIL.Controllers
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                 UserModel loggedInUser = _userService.UserLogin(login.Email, login.Password).MapFromBLL();
                 if (loggedInUser is null) return BadRequest(login);
+                if (!_userService.AccountIsActive(loggedInUser.Id)) return BadRequest("Account is not activated");
 
                 loggedInUser.Roles = _roleService.GetUserRoles(loggedInUser.Id).Select(ur => ur.MapFromBLL());
                 string generatedToken = _authManager.GenerateJwtToken(loggedInUser);
