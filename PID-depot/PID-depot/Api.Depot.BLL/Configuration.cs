@@ -22,6 +22,7 @@ namespace Api.Depot.BLL
             services.AddScoped<ILessonTimetableService, LessonTimetableService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserTokenService, UserTokenService>();
 
             return services;
         }
