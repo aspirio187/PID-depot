@@ -76,7 +76,7 @@ namespace Api.Depot.DAL.Repositories
 
         public bool AddRole(Guid userId, Guid roleId)
         {
-            string query = "INSERT INTO users_roles ('user_role', 'role_id') VALUES (@user_id, @role_id)";
+            string query = "INSERT INTO users_roles (`user_id`, `role_id`) VALUES (@user_id, @role_id)";
             Command command = new Command(query);
             command.AddParameter("user_id", userId);
             command.AddParameter("role_id", roleId);
