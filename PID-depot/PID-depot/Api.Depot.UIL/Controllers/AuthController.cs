@@ -87,13 +87,13 @@ namespace Api.Depot.UIL.Controllers
             }
         }
 
-        [HttpPost("{id}")]
-        public IActionResult Verify(Guid userId, [FromBody] string userToken)
+        [HttpPost("/activation")]
+        public IActionResult Verify(Guid userId, string token)
         {
             if (userId == Guid.Empty) return BadRequest(userId);
-            if (string.IsNullOrEmpty(userToken)) return BadRequest(userToken);
+            if (string.IsNullOrEmpty(token)) return BadRequest(token);
 
-            if (!_userTokenService.TokenIsValid(userId, userToken)) return NotFound(userToken);
+            if (!_userTokenService.TokenIsValid(userId, token)) return NotFound(token);
 
             if (!_userService.ActivateAccount(userId)) return BadRequest(userId);
 

@@ -62,9 +62,9 @@ namespace Api.Depot.UIL.Managers
 
             try
             {
-                MailAddress fromAdresse = new("xyz@gmail.com", "From display name");
+                MailAddress fromAdresse = new("pid.depot@gmail.com", "EICE Dépôt");
                 MailAddress toAdresse = new(toMail, "To display name");
-                const string fromPassword = "Password"; // PASSWORD 16 DIGITS. Se trouve sur bureau GMAIL_TOKEN_PASSWORD.png
+                const string fromPassword = "pazn gnsz llov qccp"; // PASSWORD 16 DIGITS. Se trouve sur bureau GMAIL_TOKEN_PASSWORD.png
                 const string subject = "PID - Activitation du compte";
 
                 StringBuilder body = new StringBuilder();
@@ -72,7 +72,7 @@ namespace Api.Depot.UIL.Managers
                 body.Append("<p>Veuillez cliquer sur le lien ci-dessous pour activer votre compte</p>");
 
 #if DEBUG
-                body.Append($"<a href=\"http://localhost:5000/auth/activation?token={token}\">Cliquez-ici</a>");
+                body.Append($"<a href=\"https://localhost:5001/auth/activation?token={token}\">Cliquez-ici</a>");
 #else
                 body.Append($"<a href=\"https://www.domain.com/auth/activation?token={token}\">Cliquez-ici</a>");
 #endif
