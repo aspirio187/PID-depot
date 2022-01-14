@@ -32,14 +32,14 @@ namespace Api.Depot.UIL.Controllers
         {
             UserDto userFromService = _userService.GetUser(id);
             if (userFromService is null) return NotFound(id);
-            return Ok(userFromService.MapFromBLL());
+            return Ok(userFromService.MapFromBLL(_roleService.GetUserRoles(userFromService.Id)));
         }
 
         [HttpGet]
         public IActionResult GetUsers()
         {
             IEnumerable<UserDto> usersFromService = _userService.GetUsers();
-            return Ok(usersFromService.Select(u => u.MapFromBLL()));
+            return Ok(usersFromService.Select(u => u.MapFromBLL(_roleService.GetUserRoles(u.Id))));
         }
 
         [HttpPost]
@@ -68,10 +68,10 @@ namespace Api.Depot.UIL.Controllers
             return Ok(_userService.DeleteUser(id));
         }
 
-        [HttpGet("EmailAvailable/{email}")]
+        [HttpGet("Email/{email}")]
         public IActionResult IsEmailAvailable(string email)
         {
-            if (string.IsNullOrEmpty(email)) return BadRequest("Email can't be null or empty!");
+            if (string.IsNullOrEmpty(email)) return BadRequest("Email cannot be null or empty!");
 
             return Ok(!_userService.EmailExist(email));
         }
