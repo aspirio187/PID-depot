@@ -53,6 +53,11 @@ namespace Api.Depot.UIL.Controllers
                     });
                 }
 
+                if (!_userService.AddUserRole(createdUser.Id, _roleService.GetRole(RolesData.USER_ROLE).Id))
+                {
+                    return BadRequest();
+                }
+
                 UserTokenDto userToken = _userTokenService.CreateUserToken(new UserTokenCreationDto()
                 {
                     TokenType = UserTokenType.EmailConfirmation,
