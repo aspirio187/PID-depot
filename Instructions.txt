@@ -1,8 +1,8 @@
 Fonctionnalités
 ---------------
 
-* L'utilisateur doit pouvoir s'inscrire et se connecter
-* L'utilisateur doit pouvoir voir tous les cours disponibles
+* L'utilisateur doit pouvoir s'inscrire et se connecter																						V	
+* L'utilisateur doit pouvoir voir tous les cours disponibles																				
 	- Chaque cours doit avoir son titre, sa description et le professeur donnant le cours
 * L'utilisateur doit pouvoir voir les détails d'un cours
 	- C'est-à-dire que lorsqu'un utilisateur clique sur les détails d'un cours, celui-ci affiche les horaires
