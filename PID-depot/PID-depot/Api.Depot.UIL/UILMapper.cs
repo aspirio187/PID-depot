@@ -88,6 +88,17 @@ namespace Api.Depot.UIL
                 };
         }
 
+        public static RoleDto MapToBLL(this RoleModel role)
+        {
+            return role is null
+                ? null
+                : new RoleDto()
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                };
+        }
+
         public static RoleCreationDto MapToBLL(this RoleForm role)
         {
             return role is null

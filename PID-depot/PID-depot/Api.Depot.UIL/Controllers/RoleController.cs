@@ -1,5 +1,6 @@
 ﻿using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.IServices;
+using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,11 +30,11 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetRole(Guid roleId)
+        public IActionResult GetRole(Guid id)
         {
-            if (roleId == Guid.Empty) return BadRequest(roleId);
-            RoleDto roleFromRepo = _roleService.GetRole(roleId);
-            if (roleFromRepo is null) return NotFound(roleId);
+            if (id == Guid.Empty) return BadRequest(id);
+            RoleDto roleFromRepo = _roleService.GetRole(id);
+            if (roleFromRepo is null) return NotFound(id);
             return Ok(roleFromRepo.MapFromBLL());
         }
 
@@ -45,6 +46,17 @@ namespace Api.Depot.UIL.Controllers
             if (createdRole is null) return BadRequest(role);
 
             return Ok(createdRole.MapFromBLL());
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateRole(Guid id, [FromBody] RoleModel role)
+        {
+            if (id == Guid.Empty) return BadRequest("ID cannot be empty!");
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            RoleDto updatedRole = _roleService.UpdateRole(role.MapToBLL());
+            if (updatedRole is null) return BadRequest(role);
+
+            return Ok(updatedRole.MapFromBLL());
         }
 
         [HttpDelete("{id}")]

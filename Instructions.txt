@@ -51,8 +51,11 @@ Utilisateurs
 Roles
 =====
 
-* Récupérer un rôle
-* Récupérer tous les rôles
+* Récupérer un rôle				V
+* Récupérer tous les rôles		V
+* Créer un rôle					V
+* Supprimer un rôle				V
+* Modifier un rôle
 
 Leçon (cours)
 =============
