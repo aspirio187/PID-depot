@@ -113,7 +113,7 @@ namespace Api.Depot.DAL.Repositories
         {
             Command command = new Command("spUpdateUserPassword", true);
             command.AddParameter("user_id", userId);
-            command.AddParameter("old_password", oldPassword);
+            command.AddParameter("old_password_confirmation", oldPassword);
             command.AddParameter("new_password", newPassword);
 
             return _connection.ExecuteNonQuery(command) > 0;
