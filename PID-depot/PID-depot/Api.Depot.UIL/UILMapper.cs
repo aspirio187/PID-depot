@@ -44,9 +44,9 @@ namespace Api.Depot.UIL
                     Id = user.Id,
                     Lastname = user.Lastname,
                     RegistrationNumber = user.RegistrationNumber,
-                    ConcurrencyStamp=user.ConcurrencyStamp,
+                    ConcurrencyStamp = user.ConcurrencyStamp,
                     IsActivated = user.IsActivated,
-                    SecurityStamp =user.SecurityStamp,
+                    SecurityStamp = user.SecurityStamp,
                 };
         }
 
@@ -85,6 +85,16 @@ namespace Api.Depot.UIL
                 {
                     Id = role.Id,
                     Name = role.Name,
+                };
+        }
+
+        public static RoleCreationDto MapToBLL(this RoleForm role)
+        {
+            return role is null
+                ? null
+                : new RoleCreationDto()
+                {
+                    Name = role.Name
                 };
         }
         #endregion
