@@ -19,5 +19,6 @@ namespace Api.Depot.BLL.IServices
         bool EmailExist(string email);
         bool ActivateAccount(Guid userId);
         bool AccountIsActive(Guid userId);
+        bool UpdatePassword(Guid userId, string oldPassword, string newPassword);
     }
 }

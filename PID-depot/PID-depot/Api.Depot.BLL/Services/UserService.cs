@@ -89,5 +89,14 @@ namespace Api.Depot.BLL.Services
         {
             return _userRepository.AccountIsActive(userId);
         }
+
+        public bool UpdatePassword(Guid userId, string oldPassword, string newPassword)
+        {
+            if (userId == Guid.Empty) throw new Exception($"{nameof(userId)} cannot be empty!");
+            if (oldPassword is null) throw new ArgumentNullException(nameof(oldPassword));
+            if (newPassword is null) throw new ArgumentNullException(nameof(newPassword));
+
+            return _userRepository.UpdatePassword(userId, oldPassword, newPassword);
+        }
     }
 }
