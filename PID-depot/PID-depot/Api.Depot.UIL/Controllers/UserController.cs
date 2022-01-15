@@ -61,6 +61,7 @@ namespace Api.Depot.UIL.Controllers
 
         // N'autoriser l'accès qu'aux administrateurs
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult DeleteUser(Guid id)
         {
             UserDto userFromRepo = _userService.GetUser(id);
@@ -74,6 +75,15 @@ namespace Api.Depot.UIL.Controllers
             if (string.IsNullOrEmpty(email)) return BadRequest("Email cannot be null or empty!");
 
             return Ok(!_userService.EmailExist(email));
+        }
+
+        [HttpPost("Password")]
+        public IActionResult UpdatePassword([FromBody] PasswordForm password)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+
+            return Ok();
         }
     }
 }
