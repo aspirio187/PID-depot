@@ -38,26 +38,25 @@ namespace Api.Depot.UIL.Controllers
             return Ok(roleFromRepo.MapFromBLL());
         }
 
-        [HttpPost]
-        public IActionResult CreateRole([FromBody] RoleForm role)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            RoleDto createdRole = _roleService.CreateRole(role.MapToBLL());
-            if (createdRole is null) return BadRequest(role);
+        //[HttpPost]
+        //public IActionResult CreateRole([FromBody] RoleForm role)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+        //    RoleDto createdRole = _roleService.CreateRole(role.MapToBLL());
+        //    if (createdRole is null) return BadRequest(role);
 
-            return Ok(createdRole.MapFromBLL());
-        }
+        //    return Ok(createdRole.MapFromBLL());
+        //}
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateRole(Guid id, [FromBody] RoleModel role)
-        {
-            if (id == Guid.Empty) return BadRequest("ID cannot be empty!");
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            RoleDto updatedRole = _roleService.UpdateRole(role.MapToBLL());
-            if (updatedRole is null) return BadRequest(role);
+        //[HttpPut()]
+        //public IActionResult UpdateRole([FromBody] RoleModel role)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+        //    RoleDto updatedRole = _roleService.UpdateRole(role.MapToBLL());
+        //    if (updatedRole is null) return BadRequest(role);
 
-            return Ok(updatedRole.MapFromBLL());
-        }
+        //    return Ok(updatedRole.MapFromBLL());
+        //}
 
         [HttpDelete("{id}")]
         public IActionResult DeleteRole(Guid id)
