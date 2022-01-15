@@ -82,8 +82,10 @@ namespace Api.Depot.UIL.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
+            if (!_userService.UpdatePassword(password.Id, password.OldPassword, password.NewPassword))
+                return BadRequest();
 
-            return Ok();
+            return Ok(_userService.GetUser(password.Id));
         }
     }
 }
