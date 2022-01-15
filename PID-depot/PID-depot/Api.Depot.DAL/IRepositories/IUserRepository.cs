@@ -13,5 +13,6 @@ namespace Api.Depot.DAL.IRepositories
         bool EmailExist(string email);
         bool ActivateAccount(Guid userId);
         bool AccountIsActive(Guid userid);
+        bool UpdatePassword(Guid userId,string oldPassword, string newPassword);
     }
 }

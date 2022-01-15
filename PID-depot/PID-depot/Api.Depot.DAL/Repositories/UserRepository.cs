@@ -108,5 +108,15 @@ namespace Api.Depot.DAL.Repositories
 
             return _connection.ExecuteReader(command, u => (bool)u["is_activated"]).FirstOrDefault();
         }
+
+        public bool UpdatePassword(Guid userId, string oldPassword, string newPassword)
+        {
+            Command command = new Command("spUpdateUserPassword", true);
+            command.AddParameter("user_id", userId);
+            command.AddParameter("old_password", oldPassword);
+            command.AddParameter("new_password", newPassword);
+
+            return _connection.ExecuteNonQuery(command) > 0;
+        }
     }
 }
