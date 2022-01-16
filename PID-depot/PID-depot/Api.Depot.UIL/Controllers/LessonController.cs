@@ -1,4 +1,5 @@
 ﻿using Api.Depot.BLL.Dtos.LessonDtos;
+using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserLessonDtos;
 using Api.Depot.BLL.IServices;
@@ -82,7 +83,10 @@ namespace Api.Depot.UIL.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
+            LessonTimetableDto createdLessonTimetable = _lessonTimetableService.CreateLessonTimetable(lessonTimetable.MapToBLL());
+            if (createdLessonTimetable is null) return BadRequest(lessonTimetable);
 
+            return Ok(createdLessonTimetable.MapFromBLL());
         }
     }
 }
