@@ -1,6 +1,8 @@
 ﻿using Api.Depot.BLL.Dtos.LessonDtos;
+using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models.Forms;
+using Api.Depot.UIL.Static_Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -49,7 +51,25 @@ namespace Api.Depot.UIL.Controllers
             LessonDto createdLesson = _lessonService.CreateLesson(lesson.MapToBLL());
             if (createdLesson is null) return BadRequest(lesson);
 
-            // TODO : Add teacher
+            RoleDto teacherRole = null;
+
+            if (!_roleService.RoleExist(RolesData.TEACHER_ROLE))
+            {
+                teacherRole = _roleService.CreateRole(new RoleCreationDto()
+                {
+                    Name = RolesData.TEACHER_ROLE
+                });
+            }
+            else
+            {
+                teacherRole = _roleService.GetRole(RolesData.TEACHER_ROLE);
+            }
+
+            if(teacherRole is null) return NotFound($"{nameof(teacherRole)} not found");
+
+            if (!_lessonService.AddLessonTeacher(createdLesson.Id, lesson.UserId, teacherRole.Id)) return BadRequest();
+
+            return 
         }
     }
 }

@@ -114,16 +114,19 @@ namespace Api.Depot.UIL
         #endregion
 
         #region Lesson mapping
-        public static LessonModel MapFromBLL(this LessonDto lesson)
+        public static LessonModel MapFromBLL(this LessonDto lesson, UserDto teacher)
         {
-            return lesson is null
-                ? null
-                : new LessonModel()
-                {
-                    Description = lesson.Description,
-                    Id = lesson.Id,
-                    Name = lesson.Name,
-                };
+            if (lesson is null) return null;
+            if (teacher is null) return null;
+
+            return new LessonModel()
+            {
+                Description = lesson.Description,
+                Id = lesson.Id,
+                Name = lesson.Name,
+                TeacherName = $"{teacher.Lastname.ToUpper()} {teacher.Firstname}",
+                TeacherRegistrationNumber = teacher.RegistrationNumber
+            };
         }
 
         public static LessonDto MapToBLL(this LessonModel lesson)

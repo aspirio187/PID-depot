@@ -26,7 +26,7 @@ namespace Api.Depot.BLL.Services
                 throw new ArgumentNullException(nameof(roleRepository));
         }
 
-        public bool AddLessonTeacher(int lessonId, Guid roleId, Guid userId)
+        public bool AddLessonTeacher(int lessonId, Guid userId, Guid roleId)
         {
             if (lessonId <= 0) throw new ArgumentException(nameof(lessonId));
             if (userId == Guid.Empty) throw new ArgumentException(nameof(userId));

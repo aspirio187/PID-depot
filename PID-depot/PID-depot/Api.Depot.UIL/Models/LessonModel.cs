@@ -14,5 +14,11 @@ namespace Api.Depot.UIL.Models
         [Required(AllowEmptyStrings = false)]
         [MaxLength(1500)]
         public string Description { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string TeacherName { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string TeacherRegistrationNumber { get; set; }
     }
 }
