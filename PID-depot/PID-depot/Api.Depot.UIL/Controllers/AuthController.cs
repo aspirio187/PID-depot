@@ -103,7 +103,7 @@ namespace Api.Depot.UIL.Controllers
             }
         }
 
-        [HttpGet("/activation")]
+        [HttpGet("activation")]
         public IActionResult Verify(Guid id, string token)
         {
             if (id == Guid.Empty) return BadRequest(id);

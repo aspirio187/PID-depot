@@ -9,5 +9,6 @@ namespace Api.Depot.DAL.IRepositories
 {
     public interface ILessonRepository : IRepositoryBase<int, LessonEntity>
     {
+        bool AddLessonUser(int lessonId, Guid userId);
     }
 }

@@ -2,6 +2,7 @@
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
+using Api.Depot.UIL.Static_Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,6 +21,8 @@ namespace Api.Depot.UIL.Controllers
         {
             _roleService = roleService ??
                 throw new ArgumentNullException(nameof(roleService));
+
+            if (!InitilizeRoles()) throw new ApplicationException("Roles initialization didn't work!");
         }
 
         [HttpGet]
@@ -63,6 +66,21 @@ namespace Api.Depot.UIL.Controllers
         {
             if (id == Guid.Empty) return BadRequest("Role ID cannot be null!");
             return Ok(_roleService.DeleteRole(id));
+        }
+
+        private bool InitilizeRoles()
+        {
+            RoleDto userRole = _roleService.GetRole(RolesData.USER_ROLE);
+            if (userRole is null) userRole = _roleService.CreateRole(new RoleCreationDto() { Name = RolesData.USER_ROLE });
+            RoleDto studentRole = _roleService.GetRole(RolesData.STUDENT_ROLE);
+            if (studentRole is null) studentRole = _roleService.CreateRole(new RoleCreationDto() { Name = RolesData.STUDENT_ROLE });
+            RoleDto teacherRole = _roleService.GetRole(RolesData.TEACHER_ROLE);
+            if (teacherRole is null) teacherRole = _roleService.CreateRole(new RoleCreationDto() { Name = RolesData.TEACHER_ROLE });
+            RoleDto adminRole = _roleService.GetRole(RolesData.ADMIN_ROLE);
+            if (adminRole is null) adminRole = _roleService.CreateRole(new RoleCreationDto() { Name = RolesData.ADMIN_ROLE });
+
+            return userRole is not null && studentRole is not null
+                && teacherRole is not null && adminRole is not null;
         }
     }
 }

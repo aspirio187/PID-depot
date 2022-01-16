@@ -11,6 +11,7 @@ namespace Api.Depot.BLL.IServices
     {
         IEnumerable<UserDto> GetUsers();
         UserDto GetUser(Guid id);
+        UserDto GetUserLesson(int lessonId, Guid roleId);
         bool DeleteUser(Guid id);
         UserDto CreateUser(UserCreationDto user);
         UserDto UserLogin(string email, string password);

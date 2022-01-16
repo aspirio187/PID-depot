@@ -33,7 +33,9 @@ namespace Api.Depot.UIL.Controllers
         [HttpGet]
         public IActionResult GetLessons()
         {
-            return Ok(_lessonService.GetLessons().Select(l => l.MapFromBLL(_lessonService.GetLessonTeacher(l.Id))));
+            RoleDto teacherRole = _roleService.GetRole(RolesData.TEACHER_ROLE);
+            if (teacherRole is null) return NotFound($"Teachers doesn't exist!");
+            return Ok(_lessonService.GetLessons().Select(l => l.MapFromBLL(_userService.GetUserLesson(l.Id, teacherRole.Id))));
         }
 
         [HttpGet("{id}")]
@@ -42,7 +44,10 @@ namespace Api.Depot.UIL.Controllers
             LessonDto lessonsFromRepo = _lessonService.GetLesson(id);
             if (lessonsFromRepo is null) return NotFound(id);
 
-            return Ok(lessonsFromRepo.MapFromBLL(_lessonService.GetLessonTeacher(lessonsFromRepo.Id)));
+            RoleDto teacherRole = _roleService.GetRole(RolesData.TEACHER_ROLE);
+            if (teacherRole is null) return NotFound("Teachers doesn't exist!");
+
+            return Ok(lessonsFromRepo.MapFromBLL(_userService.GetUserLesson(lessonsFromRepo.Id, teacherRole.Id)));
         }
 
         [HttpPost]
@@ -64,14 +69,7 @@ namespace Api.Depot.UIL.Controllers
 
             if (teacherRole is null) return NotFound($"{nameof(teacherRole)} not found");
 
-            UserLessonCreationDto userLesson = new UserLessonCreationDto()
-            {
-                UserId = lesson.UserId,
-                LessonId = createdLesson.Id,
-                RoleId = teacherRole.Id,
-            };
-
-            if (!_lessonService.AddLessonTeacher(userLesson)) return BadRequest();
+            if (!_lessonService.AddLessonUser(createdLesson.Id, lesson.UserId)) return BadRequest();
 
             return Ok(_lessonService.GetLesson(createdLesson.Id).MapFromBLL(_userService.GetUser(lesson.UserId)));
         }

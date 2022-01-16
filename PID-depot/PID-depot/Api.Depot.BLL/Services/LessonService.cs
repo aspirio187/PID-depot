@@ -15,27 +15,25 @@ namespace Api.Depot.BLL.Services
     public class LessonService : ILessonService
     {
         private readonly ILessonRepository _lessonRepository;
-        private readonly IUserLessonRepository _userLessonRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
 
-        public LessonService(ILessonRepository lessonRepository, IUserLessonRepository userLessonRepository, IRoleRepository roleRepository, IUserRepository userRepository)
+        public LessonService(ILessonRepository lessonRepository, IRoleRepository roleRepository, IUserRepository userRepository)
         {
             _lessonRepository = lessonRepository ??
                 throw new ArgumentNullException(nameof(lessonRepository));
-            _userLessonRepository = userLessonRepository ??
-                throw new ArgumentNullException(nameof(userLessonRepository));
             _roleRepository = roleRepository ??
                 throw new ArgumentNullException(nameof(roleRepository));
             _userRepository = userRepository ??
                 throw new ArgumentNullException(nameof(userRepository));
         }
 
-        public bool AddLessonTeacher(UserLessonCreationDto userLesson)
+        public bool AddLessonUser(int lessonId, Guid userId)
         {
-            if (userLesson is null) throw new ArgumentNullException(nameof(userLesson));
+            if (lessonId <= 0) throw new ArgumentOutOfRangeException(nameof(lessonId));
+            if (userId == Guid.Empty) throw new ArgumentException(nameof(userId));
 
-            return _userLessonRepository.Create(userLesson.MapToDAL()) > 0;
+            return _lessonRepository.AddLessonUser(lessonId, userId);
         }
 
         public LessonDto CreateLesson(LessonCreationDto lesson)
@@ -60,16 +58,6 @@ namespace Api.Depot.BLL.Services
         public IEnumerable<LessonDto> GetLessons()
         {
             return _lessonRepository.GetAll().Select(l => l.MapFromDAL());
-        }
-
-        public UserDto GetLessonTeacher(int lessonId)
-        {
-            if (lessonId <= 0) throw new ArgumentOutOfRangeException(nameof(lessonId));
-
-            UserLessonEntity userLesson = _userLessonRepository.GetByLessonKey(lessonId);
-            if (userLesson is null) return null;
-
-            return _userRepository.GetById(userLesson.UserId).MapFromDAL();
         }
 
         public LessonDto UpdateLesson(LessonDto lesson)

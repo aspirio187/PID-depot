@@ -25,6 +25,7 @@ namespace Api.Depot.UIL.Controllers
                 throw new ArgumentNullException(nameof(userService));
             _roleService = roleService ??
                 throw new ArgumentNullException(nameof(roleService));
+
         }
 
         [HttpGet("{id}")]
@@ -53,7 +54,7 @@ namespace Api.Depot.UIL.Controllers
         }
 
         // N'autoriser l'accès qu'aux administrateur
-        [HttpPost("{id}/Role")]
+        [HttpPost("{id}/{roleId}")]
         public IActionResult AddUserRole(Guid id, [FromBody] Guid roleId)
         {
             return Ok(_userService.AddUserRole(id, roleId));

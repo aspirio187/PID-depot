@@ -15,16 +15,13 @@ namespace Api.Depot.BLL.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
-        private readonly IUserLessonRepository _userLessonRepository;
 
-        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, IUserLessonRepository userLessonRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository ??
                 throw new ArgumentNullException(nameof(userRepository));
             _roleRepository = roleRepository ??
                 throw new ArgumentNullException(nameof(roleRepository));
-            _userLessonRepository = userLessonRepository ??
-                throw new ArgumentNullException(nameof(userLessonRepository));
         }
 
         public bool DeleteUser(Guid id)
@@ -100,6 +97,17 @@ namespace Api.Depot.BLL.Services
             if (newPassword is null) throw new ArgumentNullException(nameof(newPassword));
 
             return _userRepository.UpdatePassword(userId, oldPassword, newPassword);
+        }
+
+        public UserDto GetUserLesson(int lessonId, Guid roleId)
+        {
+            if (lessonId <= 0) throw new ArgumentOutOfRangeException(nameof(lessonId));
+            if (roleId == Guid.Empty) throw new ArgumentNullException(nameof(roleId));
+
+            UserEntity userFromRepo = _userRepository.GetUser(lessonId, roleId);
+            if (userFromRepo is null) return null;
+
+            return userFromRepo.MapFromDAL();
         }
     }
 }

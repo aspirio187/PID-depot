@@ -19,6 +19,19 @@ namespace Api.Depot.DAL.Repositories
                 throw new ArgumentNullException(nameof(connection));
         }
 
+        public bool AddLessonUser(int lessonId, Guid userId)
+        {
+            if (lessonId <= 0) throw new ArgumentOutOfRangeException(nameof(lessonId));
+            if (userId == Guid.Empty) throw new ArgumentException(nameof(userId));
+
+            string query = "INSERT INTO users_lessons (`user_id`, `lesson_id`) VALUES (@user_id, lesson_id)";
+            Command command = new Command(query);
+            command.AddParameter("user_id", userId);
+            command.AddParameter("lesson_id", lessonId);
+
+            return _connection.ExecuteNonQuery(command) > 0;
+        }
+
         public int Create(LessonEntity data)
         {
             if (data is null) throw new ArgumentNullException(nameof(data));
