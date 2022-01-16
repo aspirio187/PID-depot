@@ -13,11 +13,30 @@ namespace Api.Depot.BLL.Services
     public class LessonService : ILessonService
     {
         private readonly ILessonRepository _lessonRepository;
+        private readonly IUserLessonRepository _userLessonRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public LessonService(ILessonRepository lessonRepository)
+        public LessonService(ILessonRepository lessonRepository, IUserLessonRepository userLessonRepository, IRoleRepository roleRepository)
         {
             _lessonRepository = lessonRepository ??
                 throw new ArgumentNullException(nameof(lessonRepository));
+            _userLessonRepository = userLessonRepository ??
+                throw new ArgumentNullException(nameof(userLessonRepository));
+            _roleRepository = roleRepository ??
+                throw new ArgumentNullException(nameof(roleRepository));
+        }
+
+        public bool AddLessonTeacher(int lessonId, Guid roleId, Guid userId)
+        {
+            if (lessonId <= 0) throw new ArgumentException(nameof(lessonId));
+            if (userId == Guid.Empty) throw new ArgumentException(nameof(userId));
+
+            return _userLessonRepository.Create(new UserLessonEntity()
+            {
+                LessonId = lessonId,
+                UserId = userId,
+                RoleId = roleId
+            }) > 0;
         }
 
         public LessonDto CreateLesson(LessonCreationDto lesson)

@@ -137,6 +137,17 @@ namespace Api.Depot.UIL
                     Name = lesson.Name
                 };
         }
+
+        public static LessonCreationDto MapToBLL(this LessonForm lesson)
+        {
+            return lesson is null
+                ? null
+                : new LessonCreationDto()
+                {
+                    Description = lesson.Description,
+                    Name = lesson.Name,
+                };
+        }
         #endregion
     }
 }

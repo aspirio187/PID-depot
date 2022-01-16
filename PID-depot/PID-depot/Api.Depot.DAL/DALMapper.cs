@@ -71,6 +71,7 @@ namespace Api.Depot.DAL
             {
                 Id = (int)data["id"],
                 UserId = (Guid)data["user_id"],
+                RoleId = (Guid)data["role_id"],
                 LessonId = (int)data["lesson_id"]
             };
         }

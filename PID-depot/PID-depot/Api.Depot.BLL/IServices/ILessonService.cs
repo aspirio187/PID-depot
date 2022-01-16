@@ -14,5 +14,6 @@ namespace Api.Depot.BLL.IServices
         bool DeleteLesson(int id);
         LessonDto CreateLesson(LessonCreationDto lesson);
         LessonDto UpdateLesson(LessonDto lesson);
+        bool AddLessonTeacher(int lessonId, Guid userId);
     }
 }

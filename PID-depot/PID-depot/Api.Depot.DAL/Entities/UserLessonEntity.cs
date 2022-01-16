@@ -11,11 +11,7 @@ namespace Api.Depot.DAL.Entities
     {
         public int Id { get; set; }
         public Guid UserId { get; set; }
+        public Guid RoleId { get; set; }
         public int LessonId { get; set; }
-
-        public UserLessonEntity()
-        {
-
-        }
     }
 }
