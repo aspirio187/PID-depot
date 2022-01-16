@@ -51,6 +51,7 @@ namespace Api.Depot.DAL.Repositories
         {
             string query = "SELECT * FROM lesson_timetables WHERE id = @id";
             Command command = new Command(query);
+            command.AddParameter("id", key);
 
             return _connection.ExecuteReader(command, lt => lt.MapLessonTimetable()).FirstOrDefault();
         }
