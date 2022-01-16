@@ -17,10 +17,11 @@ namespace Api.Depot.UIL.Controllers
     public class LessonController : ControllerBase
     {
         private readonly ILessonService _lessonService;
+        private readonly ILessonTimetableService _lessonTimetableService;
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
 
-        public LessonController(ILessonService lessonService, IUserService userService, IRoleService roleService)
+        public LessonController(ILessonService lessonService, IUserService userService, IRoleService roleService, ILessonTimetableService lessonTimetableService)
         {
             _lessonService = lessonService ??
                 throw new ArgumentNullException(nameof(lessonService));
@@ -28,6 +29,8 @@ namespace Api.Depot.UIL.Controllers
                 throw new ArgumentNullException(nameof(userService));
             _roleService = roleService ??
                 throw new ArgumentNullException(nameof(roleService));
+            _lessonTimetableService = lessonTimetableService ??
+                throw new ArgumentNullException(nameof(lessonTimetableService));
         }
 
         [HttpGet]
@@ -77,6 +80,8 @@ namespace Api.Depot.UIL.Controllers
         [HttpPost("{id}")]
         public IActionResult CreateLessonTimetable(int id, [FromBody] LessonTimetableForm lessonTimetable)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
 
         }
     }
