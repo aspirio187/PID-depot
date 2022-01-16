@@ -28,7 +28,7 @@ namespace Api.Depot.DAL.Repositories
             command.AddParameter("role_id", data.RoleId);
             command.AddParameter("lesson_id", data.LessonId);
 
-            return (int)_connection.ExecuteScalar(command);
+            return int.Parse(_connection.ExecuteScalar(command).ToString());
         }
 
         public bool Delete(int key)
