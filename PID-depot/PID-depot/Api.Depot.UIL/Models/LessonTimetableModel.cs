@@ -7,6 +7,6 @@ namespace Api.Depot.UIL.Models
         public int Id { get; set; }
         public DateTime StartsAt { get; set; }
         public DateTime EndsAt { get; set; }
-        public LessonModel Lesson { get; set; }
+        public int LessonId { get; set; }
     }
 }

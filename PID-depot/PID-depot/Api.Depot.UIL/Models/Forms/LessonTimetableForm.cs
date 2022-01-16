@@ -12,5 +12,7 @@ namespace Api.Depot.UIL.Models.Forms
         [Required]
         [DateTimeComparison("StartsAt")]
         public DateTime EndsAt { get; set; }
+
+        public int LessonId { get; set; }
     }
 }
