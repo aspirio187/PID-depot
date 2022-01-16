@@ -118,5 +118,23 @@ namespace Api.Depot.DAL.Repositories
 
             return _connection.ExecuteNonQuery(command) > 0;
         }
+
+        public UserEntity GetUser(int lessonId, Guid roleId)
+        {
+            Command command = new Command("spGetUserLessonRole", true);
+            command.AddParameter("lesson_id", lessonId);
+            command.AddParameter("role_id", roleId);
+
+            return _connection.ExecuteReader(command, u => u.MapUser()).FirstOrDefault();
+        }
+
+        public IEnumerable<UserEntity> GetUsers(int lessonId, Guid roleId)
+        {
+            Command command = new Command("spGetUserLessonRole", true);
+            command.AddParameter("lesson_id", lessonId);
+            command.AddParameter("role_id", roleId);
+
+            return _connection.ExecuteReader(command, u => u.MapUser());
+        }
     }
 }
