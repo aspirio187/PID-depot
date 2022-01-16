@@ -4,6 +4,7 @@ using Api.Depot.BLL.Dtos.LessonFileDtos;
 using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
+using Api.Depot.BLL.Dtos.UserLessonDtos;
 using Api.Depot.BLL.Dtos.UserTokenDtos;
 using Api.Depot.DAL.Entities;
 using System;
@@ -60,6 +61,33 @@ namespace Api.Depot.BLL
                     Firstname = user.Firstname,
                     Lastname = user.Lastname,
                     Birthdate = user.Birthdate,
+                };
+        }
+        #endregion
+
+        #region UserLesson mapping
+        public static UserLessonDto MapFromDAL(this UserLessonEntity userLesson)
+        {
+            return userLesson is null
+                ? null
+                : new UserLessonDto()
+                {
+                    Id = userLesson.Id,
+                    LessonId = userLesson.LessonId,
+                    RoleId = userLesson.RoleId,
+                    UserId = userLesson.UserId,
+                };
+        }
+
+        public static UserLessonEntity MapToDAL(this UserLessonCreationDto userLesson)
+        {
+            return userLesson is null
+                ? null
+                : new UserLessonEntity()
+                {
+                    LessonId = userLesson.LessonId,
+                    RoleId = userLesson.RoleId,
+                    UserId = userLesson.UserId,
                 };
         }
         #endregion

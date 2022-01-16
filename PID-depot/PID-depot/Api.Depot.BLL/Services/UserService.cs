@@ -15,13 +15,16 @@ namespace Api.Depot.BLL.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly IUserLessonRepository _userLessonRepository;
 
-        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, IUserLessonRepository userLessonRepository)
         {
             _userRepository = userRepository ??
                 throw new ArgumentNullException(nameof(userRepository));
             _roleRepository = roleRepository ??
                 throw new ArgumentNullException(nameof(roleRepository));
+            _userLessonRepository = userLessonRepository ??
+                throw new ArgumentNullException(nameof(userLessonRepository));
         }
 
         public bool DeleteUser(Guid id)
