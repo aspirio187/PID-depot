@@ -1,5 +1,6 @@
 ﻿using Api.Depot.BLL.Dtos.LessonDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
+using Api.Depot.BLL.Dtos.UserLessonDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models.Forms;
 using Api.Depot.UIL.Static_Data;
@@ -32,7 +33,7 @@ namespace Api.Depot.UIL.Controllers
         [HttpGet]
         public IActionResult GetLessons()
         {
-            return Ok(_lessonService.GetLessons().Select(l => l.MapFromBLL(_userService.GetLessonTeacher(l.Id))));
+            return Ok(_lessonService.GetLessons().Select(l => l.MapFromBLL(_lessonService.GetLessonTeacher(l.Id))));
         }
 
         [HttpGet("{id}")]
@@ -41,7 +42,7 @@ namespace Api.Depot.UIL.Controllers
             LessonDto lessonsFromRepo = _lessonService.GetLesson(id);
             if (lessonsFromRepo is null) return NotFound(id);
 
-            return Ok(lessonsFromRepo.MapFromBLL(_userService.GetLessonTeacher(lessonsFromRepo.Id)));
+            return Ok(lessonsFromRepo.MapFromBLL(_lessonService.GetLessonTeacher(lessonsFromRepo.Id)));
         }
 
         [HttpPost]
@@ -63,9 +64,16 @@ namespace Api.Depot.UIL.Controllers
 
             if (teacherRole is null) return NotFound($"{nameof(teacherRole)} not found");
 
-            if (!_lessonService.AddLessonTeacher(createdLesson.Id, lesson.UserId, teacherRole.Id)) return BadRequest();
+            UserLessonCreationDto userLesson = new UserLessonCreationDto()
+            {
+                UserId = lesson.UserId,
+                LessonId = createdLesson.Id,
+                RoleId = teacherRole.Id,
+            };
 
-            return
+            if (!_lessonService.AddLessonTeacher(userLesson)) return BadRequest();
+
+            return Ok(_lessonService.GetLesson(createdLesson.Id).MapFromBLL(_userService.GetUser(lesson.UserId)));
         }
     }
 }
