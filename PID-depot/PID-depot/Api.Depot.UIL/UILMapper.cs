@@ -164,6 +164,7 @@ namespace Api.Depot.UIL
                     EndsAt = lessonTimetable.EndsAt,
                     Id = lessonTimetable.Id,
                     StartsAt = lessonTimetable.StartsAt,
+                    LessonId = lessonTimetable.LessonId,
                 };
         }
 
