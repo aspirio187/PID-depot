@@ -33,17 +33,59 @@ namespace Api.Depot.DAL.Repositories
 
         public bool Delete(int key)
         {
-            throw new NotImplementedException();
+            string query = "DELETE FROM users_lessons WHERE users_lessons.id = @id";
+            Command command = new Command(query);
+            command.AddParameter("id", key);
+
+            return _connection.ExecuteNonQuery(command) > 0;
         }
 
         public IEnumerable<UserLessonEntity> GetAll()
         {
-            throw new NotImplementedException();
+            string query = "SELECT * FROM users_lessons";
+            Command command = new Command(query);
+
+            return _connection.ExecuteReader(command, ul => ul.MapUserLesson());
         }
 
         public UserLessonEntity GetById(int key)
         {
-            throw new NotImplementedException();
+            string query = "SELECT * FROM users_lessons WHERE users_lessons.id = @id";
+            Command command = new Command(query);
+            command.AddParameter("id", key);
+
+            return _connection.ExecuteReader(command, ul => ul.MapUserLesson())
+                .FirstOrDefault();
+        }
+
+        public UserLessonEntity GetByLessonKey(int id)
+        {
+            string query = "SELECT * FROM users_lessons WHERE users_lessons.lesson_id = @lesson_id";
+            Command command = new Command(query);
+            command.AddParameter("lesson_id", id);
+
+            return _connection.ExecuteReader(command, ul => ul.MapUserLesson())
+                .FirstOrDefault();
+        }
+
+        public UserLessonEntity GetByRoleKey(Guid id)
+        {
+            string query = "SELECT * FROM users_lessons WHERE users_lessons.role_id = @role_id";
+            Command command = new Command(query);
+            command.AddParameter("role_id", id);
+
+            return _connection.ExecuteReader(command, ul => ul.MapUserLesson())
+                .FirstOrDefault();
+        }
+
+        public UserLessonEntity GetByUserKey(Guid id)
+        {
+            string query = "SELECT * FROM users_lessons WHERE users_lessons.user_id = @user_id";
+            Command command = new Command(query);
+            command.AddParameter("user_id", id);
+
+            return _connection.ExecuteReader(command, ul => ul.MapUserLesson())
+                .FirstOrDefault();
         }
 
         public bool Update(int key, UserLessonEntity data)

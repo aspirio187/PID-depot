@@ -9,6 +9,8 @@ namespace Api.Depot.DAL.IRepositories
 {
     public interface IUserLessonRepository : IRepositoryBase<int, UserLessonEntity>
     {
-        
+        UserLessonEntity GetByUserKey(Guid id);
+        UserLessonEntity GetByRoleKey(Guid id);
+        UserLessonEntity GetByLessonKey(int id);
     }
 }

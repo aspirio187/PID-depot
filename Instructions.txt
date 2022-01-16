@@ -60,7 +60,7 @@ Roles
 Leçon (cours)
 =============
 
-* Récupérer tous les cours
+* Récupérer tous les cours						
 * Récupérer un cours
 * Créer un cours
 * Supprimer un cours
