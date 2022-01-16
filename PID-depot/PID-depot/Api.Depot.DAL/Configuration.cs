@@ -23,6 +23,7 @@ namespace Api.Depot.DAL
             services.AddScoped<ILessonRepository, LessonRepository>();
             services.AddScoped<ILessonTimetableRepository, LessonTimetableRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserLessonRepository, UserLessonRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserTokenRepository, UserTokenRepository>();
 
