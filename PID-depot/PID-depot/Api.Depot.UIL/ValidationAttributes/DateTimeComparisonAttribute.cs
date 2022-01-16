@@ -8,9 +8,9 @@ namespace Api.Depot.UIL.ValidationAttributes
     {
         public string MinimumDatePropertyName { get; set; }
 
-        public DateTimeComparisonAttribute()
+        public DateTimeComparisonAttribute(string minimumDatePropertyName)
         {
-
+            MinimumDatePropertyName = minimumDatePropertyName;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
