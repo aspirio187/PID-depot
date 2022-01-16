@@ -13,10 +13,5 @@ namespace Api.Depot.BLL.Dtos.LessonTimetableDtos
         public DateTime StartsAt { get; set; }
         public DateTime EndsAt { get; set; }
         public int LessonId { get; set; }
-
-        public LessonTimetableDto()
-        {
-
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Api.Depot.BLL.Dtos.RoleDtos;
+﻿using Api.Depot.BLL.Dtos.LessonDtos;
+using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
@@ -76,7 +77,9 @@ namespace Api.Depot.UIL
                     Password = register.Password,
                 };
         }
+        #endregion
 
+        #region Role mapping
         public static RoleModel MapFromBLL(this RoleDto role)
         {
             return role is null
@@ -106,6 +109,32 @@ namespace Api.Depot.UIL
                 : new RoleCreationDto()
                 {
                     Name = role.Name
+                };
+        }
+        #endregion
+
+        #region Lesson mapping
+        public static LessonModel MapFromBLL(this LessonDto lesson)
+        {
+            return lesson is null
+                ? null
+                : new LessonModel()
+                {
+                    Description = lesson.Description,
+                    Id = lesson.Id,
+                    Name = lesson.Name,
+                };
+        }
+
+        public static LessonDto MapToBLL(this LessonModel lesson)
+        {
+            return lesson is null
+                ? null
+                : new LessonDto()
+                {
+                    Description = lesson.Description,
+                    Id = lesson.Id,
+                    Name = lesson.Name
                 };
         }
         #endregion

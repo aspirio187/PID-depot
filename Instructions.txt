@@ -53,9 +53,9 @@ Roles
 
 * Récupérer un rôle				V
 * Récupérer tous les rôles		V
-* Créer un rôle					V
+* Créer un rôle					S
 * Supprimer un rôle				V
-* Modifier un rôle
+* Modifier un rôle				S
 
 Leçon (cours)
 =============
