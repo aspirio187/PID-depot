@@ -73,5 +73,11 @@ namespace Api.Depot.UIL.Controllers
 
             return Ok(_lessonService.GetLesson(createdLesson.Id).MapFromBLL(_userService.GetUser(lesson.UserId)));
         }
+
+        [HttpPost("{id}")]
+        public IActionResult CreateLessonTimetable(int id, [FromBody] LessonTimetableForm lessonTimetable)
+        {
+
+        }
     }
 }
