@@ -24,7 +24,7 @@ namespace Api.Depot.DAL.Repositories
             if (lessonId <= 0) throw new ArgumentOutOfRangeException(nameof(lessonId));
             if (userId == Guid.Empty) throw new ArgumentException(nameof(userId));
 
-            string query = "INSERT INTO users_lessons (`user_id`, `lesson_id`) VALUES (@user_id, lesson_id)";
+            string query = "INSERT INTO users_lessons (`user_id`, `lesson_id`) VALUES (@user_id, @lesson_id)";
             Command command = new Command(query);
             command.AddParameter("user_id", userId);
             command.AddParameter("lesson_id", lessonId);
