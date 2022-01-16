@@ -42,7 +42,7 @@ namespace Api.Depot.UIL.Controllers
             return Ok(usersFromService.Select(u => u.MapFromBLL(_roleService.GetUserRoles(u.Id))));
         }
 
-        [HttpPost]
+        [HttpPut]
         public IActionResult UpdateUser([FromBody] UserForm user)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
