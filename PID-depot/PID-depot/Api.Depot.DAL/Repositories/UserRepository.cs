@@ -130,7 +130,7 @@ namespace Api.Depot.DAL.Repositories
 
         public IEnumerable<UserEntity> GetUsers(int lessonId, Guid roleId)
         {
-            Command command = new Command("spGetUserLessonRole", true);
+            Command command = new Command("spGetUsersLessonRole", true);
             command.AddParameter("lesson_id", lessonId);
             command.AddParameter("role_id", roleId);
 

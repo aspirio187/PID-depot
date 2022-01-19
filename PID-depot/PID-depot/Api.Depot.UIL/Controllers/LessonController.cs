@@ -1,6 +1,7 @@
 ﻿using Api.Depot.BLL.Dtos.LessonDtos;
 using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
+using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.BLL.Dtos.UserLessonDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models.Forms;
@@ -54,6 +55,20 @@ namespace Api.Depot.UIL.Controllers
             return Ok(lessonsFromRepo.MapFromBLL(_userService.GetUserLesson(lessonsFromRepo.Id, teacherRole.Id)));
         }
 
+        [HttpGet("{id}/students")]
+        public IActionResult GetLessonStudents(int id)
+        {
+            if (id == 0) return BadRequest(nameof(id));
+
+            RoleDto role = _roleService.GetRole(RolesData.STUDENT_ROLE);
+            if (role is null) return NotFound(RolesData.STUDENT_ROLE);
+            IEnumerable<UserDto> users = _userService.GetUsersLesson(id, role.Id);
+
+            return Ok(users.Select(u => u.MapFromBLL()));
+        }
+
+        [HttpPost]
+
         [HttpPost]
         public IActionResult CreateLesson([FromBody] LessonForm lesson)
         {
@@ -85,17 +100,6 @@ namespace Api.Depot.UIL.Controllers
             if (!_lessonService.DeleteLesson(id)) return NotFound(id);
 
             return Ok();
-        }
-
-        [HttpPost("Timetable")]
-        public IActionResult CreateLessonTimetable([FromBody] LessonTimetableForm lessonTimetable)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            LessonTimetableDto createdLessonTimetable = _lessonTimetableService.CreateLessonTimetable(lessonTimetable.MapToBLL());
-            if (createdLessonTimetable is null) return BadRequest(lessonTimetable);
-
-            return Ok(createdLessonTimetable.MapFromBLL());
         }
     }
 }

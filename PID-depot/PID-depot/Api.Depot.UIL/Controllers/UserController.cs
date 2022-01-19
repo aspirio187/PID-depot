@@ -43,6 +43,8 @@ namespace Api.Depot.UIL.Controllers
             return Ok(usersFromService.Select(u => u.MapFromBLL(_roleService.GetUserRoles(u.Id))));
         }
 
+        [HttpGet("")]
+
         [HttpPut]
         public IActionResult UpdateUser([FromBody] UserForm user)
         {

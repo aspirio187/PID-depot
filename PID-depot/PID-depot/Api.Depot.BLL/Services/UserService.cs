@@ -102,12 +102,21 @@ namespace Api.Depot.BLL.Services
         public UserDto GetUserLesson(int lessonId, Guid roleId)
         {
             if (lessonId <= 0) throw new ArgumentOutOfRangeException(nameof(lessonId));
-            if (roleId == Guid.Empty) throw new ArgumentNullException(nameof(roleId));
+            if (roleId == Guid.Empty) throw new ArgumentException(nameof(roleId));
 
             UserEntity userFromRepo = _userRepository.GetUser(lessonId, roleId);
             if (userFromRepo is null) return null;
 
             return userFromRepo.MapFromDAL();
+        }
+
+        public IEnumerable<UserDto> GetUsersLesson(int lessonId, Guid roleId)
+        {
+            if (lessonId <= 0) throw new ArgumentOutOfRangeException(nameof(lessonId));
+            if (roleId == Guid.Empty) throw new ArgumentException(nameof(roleId));
+
+            IEnumerable<UserEntity> usersFromRepo = _userRepository.GetUsers(lessonId, roleId);
+            return usersFromRepo.Select(u => u.MapFromDAL());
         }
     }
 }
