@@ -78,8 +78,17 @@ namespace Api.Depot.UIL.Controllers
             return Ok(_lessonService.GetLesson(createdLesson.Id).MapFromBLL(_userService.GetUser(lesson.UserId)));
         }
 
-        [HttpPost("{id}")]
-        public IActionResult CreateLessonTimetable(int id, [FromBody] LessonTimetableForm lessonTimetable)
+        [HttpDelete("{id}")]
+        public IActionResult DeleteLesson(int id)
+        {
+            if (id == 0) return BadRequest(nameof(id));
+            if (!_lessonService.DeleteLesson(id)) return NotFound(id);
+
+            return Ok();
+        }
+
+        [HttpPost("Timetable")]
+        public IActionResult CreateLessonTimetable([FromBody] LessonTimetableForm lessonTimetable)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

@@ -60,13 +60,13 @@ Roles
 Leçon (cours)
 =============
 
-* Récupérer tous les cours						
-* Récupérer un cours
-* Créer un cours
-* Supprimer un cours
-* Récupérer les élèves inscris à un cours
+* Récupérer tous les cours						V
+* Récupérer un cours							V
+* Créer un cours								V
+* Supprimer un cours							V
+* Récupérer les élèves inscris à un cours		
 * S'inscrire à un cours
-* Créer un horaire pour le cours
+* Créer un horaire pour le cours				V
 
 Leçon précise (cours précis)
 ============================
