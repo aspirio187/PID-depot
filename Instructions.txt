@@ -43,7 +43,7 @@ Utilisateurs
 * Vérifie si l'email est disponible									V			
 * Récupérer un utilisateur											V
 * Récupérer tous  les utilisateurs									V
-* Ajouter un rôle à un utilisateur										
+* Ajouter un rôle à un utilisateur									V	
 * Modifier ses informations (prénom, nom, date de naissance)		V	
 * Supprimer un utilisateur											V
 * Modifier son mot de passe											V

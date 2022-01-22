@@ -65,6 +65,8 @@ namespace Api.Depot.BLL.Services
             RoleEntity roleFromRepo = _roleRepository.GetById(roleId);
             if (roleFromRepo is null) return false;
 
+            if (_roleRepository.GetUserRoles(userFromRepo.Id).Any(r => r.Id == roleFromRepo.Id)) return true;
+
             return _userRepository.AddRole(userId, roleId);
         }
 
