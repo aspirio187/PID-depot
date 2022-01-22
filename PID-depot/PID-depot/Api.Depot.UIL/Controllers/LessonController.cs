@@ -68,8 +68,6 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpPost]
-
-        [HttpPost]
         public IActionResult CreateLesson([FromBody] LessonForm lesson)
         {
             if (!ModelState.IsValid) return BadRequest(lesson);
