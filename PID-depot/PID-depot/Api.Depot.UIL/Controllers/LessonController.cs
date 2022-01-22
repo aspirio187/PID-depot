@@ -91,6 +91,22 @@ namespace Api.Depot.UIL.Controllers
             return Ok(_lessonService.GetLesson(createdLesson.Id).MapFromBLL(_userService.GetUser(lesson.UserId)));
         }
 
+        [HttpPost("{id}/{userId}")]
+        public IActionResult Subscribe(int id, Guid userId)
+        {
+            if (id == 0) return BadRequest(nameof(id));
+            if (userId == Guid.Empty) return BadRequest(nameof(userId));
+
+            LessonDto lessonFromRepo = _lessonService.GetLesson(id);
+            if (lessonFromRepo is null) return NotFound(id);
+
+            var userFromRepo = _userService.GetUser(userId);
+            if (userFromRepo is null) return NotFound(userId);
+            if (userFromRepo.MapFromBLL(_roleService.GetUserRoles(userId)).Roles.Any(r => r.Name.Equals(RolesData.TEACHER_ROLE)))
+                return BadRequest("The user is a teacher!");
+            return Ok(_lessonService.AddLessonUser(id, userId));
+        }
+
         [HttpDelete("{id}")]
         public IActionResult DeleteLesson(int id)
         {

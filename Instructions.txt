@@ -65,7 +65,7 @@ Leçon (cours)
 * Créer un cours								V
 * Supprimer un cours							V
 * Récupérer les élèves inscris à un cours		V	
-* S'inscrire à un cours
+* S'inscrire à un cours							V
 * Créer un horaire pour le cours				V
 
 Leçon précise (cours précis)
