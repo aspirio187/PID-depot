@@ -1,4 +1,5 @@
-﻿using Api.Depot.BLL.Dtos.LessonDtos;
+﻿using Api.Depot.BLL.Dtos.LessonDetailDtos;
+using Api.Depot.BLL.Dtos.LessonDtos;
 using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
@@ -190,6 +191,34 @@ namespace Api.Depot.UIL
                     EndsAt = lessonTimetable.EndsAt,
                     LessonId = lessonTimetable.LessonId,
                     StartsAt = lessonTimetable.StartsAt
+                };
+        }
+        #endregion
+
+        #region LessonDetail mapping
+        public static LessonDetailModel MapFromBLL(this LessonDetailDto lessonDetail)
+        {
+            return lessonDetail is null
+                ? null
+                : new LessonDetailModel()
+                {
+                    Details = lessonDetail.Details,
+                    Id = lessonDetail.Id,
+                    LessonTimetableId = lessonDetail.LessonTimetableId,
+                    Title = lessonDetail.Title,
+                };
+        }
+
+        public static LessonDetailDto MapToBLL(this LessonDetailModel lessonDetail)
+        {
+            return lessonDetail is null
+                ? null
+                : new LessonDetailDto()
+                {
+                    Details = lessonDetail.Details,
+                    Id = lessonDetail.Id,
+                    LessonTimetableId = lessonDetail.LessonTimetableId,
+                    Title = lessonDetail.Title
                 };
         }
         #endregion
