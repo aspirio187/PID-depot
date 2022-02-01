@@ -41,10 +41,10 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpGet("{id}/details")]
-        public IActionResult GetLessonDetails(int timetableId)
+        public IActionResult GetLessonDetails(int id)
         {
-            if (timetableId == 0) return BadRequest(nameof(timetableId));
-            var detailsFromRepo = _lessonDetailService.GetLessonDetails(timetableId);
+            if (id == 0) return BadRequest(nameof(id));
+            var detailsFromRepo = _lessonDetailService.GetLessonDetails(id);
             return Ok(detailsFromRepo.Select(d => d.MapFromBLL()).ToList());
         }
 
