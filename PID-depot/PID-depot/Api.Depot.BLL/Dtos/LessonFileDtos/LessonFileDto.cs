@@ -12,10 +12,5 @@ namespace Api.Depot.BLL.Dtos.LessonFileDtos
         public int Id { get; set; }
         public string FilePath { get; set; }
         public int LessonDetailId { get; set; }
-
-        public LessonFileDto()
-        {
-
-        }
     }
 }

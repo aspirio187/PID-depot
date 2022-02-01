@@ -1,5 +1,6 @@
 ﻿using Api.Depot.BLL.Dtos.LessonDetailDtos;
 using Api.Depot.BLL.Dtos.LessonDtos;
+using Api.Depot.BLL.Dtos.LessonFileDtos;
 using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
@@ -219,6 +220,55 @@ namespace Api.Depot.UIL
                     Id = lessonDetail.Id,
                     LessonTimetableId = lessonDetail.LessonTimetableId,
                     Title = lessonDetail.Title
+                };
+        }
+
+        public static LessonDetailCreationDto MapToBLL(this LessonDetailForm lessonDetail)
+        {
+            return lessonDetail is null
+                ? null
+                : new LessonDetailCreationDto()
+                {
+                    Details = lessonDetail.Details,
+                    LessonTimetableId = lessonDetail.LessonTimetableId,
+                    Title = lessonDetail.Title,
+                };
+        }
+        #endregion
+
+        #region LessonFile mapping
+        public static LessonFileModel MapFromBLL(this LessonFileDto lessonFile)
+        {
+            return lessonFile is null
+                ? null
+                : new LessonFileModel()
+                {
+                    Id = lessonFile.Id,
+                    FilePath = lessonFile.FilePath,
+                    LessonDetailId = lessonFile.LessonDetailId,
+                };
+        }
+
+        public static LessonFileDto MapToBLL(this LessonFileModel lessonFile)
+        {
+            return lessonFile is null
+                ? null
+                : new LessonFileDto()
+                {
+                    Id = lessonFile.Id,
+                    FilePath = lessonFile.FilePath,
+                    LessonDetailId = lessonFile.LessonDetailId
+                };
+        }
+
+        public static LessonFileCreationDto MapToBLL(this LessonFileForm lessonFile)
+        {
+            return lessonFile is null
+                ? null
+                : new LessonFileCreationDto()
+                {
+                    FilePath = lessonFile.FilePath,
+                    LessonDetailId = lessonFile.LessonDetailId
                 };
         }
         #endregion

@@ -13,11 +13,14 @@ namespace Api.Depot.UIL.Controllers
     public class LessonTimetableController : ControllerBase
     {
         private readonly ILessonTimetableService _lessonTimetableService;
+        private readonly ILessonDetailService _lessonDetailService;
 
-        public LessonTimetableController(ILessonTimetableService lessonTimetableService)
+        public LessonTimetableController(ILessonTimetableService lessonTimetableService, ILessonDetailService lessonDetailService)
         {
             _lessonTimetableService = lessonTimetableService ??
                 throw new ArgumentNullException(nameof(lessonTimetableService));
+            _lessonDetailService = lessonDetailService ??
+                throw new ArgumentNullException(nameof(lessonDetailService));
         }
 
         // TODO : Les routes de récupérations
@@ -35,6 +38,14 @@ namespace Api.Depot.UIL.Controllers
             if (timeTableFromRepo is null) return NotFound(id);
 
             return Ok(timeTableFromRepo.MapFromBLL());
+        }
+
+        [HttpGet("{id}/details")]
+        public IActionResult GetLessonDetails(int timetableId)
+        {
+            if (timetableId == 0) return BadRequest(nameof(timetableId));
+            var detailsFromRepo = _lessonDetailService.GetLessonDetails(timetableId);
+            return Ok(detailsFromRepo.Select(d => d.MapFromBLL()).ToList());
         }
 
         [HttpPost()]

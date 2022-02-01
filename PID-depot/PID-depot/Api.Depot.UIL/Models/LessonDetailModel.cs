@@ -1,4 +1,6 @@
-﻿namespace Api.Depot.UIL.Models
+﻿using System.Collections.Generic;
+
+namespace Api.Depot.UIL.Models
 {
     public class LessonDetailModel
     {
@@ -6,5 +8,6 @@
         public string Title { get; set; }
         public string Details { get; set; }
         public int LessonTimetableId { get; set; }
+        public IEnumerable<LessonFileModel> LessonFiles { get; set; }
     }
 }
