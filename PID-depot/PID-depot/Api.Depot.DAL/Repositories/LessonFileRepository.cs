@@ -48,8 +48,9 @@ namespace Api.Depot.DAL.Repositories
 
         public LessonFileEntity GetById(int key)
         {
-            string query = "SELECT * FROM lesson_files WHERE id = @id";
+            string query = "SELECT * FROM lesson_files WHERE lesson_files.id = @id";
             Command command = new Command(query);
+            command.AddParameter("id", key);
 
             return _connection.ExecuteReader(command, lf => lf.MapLessonFile()).FirstOrDefault();
         }

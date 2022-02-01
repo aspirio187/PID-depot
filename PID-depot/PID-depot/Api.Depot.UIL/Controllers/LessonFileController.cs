@@ -28,7 +28,8 @@ namespace Api.Depot.UIL.Controllers
             if (file.Length <= 0) return BadRequest(file);
             if (_lessonDetailService.GetDetail(id) is null) return NotFound(id);
 
-            string filePath = $"{PATH}{file.FileName}";
+            string fileName = $"{DateTime.Now}.{file.FileName}";
+            string filePath = $"{PATH}{fileName}";
 
             using (System.IO.FileStream stream = System.IO.File.Create(filePath))
             {
