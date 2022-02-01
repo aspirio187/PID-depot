@@ -11,6 +11,7 @@ namespace Api.Depot.BLL.IServices
     {
         IEnumerable<LessonDetailDto> GetLessonDetails(int lessonTimetableId);
         IEnumerable<LessonDetailDto> GetDetails();
+        LessonDetailDto GetDetail(int id);
         LessonDetailDto GetLessonDetail(int lessonTimetableId);
         bool DeleteLessonDetail(int id);
         LessonDetailDto CreateLessonDetail(LessonDetailCreationDto lessonDetail);

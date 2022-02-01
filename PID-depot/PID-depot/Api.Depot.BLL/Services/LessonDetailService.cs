@@ -35,6 +35,13 @@ namespace Api.Depot.BLL.Services
             return _lessonDetailRepository.Delete(id);
         }
 
+        public LessonDetailDto GetDetail(int id)
+        {
+            if (id == 0) throw new ArgumentException($"{nameof(id)} cannot be 0!");
+            LessonDetailDto detailFromRepo = _lessonDetailRepository.GetById(id).MapFromDAL();
+            return detailFromRepo;
+        }
+
         public IEnumerable<LessonDetailDto> GetDetails()
         {
             return _lessonDetailRepository.GetAll().Select(ld => ld.MapFromDAL());

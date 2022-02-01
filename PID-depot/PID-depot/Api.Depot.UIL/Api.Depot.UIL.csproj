@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Api.Depot.BLL\Api.Depot.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Files\" />
+  </ItemGroup>
+
 </Project>
