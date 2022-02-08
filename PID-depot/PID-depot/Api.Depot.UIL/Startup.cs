@@ -1,4 +1,5 @@
 using Api.Depot.BLL;
+using Api.Depot.UIL.Events;
 using Api.Depot.UIL.Managers;
 using Api.Depot.UIL.Models;
 using DevHopTools.Connection;
@@ -59,6 +60,7 @@ namespace Api.Depot.UIL
                     options.SlidingExpiration = true;
                     options.LoginPath = "/Account/Login";
                     options.AccessDeniedPath = "/Forbidden";
+                    options.EventsType = typeof(SecurityStampUpdatedCookieAuthenticationEvent);
                 })
                 .AddJwtBearer(options =>
                 {
@@ -78,6 +80,7 @@ namespace Api.Depot.UIL
 
             services.InjectBLL(connectionString);
             services.AddScoped<IAuthManager, AuthManager>();
+            services.AddScoped<SecurityStampUpdatedCookieAuthenticationEvent>();
 
             ///////////////////////////////
             /* Application Configuration */
