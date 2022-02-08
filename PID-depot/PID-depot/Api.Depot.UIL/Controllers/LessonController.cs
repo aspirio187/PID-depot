@@ -6,6 +6,7 @@ using Api.Depot.BLL.Dtos.UserLessonDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models.Forms;
 using Api.Depot.UIL.Static_Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

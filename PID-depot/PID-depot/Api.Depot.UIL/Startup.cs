@@ -58,7 +58,7 @@ namespace Api.Depot.UIL
                 {
                     options.SlidingExpiration = true;
                     options.LoginPath = "/Account/Login";
-                    options.AccessDeniedPath = "/Forbidden/";
+                    options.AccessDeniedPath = "/Forbidden";
                 })
                 .AddJwtBearer(options =>
                 {

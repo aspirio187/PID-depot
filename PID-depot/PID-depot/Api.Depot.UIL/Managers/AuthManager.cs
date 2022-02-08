@@ -1,26 +1,34 @@
 ﻿using Api.Depot.UIL.Models;
 using Mailjet.Client;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Api.Depot.UIL.Managers
 {
     public class AuthManager : IAuthManager
     {
         private readonly JwtModel _jwtModel;
+        private readonly HttpContext _httpContext;
 
-        public AuthManager(IOptions<JwtModel> jwtModel)
+        public AuthManager(IOptions<JwtModel> jwtModel, HttpContext httpContext)
         {
             _jwtModel = jwtModel.Value ??
                 throw new ArgumentNullException(nameof(jwtModel.Value));
+            _httpContext = httpContext ??
+                throw new ArgumentNullException(nameof(HttpContext));
         }
 
         public string GenerateJwtToken(UserModel user)
@@ -54,11 +62,51 @@ namespace Api.Depot.UIL.Managers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public bool ConnectionAsync(UserModel user)
+        public async Task<bool> LogInAsync(UserModel user)
         {
-            string jwt = GenerateJwtToken(user);
-            
-            var claimIdentity = new ClaimsIdentity(jwt)
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim("Stamp", user.SecurityStamp.ToString())
+            };
+
+            IEnumerable<Claim> roleClaims = user.Roles.Select(ur => new Claim(ClaimTypes.Role, ur.Name));
+
+            claims.AddRange(roleClaims);
+
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            AuthenticationProperties authProperties = new AuthenticationProperties()
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTime.Now.AddDays(_jwtModel.ExpirationInDays),
+                IsPersistent = true,
+                IssuedUtc = DateTime.Now,
+            };
+
+            try
+            {
+                await _httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public async Task LogOutAsync()
+        {
+            try
+            {
+                await _httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         public bool SendVerificationEmail(string toMail, Guid userId, string token)
