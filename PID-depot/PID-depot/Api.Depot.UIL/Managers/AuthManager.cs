@@ -54,6 +54,13 @@ namespace Api.Depot.UIL.Managers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public bool ConnectionAsync(UserModel user)
+        {
+            string jwt = GenerateJwtToken(user);
+            
+            var claimIdentity = new ClaimsIdentity(jwt)
+        }
+
         public bool SendVerificationEmail(string toMail, Guid userId, string token)
         {
             // TODO : Prévoir des urls pour la vérification

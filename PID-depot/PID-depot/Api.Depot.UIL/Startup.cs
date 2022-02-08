@@ -2,6 +2,7 @@ using Api.Depot.BLL;
 using Api.Depot.UIL.Managers;
 using Api.Depot.UIL.Models;
 using DevHopTools.Connection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,9 +49,16 @@ namespace Api.Depot.UIL
             services.AddAuthorization()
                 .AddAuthentication(options =>
                 {
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddCookie(options =>
+                {
+                    options.SlidingExpiration = true;
+                    options.LoginPath = "/Account/Login";
+                    options.AccessDeniedPath = "/Forbidden/";
                 })
                 .AddJwtBearer(options =>
                 {
@@ -71,6 +79,11 @@ namespace Api.Depot.UIL
             services.InjectBLL(connectionString);
             services.AddScoped<IAuthManager, AuthManager>();
 
+            ///////////////////////////////
+            /* Application Configuration */
+            ///////////////////////////////
+
+            services.AddRazorPages();
             services.AddControllers();
 
             ///////////////////////////
@@ -117,10 +130,21 @@ namespace Api.Depot.UIL
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api.depot v1"));
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Strict
+            });
 
             app.UseAuthentication();
 
@@ -129,6 +153,7 @@ namespace Api.Depot.UIL
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
         }
     }

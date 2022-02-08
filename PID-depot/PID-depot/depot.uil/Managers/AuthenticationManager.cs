@@ -25,6 +25,7 @@ namespace Depot.UIL.Managers
             // TODO : Call api
 
             UserModel user = new UserModel();
+            return false;
         }
 
         public bool UserIsSignedIn(ClaimsPrincipal claimsPrincipal)

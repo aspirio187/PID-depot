@@ -9,4 +9,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Authentication\" />
+    <Folder Include="Pages\Admin\" />
+    <Folder Include="Pages\Student\" />
+    <Folder Include="Pages\Teacher\" />
+  </ItemGroup>
+
 </Project>
