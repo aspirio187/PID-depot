@@ -3,6 +3,7 @@ using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -113,7 +114,7 @@ namespace Api.Depot.UIL.Managers
         {
             if (claimsPrincipal is null) throw new ArgumentNullException(nameof(claimsPrincipal));
             
-            return claimsPrincipal?.Identities is not null;
+            return claimsPrincipal?.Identities is not null && claimsPrincipal.Identities.Any(i => i.AuthenticationType == CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public bool SendVerificationEmail(string toMail, Guid userId, string token)
