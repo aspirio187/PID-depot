@@ -109,6 +109,13 @@ namespace Api.Depot.UIL.Managers
             }
         }
 
+        public bool IsSignedIn(ClaimsPrincipal claimsPrincipal)
+        {
+            if (claimsPrincipal is null) throw new ArgumentNullException(nameof(claimsPrincipal));
+            
+            return claimsPrincipal?.Identities is not null;
+        }
+
         public bool SendVerificationEmail(string toMail, Guid userId, string token)
         {
             // TODO : Prévoir des urls pour la vérification
