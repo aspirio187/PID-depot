@@ -19,5 +19,12 @@
     <input type="checkbox" class="form-check-input" >
     <label class="form-check-label" >Remember Me</label>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <div class="row">
+      <div asp-validation-summary="All" class="text-danger"></div>
+  </div>
+  <button type="submit" class="btn btn-primary">Se connecter</button>
 </form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

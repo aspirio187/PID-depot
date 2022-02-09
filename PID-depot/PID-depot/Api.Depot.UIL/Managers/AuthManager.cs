@@ -1,4 +1,5 @@
-﻿using Api.Depot.UIL.Models;
+﻿using Api.Depot.BLL.IServices;
+using Api.Depot.UIL.Models;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -23,13 +24,16 @@ namespace Api.Depot.UIL.Managers
     {
         private readonly JwtModel _jwtModel;
         private readonly IHttpContextAccessor _httpAccessor;
+        private readonly IUserService _userService;
 
-        public AuthManager(IOptions<JwtModel> jwtModel, IHttpContextAccessor httpAccessor)
+        public AuthManager(IOptions<JwtModel> jwtModel, IHttpContextAccessor httpAccessor, IUserService userService)
         {
             _jwtModel = jwtModel.Value ??
                 throw new ArgumentNullException(nameof(jwtModel.Value));
             _httpAccessor = httpAccessor ??
                 throw new ArgumentNullException(nameof(HttpContext));
+            _userService = userService ??
+                throw new ArgumentNullException(nameof(userService));
         }
 
         public string GenerateJwtToken(UserModel user)
@@ -63,8 +67,11 @@ namespace Api.Depot.UIL.Managers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<bool> LogInAsync(UserModel user)
+        public async Task<bool> LogInAsync(string email, string password, bool rememberMe)
         {
+            UserModel user = _userService.UserLogin(email, password).MapFromBLL();
+            if (user is null) return false;
+
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -113,7 +120,7 @@ namespace Api.Depot.UIL.Managers
         public bool IsSignedIn(ClaimsPrincipal claimsPrincipal)
         {
             if (claimsPrincipal is null) throw new ArgumentNullException(nameof(claimsPrincipal));
-            
+
             return claimsPrincipal?.Identities is not null && claimsPrincipal.Identities.Any(i => i.AuthenticationType == CookieAuthenticationDefaults.AuthenticationScheme);
         }
 

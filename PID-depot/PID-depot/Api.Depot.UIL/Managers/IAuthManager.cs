@@ -9,7 +9,7 @@ namespace Api.Depot.UIL.Managers
     {
         string GenerateJwtToken(UserModel user);
         bool SendVerificationEmail(string toMail,Guid userID, string token);
-        Task<bool> LogInAsync(UserModel user);
+        Task<bool> LogInAsync(string email, string password, bool rememberMe);
         Task LogOutAsync();
         bool IsSignedIn(ClaimsPrincipal claimsPrincipal);
     }
