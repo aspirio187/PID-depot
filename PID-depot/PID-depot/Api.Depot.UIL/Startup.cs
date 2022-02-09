@@ -78,6 +78,8 @@ namespace Api.Depot.UIL
             /* Dependency injections */
             ///////////////////////////
 
+            services.AddHttpContextAccessor();
+
             services.InjectBLL(connectionString);
             services.AddScoped<IAuthManager, AuthManager>();
             services.AddScoped<SecurityStampUpdatedCookieAuthenticationEvent>();
@@ -86,7 +88,8 @@ namespace Api.Depot.UIL
             /* Application Configuration */
             ///////////////////////////////
 
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
             services.AddControllers();
 
             ///////////////////////////

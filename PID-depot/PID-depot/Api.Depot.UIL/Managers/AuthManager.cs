@@ -21,13 +21,13 @@ namespace Api.Depot.UIL.Managers
     public class AuthManager : IAuthManager
     {
         private readonly JwtModel _jwtModel;
-        private readonly HttpContext _httpContext;
+        private readonly IHttpContextAccessor _httpAccessor;
 
-        public AuthManager(IOptions<JwtModel> jwtModel, HttpContext httpContext)
+        public AuthManager(IOptions<JwtModel> jwtModel, IHttpContextAccessor httpAccessor)
         {
             _jwtModel = jwtModel.Value ??
                 throw new ArgumentNullException(nameof(jwtModel.Value));
-            _httpContext = httpContext ??
+            _httpAccessor = httpAccessor ??
                 throw new ArgumentNullException(nameof(HttpContext));
         }
 
@@ -87,7 +87,7 @@ namespace Api.Depot.UIL.Managers
 
             try
             {
-                await _httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                await _httpAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
                 return true;
             }
             catch (Exception e)
@@ -101,7 +101,7 @@ namespace Api.Depot.UIL.Managers
         {
             try
             {
-                await _httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await _httpAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             }
             catch (Exception e)
             {
