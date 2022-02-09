@@ -13,7 +13,7 @@ namespace Api.Depot.UIL.Pages.Account
         private readonly ILogger _logger;
         private readonly IAuthManager _authManager;
 
-        public LoginModel(ILogger logger, IAuthManager authManager)
+        public LoginModel(ILogger<LoginModel> logger, IAuthManager authManager)
         {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));

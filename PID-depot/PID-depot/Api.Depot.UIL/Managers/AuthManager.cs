@@ -25,15 +25,18 @@ namespace Api.Depot.UIL.Managers
         private readonly JwtModel _jwtModel;
         private readonly IHttpContextAccessor _httpAccessor;
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public AuthManager(IOptions<JwtModel> jwtModel, IHttpContextAccessor httpAccessor, IUserService userService)
+        public AuthManager(IOptions<JwtModel> jwtModel, IHttpContextAccessor httpAccessor, IUserService userService, IRoleService roleService)
         {
             _jwtModel = jwtModel.Value ??
                 throw new ArgumentNullException(nameof(jwtModel.Value));
             _httpAccessor = httpAccessor ??
-                throw new ArgumentNullException(nameof(HttpContext));
+                throw new ArgumentNullException(nameof(httpAccessor));
             _userService = userService ??
                 throw new ArgumentNullException(nameof(userService));
+            _roleService = roleService ??
+                throw new ArgumentNullException(nameof(roleService));
         }
 
         public string GenerateJwtToken(UserModel user)
@@ -71,6 +74,9 @@ namespace Api.Depot.UIL.Managers
         {
             UserModel user = _userService.UserLogin(email, password).MapFromBLL();
             if (user is null) return false;
+
+            user.Roles = _roleService.GetUserRoles(user.Id).Select(r => r.MapFromBLL());
+            if (user.Roles is null || user.Roles.Count() == 0) return false;
 
             List<Claim> claims = new List<Claim>()
             {
