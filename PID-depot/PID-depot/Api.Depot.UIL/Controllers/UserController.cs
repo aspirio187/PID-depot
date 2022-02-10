@@ -3,6 +3,8 @@ using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,8 @@ namespace Api.Depot.UIL.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private const string Both = JwtBearerDefaults.AuthenticationScheme + "," + CookieAuthenticationDefaults.AuthenticationScheme;
+
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
 

@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -72,6 +73,8 @@ namespace Api.Depot.UIL.Managers
 
         public async Task<bool> LogInAsync(string email, string password, bool rememberMe)
         {
+            await LogOutAsync();
+
             UserModel user = _userService.UserLogin(email, password).MapFromBLL();
             if (user is null) return false;
 
@@ -91,7 +94,7 @@ namespace Api.Depot.UIL.Managers
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            AuthenticationProperties authProperties = new AuthenticationProperties()
+            AuthenticationProperties authProperties = new AuthenticationProperties
             {
                 AllowRefresh = true,
                 ExpiresUtc = DateTime.Now.AddDays(_jwtModel.ExpirationInDays),
@@ -99,9 +102,11 @@ namespace Api.Depot.UIL.Managers
                 IssuedUtc = DateTime.Now,
             };
 
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
             try
             {
-                await _httpAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                await _httpAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
                 return true;
             }
             catch (Exception e)
@@ -128,6 +133,12 @@ namespace Api.Depot.UIL.Managers
             if (claimsPrincipal is null) throw new ArgumentNullException(nameof(claimsPrincipal));
 
             return claimsPrincipal?.Identities is not null && claimsPrincipal.Identities.Any(i => i.AuthenticationType == CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        public bool SetUser()
+        {
+            string cookie = _httpAccessor.HttpContext.Request.Cookies["Depot.Authentification"];
+            return true;
         }
 
         public bool SendVerificationEmail(string toMail, Guid userId, string token)

@@ -5,8 +5,10 @@ using Api.Depot.UIL.Models;
 using DevHopTools.Connection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,21 +49,11 @@ namespace Api.Depot.UIL
             services.Configure<JwtModel>(Configuration.GetSection("Jwt"));
             JwtModel jwtModel = Configuration.GetSection("Jwt").Get<JwtModel>();
 
-
-            services.AddAuthorization()
-                .AddAuthentication(options =>
+            services.AddAuthentication(options =>
                 {
                     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddCookie(options =>
-                {
-                    options.SlidingExpiration = true;
-                    options.LoginPath = "/Account/Login";
-                    options.AccessDeniedPath = "/Forbidden";
-                    options.EventsType = typeof(SecurityStampUpdatedCookieAuthenticationEvent);
                 })
                 .AddJwtBearer(options =>
                 {
@@ -72,7 +65,45 @@ namespace Api.Depot.UIL
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtModel.Secret)),
                         ClockSkew = TimeSpan.Zero
                     };
-                });
+                })
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                 {
+                     options.LoginPath = "/Account/Login";
+                     options.AccessDeniedPath = "/Forbidden";
+
+                     options.Events = new CookieAuthenticationEvents()
+                     {
+                         OnRedirectToLogin = (ctx) =>
+                         {
+                             if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+                             {
+                                 ctx.Response.StatusCode = 401;
+                             }
+
+                             return Task.CompletedTask;
+                         },
+                         OnRedirectToAccessDenied = (ctx) =>
+                         {
+                             if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == 200)
+                             {
+                                 ctx.Response.StatusCode = 403;
+                             }
+
+                             return Task.CompletedTask;
+                         }
+                     };
+
+                     options.EventsType = typeof(SecurityStampUpdatedCookieAuthenticationEvent);
+                 });
+
+            AuthorizationPolicy multiSchemePolicy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme, JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build();
+
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = multiSchemePolicy;
+            });
 
             ///////////////////////////
             /* Dependency injections */
@@ -147,10 +178,7 @@ namespace Api.Depot.UIL
 
             app.UseRouting();
 
-            app.UseCookiePolicy(new CookiePolicyOptions
-            {
-                MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Strict
-            });
+            app.UseCookiePolicy();
 
             app.UseAuthentication();
 

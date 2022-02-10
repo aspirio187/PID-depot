@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Api.Depot.UIL.Pages.Account
@@ -41,7 +44,7 @@ namespace Api.Depot.UIL.Pages.Account
                     {
                         if (string.IsNullOrEmpty(ReturnUrl))
                         {
-                            return RedirectToPage("Index");
+                            return RedirectToPage("/Index");
                         }
                         else
                         {
