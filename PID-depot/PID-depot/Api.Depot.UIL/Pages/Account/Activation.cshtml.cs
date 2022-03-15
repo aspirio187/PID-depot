@@ -23,12 +23,12 @@ namespace Api.Depot.UIL.Pages.Account
                 throw new ArgumentNullException(nameof(userService));
         }
 
-        public void OnGet(Guid id, string activationToken)
+        public void OnGet(Guid id, string token)
         {
-            if (string.IsNullOrEmpty(activationToken)) RedirectToPage("/Index");
+            if (string.IsNullOrEmpty(token)) RedirectToPage("/Index");
             if (id == Guid.Empty) RedirectToPage("/Index");
 
-            if (!_userTokenService.TokenIsValid(id, activationToken))
+            if (!_userTokenService.TokenIsValid(id, token))
             {
                 ViewData["ActivationMessage"] = "Le lien d'activation a expiré !";
             }

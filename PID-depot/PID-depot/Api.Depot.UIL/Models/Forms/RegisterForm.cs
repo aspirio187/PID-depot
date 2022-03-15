@@ -27,6 +27,8 @@ namespace Api.Depot.UIL.Models.Forms
         public string Lastname { get; set; }
 
         [Required(ErrorMessage = "Veuillez entrer votre date de naissance!")]
+        [DataType(DataType.Date, ErrorMessage = "Veuillez entrer une date de naissance dans un format valide !")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Birthdate { get; set; }
     }
 }

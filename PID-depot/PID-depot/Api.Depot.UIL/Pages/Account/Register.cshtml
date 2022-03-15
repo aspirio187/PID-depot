@@ -36,7 +36,7 @@
 
 	<div class="form-group">
 		<label asp-for="RegForm.Birthdate">Date de naissance</label>
-		<input asp-for="RegForm.Birthdate" type="date" class="form-control" placeholder="Choisissez votre date de naissance" />
+		<input asp-for="RegForm.Birthdate" type="date" id="birthDatepicker" class="form-control" placeholder="Choisissez votre date de naissance" />
 		<span asp-validation-for="RegForm.Birthdate" class="text-danger"></span>
 	</div>
 
@@ -47,5 +47,5 @@
 </form>
 
 @section Scripts{
-    <partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
 }

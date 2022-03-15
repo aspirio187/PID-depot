@@ -6,6 +6,7 @@ using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,6 +79,20 @@ namespace Api.Depot.UIL
                     Firstname = register.Firstname,
                     Lastname = register.Lastname,
                     Password = register.Password,
+                };
+        }
+
+        public static UserCreationDto MapToBLL(this RegisterSiteForm register)
+        {
+            return register is null
+                ? null
+                : new UserCreationDto()
+                {
+                    Birthdate = Convert.ToDateTime(register.Birthdate),
+                    Email = register.Email,
+                    Firstname = register.Firstname,
+                    Lastname = register.Lastname,
+                    Password = register.Password
                 };
         }
         #endregion
