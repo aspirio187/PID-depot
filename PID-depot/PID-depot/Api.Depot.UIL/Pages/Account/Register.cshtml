@@ -3,11 +3,13 @@
 @{
 }
 
+<h1>@ViewData["Inscription"]</h1>
+
 <form method="post">
 	<div class="form-group">
 		<label asp-for="RegForm.Email"> Email address </label>
 		<input asp-for="RegForm.Email" type="email" class="form-control" placeholder="Entrez votre email">
-		<span asp-validation-for="RegForm.Email" class="text-danger"></span>>
+		<span asp-validation-for="RegForm.Email" class="text-danger"></span>
 	</div>
 	<div class="form-group">
 		<label asp-for="RegForm.Password"> Password </label>

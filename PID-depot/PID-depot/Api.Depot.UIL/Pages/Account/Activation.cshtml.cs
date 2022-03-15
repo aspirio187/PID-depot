@@ -13,7 +13,7 @@ namespace Api.Depot.UIL.Pages.Account
         private readonly IUserTokenService _userTokenService;
         private readonly IUserService _userService;
 
-        public ActivationModel(ILogger logger, IUserTokenService userTokenService, IUserService userService)
+        public ActivationModel(ILogger<ActivationModel> logger, IUserTokenService userTokenService, IUserService userService)
         {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
