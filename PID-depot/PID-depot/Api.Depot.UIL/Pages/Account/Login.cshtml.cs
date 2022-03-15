@@ -25,7 +25,7 @@ namespace Api.Depot.UIL.Pages.Account
         }
 
         [BindProperty]
-        public LoginForm Login { get; set; }
+        public LoginSiteForm Login { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -40,7 +40,7 @@ namespace Api.Depot.UIL.Pages.Account
             {
                 try
                 {
-                    if (await _authManager.LogInAsync(Login.Email, Login.Password, false))
+                    if (await _authManager.LogInAsync(Login.Email, Login.Password, Login.RememberMe))
                     {
                         if (string.IsNullOrEmpty(ReturnUrl))
                         {

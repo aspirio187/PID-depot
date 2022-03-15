@@ -23,6 +23,9 @@ namespace Api.Depot.UIL.Pages.Account
         [BindProperty]
         public RegisterForm RegForm { get; set; }
 
+        [BindProperty]
+        public bool RememberMe { get; set; } = false;
+
         public string ReturnUrl { get; set; }
 
         public void OnGet(string returnUl = null)

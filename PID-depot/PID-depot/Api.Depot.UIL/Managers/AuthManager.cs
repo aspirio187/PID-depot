@@ -98,7 +98,7 @@ namespace Api.Depot.UIL.Managers
             {
                 AllowRefresh = true,
                 ExpiresUtc = DateTime.Now.AddDays(_jwtModel.ExpirationInDays),
-                IsPersistent = true,
+                IsPersistent = rememberMe,
                 IssuedUtc = DateTime.Now,
             };
 
