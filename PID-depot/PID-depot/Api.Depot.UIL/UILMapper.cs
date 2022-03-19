@@ -81,20 +81,6 @@ namespace Api.Depot.UIL
                     Password = register.Password,
                 };
         }
-
-        public static UserCreationDto MapToBLL(this RegisterSiteForm register)
-        {
-            return register is null
-                ? null
-                : new UserCreationDto()
-                {
-                    Birthdate = Convert.ToDateTime(register.Birthdate),
-                    Email = register.Email,
-                    Firstname = register.Firstname,
-                    Lastname = register.Lastname,
-                    Password = register.Password
-                };
-        }
         #endregion
 
         #region Role mapping
