@@ -113,7 +113,7 @@ _________________
 
 Barre de navigation
 Filtres sur les utilisateurs
-Tableau des utilisateurs (par 15):
+Tableau des utilisateurs (par 15, mais règlable par 20 ou 25):
 	* Colonnes :
 		- Nom
 		- Prénom

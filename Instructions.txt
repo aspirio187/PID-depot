@@ -121,7 +121,8 @@ Tableau des utilisateurs (par 15, mais règlable par 20 ou 25):
 		- Numéro de matricule
 		- Date de naissance
 		- Est actif
-		- Bouton détails
+		- Bouton détails 
+			* Ouvre un modal qui permet de modifier le rôle de l'utilisateur
 
 	
 Student
