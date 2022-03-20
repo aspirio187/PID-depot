@@ -13,7 +13,7 @@ namespace Api.Depot.UIL.Pages.Admin
     {
         private readonly ILogger _logger;
         private readonly IUserService _userService;
-        private readonly int ElementsPerPage = 1;
+        private readonly int ElementsPerPage = 10;
 
         public int ActualPage { get; set; }
         public IEnumerable<UserModel> Users { get; set; }
@@ -35,7 +35,7 @@ namespace Api.Depot.UIL.Pages.Admin
             if (p == 1) HasPrevious = false;
 
             var users = _userService.GetUsers();
-            if (p - 1 * ElementsPerPage >= users.Count()) HasNext = false;
+            if (p * ElementsPerPage >= users.Count()) HasNext = false;
 
             Users = users.Skip(p - 1 * ElementsPerPage).Take(ElementsPerPage).Select(u => u.MapFromBLL());
         }

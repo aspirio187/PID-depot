@@ -19,23 +19,25 @@
 			</thead>
 			<tbody>
 
-				<tr>
-					<th scope="row">1</th>
-					<td>Mark</td>
-					<td>Otto</td>
-					<td>mdo</td>
-				</tr>
-				<tr>
-					<th scope="row">2</th>
-					<td>Jacob</td>
-					<td>Thornton</td>
-					<td>fat</td>
-				</tr>
-				<tr>
-					<th scope="row">3</th>
-					<td colspan="2">Larry the Bird</td>
-					<td></td>
-				</tr>
+				@{
+					foreach (var user in Model.Users)
+					{
+						<tr>
+							<th scope="row">@user.RegistrationNumber</th>
+							<td>@user.Lastname</td>
+							<td>@user.Firstname</td>
+							<td>@user.Email</td>
+							<td>@user.Birthdate.ToString("dd-MM-yyyy")</td>
+							<td>@user.IsActivated</td>
+							<td>
+								<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#userModificationModal" data-bs-whatever="@user.Id" onclick="onModalOpened(@user.Id)">
+									Modifier
+								</button>
+							</td>
+						</tr>
+					}
+				}
+
 			</tbody>
 		</table>
 	</div>
@@ -84,4 +86,63 @@
 	</div>
 
 </div>
+
+<div class="modal fade" id="userModificationModal" tabindex="-1" aria-labelledby="Modification de l'utilisateur'" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modelUserName"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer" onclick="onModalClosed"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row" id="modelUserRoles">
+				</div>
+				<form>
+					<div class="mb-3">
+						<label for="modalUserAvailableRoles" class="col-form-label">Ajouter un rôle</label>
+						<select name="modalAvailableRoles" id="modalAvailableRoles">
+						</select>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" onclick="onModalClosed()" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="onModalSaved()">Send message</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+	function onModalClosed() {
+
+	}
+
+	function onModalSaved() {
+
+	}
+
+	function onModalOpened(let userId) {
+
+		$.ajax({
+			url: "/api/user/" + userId,
+			type : 'GET',
+			dataType: 'JSON',
+			success: function(response){
+				$('#modalUserName').text(user.Lastname + " " + user.Firstname);
+			},
+			error: function(xhr) {
+				$.notify(xhr.responseText, "error");
+				console.log(xhr);
+			}
+		})
+	}
+
+	function setModalUserInfos(let user) {
+		
+	}
+
+</script>
+
 
