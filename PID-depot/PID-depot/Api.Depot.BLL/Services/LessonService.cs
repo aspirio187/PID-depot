@@ -60,6 +60,11 @@ namespace Api.Depot.BLL.Services
             return _lessonRepository.GetAll().Select(l => l.MapFromDAL());
         }
 
+        public IEnumerable<LessonDto> GetUserLessons(Guid userId)
+        {
+            return _lessonRepository.GetUserLessons(userId).Select(l => l.MapFromDAL());
+        }
+
         public LessonDto UpdateLesson(LessonDto lesson)
         {
             if (lesson is null) throw new ArgumentNullException(nameof(lesson));

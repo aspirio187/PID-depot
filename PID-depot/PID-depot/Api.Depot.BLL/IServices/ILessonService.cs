@@ -17,5 +17,6 @@ namespace Api.Depot.BLL.IServices
         LessonDto CreateLesson(LessonCreationDto lesson);
         LessonDto UpdateLesson(LessonDto lesson);
         bool AddLessonUser(int lessonId, Guid userId);
+        IEnumerable<LessonDto> GetUserLessons(Guid userId);
     }
 }
