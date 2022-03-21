@@ -30,7 +30,7 @@
 							<td>@user.Birthdate.ToString("dd-MM-yyyy")</td>
 							<td>@user.IsActivated</td>
 							<td>
-								<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#userModificationModal" data-bs-whatever="@user.Id" onclick="onModalOpened(@user.Id)">
+								<button type="button" class="btn btn-outline-primary" onclick="onModalOpened('@user.Id');" data-bs-toggle="modal" data-bs-target="#userModificationModal">
 									Modifier
 								</button>
 							</td>
@@ -91,11 +91,12 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modelUserName"></h5>
+				<h5 class="modal-title" id="modalUserName"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer" onclick="onModalClosed"></button>
 			</div>
 			<div class="modal-body">
-				<div class="row" id="modelUserRoles">
+				<span hidden id="modalUserId"></span>
+				<div class="row" id="modalUserRoles">
 				</div>
 				<form>
 					<div class="mb-3">
@@ -106,8 +107,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" onclick="onModalClosed()" data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" onclick="onModalSaved()">Send message</button>
+				<button type="button" class="btn btn-secondary" id="modalCloseButton" onclick="onModalClosed()" data-bs-dismiss="modal">Fermer</button>
+				<button type="button" class="btn btn-primary" onclick="onModalSaved()">Ajouter un rôle</button>
 			</div>
 		</div>
 	</div>
@@ -116,31 +117,81 @@
 <script>
 
 	function onModalClosed() {
-
+		$('#modalUserName').text("");
+		$('#modalUserRoles').empty();
+		$('#modalAvailableRoles').empty();
 	}
 
 	function onModalSaved() {
 
+		let userId = $('#modalUserId').text();
+		let userRoleId = $('#modalAvailableRoles').val();
+
+		$.ajax({
+			url: '/api/user/' + userId + '/' + userRoleId,
+			type: 'POST',
+			data: JSON.stringify,
+			contentType: 'application/json',
+			success: function(response) {
+			
+				$.notify("Le rôle a bien été ajouté à l'utilisateur", "success");
+			},
+			error: function(xhr) {
+				$.notify("Une erreur est survenue: " + xhr.responseText, "error");
+			}
+
+		});
+
+		$('#modalCloseButton').click();
 	}
 
-	function onModalOpened(let userId) {
+	function onModalOpened(userId) {
 
 		$.ajax({
 			url: "/api/user/" + userId,
 			type : 'GET',
 			dataType: 'JSON',
 			success: function(response){
-				$('#modalUserName').text(user.Lastname + " " + user.Firstname);
+
+				setModalUserInfos(response);
+
+				$.ajax({
+					url: "/api/role",
+					type: 'GET',
+					dataType: 'JSON',
+					success: function(roleResponse){
+
+						
+
+						for(let i = 0; i < roleResponse.length; i++) {
+
+							let result = response.roles.some(function(item) {
+								return item.name.includes(roleResponse[i].name);
+							});
+
+							if(!result){
+								$('#modalAvailableRoles').append("<option value='" + roleResponse[i].id + "'>" + roleResponse[i].name + "</option>");
+							}
+						}		
+					}
+				})
+
 			},
 			error: function(xhr) {
 				$.notify(xhr.responseText, "error");
-				console.log(xhr);
 			}
 		})
 	}
 
-	function setModalUserInfos(let user) {
-		
+	function setModalUserInfos(user) {
+
+		$('#modalUserName').text(user.lastname + " " + user.firstname);
+		$('#modalUserId').text(user.id);
+
+		for(let i = 0; i < user.roles.length; i++) {
+
+			$('#modalUserRoles').append("<span>" + user.roles[i].name + "</span>")
+		}
 	}
 
 </script>
