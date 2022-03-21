@@ -44,7 +44,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
             {
                 try
                 {
-                    if (User.IsInRole(RolesData.TEACHER_ROLE) || User.IsInRole(RolesData.ADMIN_ROLE))
+                    if (User.IsInRole(RolesData.TEACHER_ROLE))
                     {
                         LessonDto createdLesson = _lessonService.CreateLesson(Lesson.MapToBLL());
                         if (createdLesson is null)

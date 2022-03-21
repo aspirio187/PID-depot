@@ -6,4 +6,18 @@
 <div class="container">
 	<h1>Mes cours</h1>
 	une ligne par cours avec chaque information
+
+	@{
+		foreach (var lesson in Model.Lessons)
+		{
+			<div class="row">
+				<h2>@lesson.Name</h2>
+				<hr />
+				<p>@lesson.Description</p>
+				<hr />
+				<a class="btn btn-outline-primary" asp-page="/Details" asp-area="Teachers" asp-route-id="@lesson.Id">Détails</a>
+			</div>
+		}
+	}
+
 </div>
