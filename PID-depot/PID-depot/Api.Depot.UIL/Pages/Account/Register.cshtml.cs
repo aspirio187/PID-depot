@@ -47,10 +47,16 @@ namespace Api.Depot.UIL.Pages.Account
 
         public IActionResult OnPostAsync()
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+           
+            if (!ModelState.IsValid) return Page();
             try
             {
-                if (_userService.EmailExist(RegForm.Email)) return BadRequest(RegForm.Email);
+                if (_userService.EmailExist(RegForm.Email))
+                {
+                    ModelState.AddModelError("email exist", "L'adresse email est indisponible!");
+                    return Page();
+                }
+
                 UserModel createdUser = _userService.CreateUser(RegForm.MapToBLL()).MapFromBLL();
                 if (createdUser is null)
                 {
@@ -68,7 +74,8 @@ namespace Api.Depot.UIL.Pages.Account
 
                 if (!_userService.AddUserRole(createdUser.Id, _roleService.GetRole(RolesData.USER_ROLE).Id))
                 {
-                    return BadRequest();
+                    ModelState.AddModelError("Role add", "L'ajout du rôle a échoué!");
+                    return Page();
                 }
 
                 UserTokenDto userToken = _userTokenService.CreateUserToken(new UserTokenCreationDto()
@@ -77,9 +84,17 @@ namespace Api.Depot.UIL.Pages.Account
                     UserId = createdUser.Id
                 });
 
-                if (userToken is null) return BadRequest(RegForm);
+                if (userToken is null)
+                {
+                    ModelState.AddModelError("User token", "Impossible de créer un token d'activation");
+                    return Page();
+                }
 
-                if (!_authManager.SendVerificationEmail(createdUser.Email, createdUser.Id, userToken.Token)) return BadRequest(RegForm);
+                if (!_authManager.SendVerificationEmail(createdUser.Email, createdUser.Id, userToken.Token))
+                {
+                    ModelState.AddModelError("Verification email", "Le mail de vérification n'a pas pu être envoyé");
+                    return Page();
+                }
 
                 ViewData["Inscription"] = "Votre compte a bien été crée, un mail d'activation vous a été envoyé";
                 return Page();
