@@ -46,23 +46,22 @@
 		</div>
 	</nav>
 
-	<div class="container body-content">
-		<div class="container">
-			<div class="col-2">
-				<partial name="_TeacherNavigation" />
-			</div>
+	<div class="container d-flex flex-row">
 
-			<div class="col-10">
-				@RenderBody()
-			</div>
-
+		<div class="col-3">
+			<partial name="_TeacherNavigation" />
 		</div>
 
-		<hr />
-		<footer>
-			<p>&copy; 2019 - Dépot</p>
-		</footer>
+		<div class="col-8">
+			@RenderBody()
+		</div>
 	</div>
+
+	<footer class="footer navbar-fixed-bottom mt-auto py-3 bg-light">
+		<div class="container">
+			<p>&copy; 2019 - Dépot</p>
+		</div>
+	</footer>
 
 	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 	<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
