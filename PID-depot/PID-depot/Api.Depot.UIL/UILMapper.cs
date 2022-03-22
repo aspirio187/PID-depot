@@ -145,6 +145,17 @@ namespace Api.Depot.UIL
                 };
         }
 
+        public static LessonCreationDto MapToBLL(this LessonSiteForm lesson)
+        {
+            return lesson is null
+                ? null
+                : new LessonCreationDto()
+                {
+                    Description = lesson.Description,
+                    Name = lesson.Name,
+                };
+        }
+
         public static LessonCreationDto MapToBLL(this LessonForm lesson)
         {
             return lesson is null
@@ -181,6 +192,18 @@ namespace Api.Depot.UIL
                     Id = lessonTimetable.Id,
                     LessonId = lessonTimetable.LessonId,
                     StartsAt = lessonTimetable.StartsAt
+                };
+        }
+
+        public static LessonTimetableCreationDto MapToBLL(this LessonSiteForm lesson, int lessonId)
+        {
+            return lesson is null
+                ? null
+                : new LessonTimetableCreationDto()
+                {
+                    EndsAt = lesson.EndsAt,
+                    LessonId = lessonId,
+                    StartsAt = lesson.StartsAt
                 };
         }
 
