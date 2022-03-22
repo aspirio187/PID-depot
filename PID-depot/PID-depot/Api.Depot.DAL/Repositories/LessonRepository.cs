@@ -51,6 +51,23 @@ namespace Api.Depot.DAL.Repositories
             return _connection.ExecuteNonQuery(command) > 0;
         }
 
+        public bool DeleteLessonUser(int lessonId, Guid userId)
+        {
+            if (lessonId == 0) throw new ArgumentException($"{nameof(lessonId)} cannot be 0!");
+            if (userId == Guid.Empty) throw new ArgumentException($"{nameof(userId)} cannot be an empty GUID");
+
+            string query =
+                @"BEGIN
+                    DELETE FROM users_lessons
+                    WHERE users_lessons.user_id = @user_id AND users_lessons.lesson_id = @lesson_id";
+
+            Command command = new Command(query);
+            command.AddParameter("user_id", userId);
+            command.AddParameter("lesson_id", lessonId);
+
+            return _connection.ExecuteNonQuery(command) > 0;
+        }
+
         public IEnumerable<LessonEntity> GetAll()
         {
             Command command = new Command("spGetLessons", true);

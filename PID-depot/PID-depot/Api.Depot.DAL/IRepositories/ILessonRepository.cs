@@ -11,5 +11,6 @@ namespace Api.Depot.DAL.IRepositories
     {
         bool AddLessonUser(int lessonId, Guid userId);
         IEnumerable<LessonEntity> GetUserLessons(Guid userId);
+        bool DeleteLessonUser(int lessonId, Guid userId);
     }
 }
