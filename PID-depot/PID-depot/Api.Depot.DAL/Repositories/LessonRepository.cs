@@ -68,16 +68,17 @@ namespace Api.Depot.DAL.Repositories
 
         public IEnumerable<LessonEntity> GetUserLessons(Guid userId)
         {
-            string query = @"SELECT lessons.name, lessons.description 
+            string query = @"SELECT lessons.id, lessons.name, lessons.description 
                             FROM users_lessons 
                             LEFT JOIN users ON users.id = users_lessons.user_id 
                             LEFT JOIN lessons ON lessons.id = users_lessons.lesson_id
-                            WHERE users.id = '@user_id'";
+                            WHERE users.id = @user_id";
 
             Command command = new Command(query);
             command.AddParameter("user_id", userId);
 
-            return _connection.ExecuteReader(command, l => l.MapLesson());
+            var lessons = _connection.ExecuteReader(command, l => l.MapLesson());
+            return lessons;
         }
 
         public bool Update(int key, LessonEntity data)

@@ -53,7 +53,13 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                             return Page();
                         }
 
-                        RedirectToPage("/Index", new { area = "Teachers" });
+                        if(!_lessonService.AddLessonUser(createdLesson.Id, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))))
+                        {
+                            ModelState.AddModelError("Add user", "Vous n'avez pas pu être ajouté comme professeur pour ce cours");
+                            return Page();
+                        }
+
+                        return RedirectToPage("/Index", new { area = "Teachers" });
                     }
                 }
                 catch (Exception e)
