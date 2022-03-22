@@ -50,6 +50,11 @@ namespace Api.Depot.BLL.Services
             return _lessonRepository.Delete(id);
         }
 
+        public bool DeleteLessonUser(int lessonId, Guid userId)
+        {
+            return _lessonRepository.DeleteLessonUser(lessonId, userId);
+        }
+
         public LessonDto GetLesson(int id)
         {
             return _lessonRepository.GetById(id).MapFromDAL();
