@@ -1,5 +1,6 @@
 ﻿using Api.Depot.UIL.ValidationAttributes;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Api.Depot.UIL.Models.Forms

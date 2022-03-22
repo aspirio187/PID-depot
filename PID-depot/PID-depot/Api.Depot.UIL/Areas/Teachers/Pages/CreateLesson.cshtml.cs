@@ -1,6 +1,7 @@
 using Api.Depot.BLL.Dtos.LessonDtos;
 using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.IServices;
+using Api.Depot.UIL.Helpers;
 using Api.Depot.UIL.Models.Forms;
 using Api.Depot.UIL.Static_Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
@@ -23,6 +25,9 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
         [BindProperty]
         public LessonSiteForm Lesson { get; set; }
+
+        [BindProperty]
+        public List<LessonDayForm> LessonDays { get; set; }
 
         public CreateLessonModel(ILogger<CreateLessonModel> logger, ILessonService lessonService, ILessonTimetableService lessonTimetableService)
         {
@@ -40,6 +45,19 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
             {
                 UserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))
             };
+
+            LessonDays = new List<LessonDayForm>();
+            foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+            {
+                if(day != DayOfWeek.Sunday)
+                {
+                    LessonDays.Add(new LessonDayForm()
+                    {
+                        Day = (int)day,
+                        DayName = DateTimeHelper.DayOfWeekToFrench(day),
+                    });
+                }
+            }
         }
 
         public IActionResult OnPost()
