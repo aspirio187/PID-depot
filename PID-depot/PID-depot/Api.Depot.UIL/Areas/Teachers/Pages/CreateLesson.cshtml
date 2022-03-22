@@ -19,9 +19,11 @@
 
 	<div class="form-group">
 		<label>Horaire de début</label>
-		<input type="datetime-local" class="form-control" placeholder="Horaire début" />
+		<input asp-for="Lesson.StartsAt" type="datetime-local" class="form-control" placeholder="Horaire début" />
+		<span asp-validation-for="Lesson.StartsAt" class="text-danger"></span>
 		<label>Horaire de fin</label>
-		<input type="datetime-local" class="form-control" placeholder="Horaire fin" />
+		<input asp-for="Lesson.EndsAt" type="datetime-local" class="form-control" placeholder="Horaire fin" />
+		<span asp-validation-for="Lesson.EndsAt" class="text-danger"></span>
 	</div>
 
 	<div class="form-group">
