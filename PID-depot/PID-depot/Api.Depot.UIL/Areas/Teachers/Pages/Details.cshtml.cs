@@ -5,6 +5,7 @@ using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Helpers;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
+using Api.Depot.UIL.Static_Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -26,7 +27,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         public LessonModel Lesson { get; set; }
 
         [BindProperty]
-        public List<LessonDayForm> LessonDays { get; set; } = new List<LessonDayForm>();
+        public List<LessonDayForm> LessonDays { get; set; } = LessonDaysData.LoadLessonDays().ToList();
 
         public DetailsModel(ILogger<DetailsModel> logger, ILessonService lessonService, ILessonTimetableService lessonTimetableService, IUserService userService)
         {
@@ -54,7 +55,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
             foreach (LessonTimetableDto timetable in timetablesFromRepo)
             {
                 LessonDayForm ld = LessonDays.FirstOrDefault(d => d.Day == (int)timetable.StartsAt.DayOfWeek);
-                if (ld is not null)
+                if (ld is null)
                 {
                     throw new NullReferenceException($"There must be at least one day in {nameof(LessonDays)} " +
                         $"that matches the day {timetable.StartsAt.DayOfWeek}");

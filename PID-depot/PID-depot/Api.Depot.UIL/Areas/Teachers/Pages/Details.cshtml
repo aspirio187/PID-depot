@@ -3,13 +3,17 @@
 @{
 }
 
-<h1>Nom du cours</h1>
-<p>Description</p>
-<span>horaire de début</span>
-<form>
-	<span>Horaire de fin</span>
+<h1>@Model.Lesson.Name</h1>
+<div class="row">
+	<span class="fw-bold">@Model.Lesson.TeacherName</span>
+	<span>@Model.Lesson.TeacherRegistrationNumber</span>
+</div>
 
-	<div>
-		Horaire journalier
-	</div>
+<div class="row">
+	<span>Début</span>
+</div>
+
+
+
+<form method="post">
 </form>

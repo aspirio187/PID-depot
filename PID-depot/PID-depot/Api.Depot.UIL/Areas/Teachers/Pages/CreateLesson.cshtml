@@ -6,40 +6,44 @@
 <h1 class="text-center">Créer un cours</h1>
 
 <form method="post">
-	<div class="row">
-		<div class="form-group">
-			<label asp-for="Lesson.Name">Titre</label>
-			<input asp-for="Lesson.Name" type="text" class="form-control" placeholder="Titre du cours" />
+	<div class="row g-3">
+		<div class="form-group mb-3">
+			<label asp-for="Lesson.Name" class="form-label">Titre</label>
+			<input asp-for="Lesson.Name" type="text" class="form-control" style="min-width:100%;" placeholder="Titre du cours" />
 			<span asp-validation-for="Lesson.Name" class="text-danger"></span>
 		</div>
-		<div class="form-group">
-			<label asp-for="Lesson.Description"> Description </label>
-			<input asp-for="Lesson.Description" type="text" height="250" class="form-control" placeholder="Description du cours">
+		<div class="form-group mb-3">
+			<label asp-for="Lesson.Description" class="form-label"> Description </label>
+			<textarea name="Lesson.Description" value="@Model.Lesson.Description" class="form-control" style="min-width:100%;"></textarea>
 			<span asp-validation-for="Lesson.Description" class="text-danger"></span>
 		</div>
 
-		<div class="form-group">
-			<label>Horaire de début</label>
-			<input asp-for="Lesson.StartsAt" type="date" class="form-control" placeholder="Horaire début" />
-			<span asp-validation-for="Lesson.StartsAt" class="text-danger"></span>
-			<label>Horaire de fin</label>
-			<input asp-for="Lesson.EndsAt" type="date" class="form-control" placeholder="Horaire fin" />
-			<span asp-validation-for="Lesson.EndsAt" class="text-danger"></span>
+		<div class="row mb-3">
+
+			<div class="col-auto">
+				<label class="form-label text-center">Début</label>
+				<input asp-for="Lesson.StartsAt" type="date" class="form-control" placeholder="Horaire début" />
+				<span asp-validation-for="Lesson.StartsAt" class="text-danger"></span>
+			</div>
+
+			<div class="col-auto">
+				<label class="form-label">Fin</label>
+				<input asp-for="Lesson.EndsAt" type="date" class="form-control" placeholder="Horaire fin" />
+				<span asp-validation-for="Lesson.EndsAt" class="text-danger"></span>
+			</div>
 		</div>
 
 		<div class="form-group">
 			<input asp-for="Lesson.UserId" type="text" hidden>
 		</div>
-		<div class="row">
-			<div asp-validation-summary="All" class="text-danger"></div>
-		</div>
 	</div>
+	<hr />
 
 	<div class="d-flex justify-content-lg-between" id="daysOfWeek">
 		@{
 			for (int i = 0; i < Model.LessonDays.Count; i++)
 			{
-				<div class="mr-10 ml-10" id="@Model.LessonDays[i].DayName">
+				<div id="@Model.LessonDays[i].DayName" style="width:15%;">
 					<h2>@Model.LessonDays[i].DayName</h2>
 					<input asp-for="@Model.LessonDays[i].Day" name="LessonDays[@i].Day" hidden />
 					<input asp-for="@Model.LessonDays[i].DayName" name="LessonDays[@i].DayName" type="text" hidden />
@@ -56,7 +60,10 @@
 		}
 	</div>
 	<br />
-	<button type="submit" class="btn btn-primary">Créer</button>
+	<div class="row">
+		<div asp-validation-summary="All" class="text-danger"></div>
+	</div>
+	<button type="submit" class="btn btn-primary" style="width:150px;">Créer</button>
 </form>
 
 <script>
