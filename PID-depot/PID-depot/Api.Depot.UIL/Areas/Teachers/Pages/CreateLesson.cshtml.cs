@@ -16,9 +16,6 @@ using System.Security.Claims;
 
 namespace Api.Depot.UIL.Areas.Teachers.Pages
 {
-    // TODO : Fixed the problem described here
-    // En cas d'erreur et que la page se recharge, la liste LessonDays est perdue et il faut la recharger ou recharger la page en retapant le lien
-
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = RolesData.AUTH_TEACHER_ROLE)]
     public class CreateLessonModel : PageModel
     {
