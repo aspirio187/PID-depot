@@ -49,7 +49,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
             LessonDays = new List<LessonDayForm>();
             foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
             {
-                if(day != DayOfWeek.Sunday)
+                if (day != DayOfWeek.Sunday)
                 {
                     LessonDays.Add(new LessonDayForm()
                     {
@@ -87,28 +87,25 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                             return Page();
                         }
 
-                        LessonTimetableDto createdLessonTimetable = _lessonTimetableService.CreateLessonTimetable(Lesson.MapToBLL(createdLesson.Id));
-                        if (createdLessonTimetable is null)
+                        for (DateTime d = Lesson.StartsAt; d <= Lesson.EndsAt.AddDays(1); d = d.AddDays(1))
                         {
-                            // If the timetable couldn't be created and linked to the lesson we delete the user / lesson relation then we delete
-                            // the lessson. If one of these steps didn't go successfully through, we log errors
-                            ModelState.AddModelError("Timetable creation", "L'horaire crée n'a pas pu être ajouté au cours");
+                            LessonDayForm lessonDay = LessonDays.SingleOrDefault(ld => ld.IsSelected && ld.Day == (int)d.DayOfWeek);
+                            if (lessonDay is null) continue;
 
-                            if (!_lessonService.DeleteLessonUser(createdLesson.Id, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))))
+                            LessonTimetableCreationDto timetableToCreate = new LessonTimetableCreationDto()
                             {
-                                _logger.LogError("Couldn't delete lesson's user for lesson : {0} with user id : {1}",
-                                    createdLesson.Id,
-                                    Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-                            }
-                            else
-                            {
-                                if (!_lessonService.DeleteLesson(createdLesson.Id))
-                                {
-                                    _logger.LogError("Couldn't delete lesson with id : {0}", createdLesson.Id);
-                                }
-                            }
+                                LessonId = createdLesson.Id,
+                                StartsAt = new DateTime(d.Year, d.Month, d.Day, lessonDay.StartsAt.Hours, lessonDay.StartsAt.Minutes, 0),
+                                EndsAt = new DateTime(d.Year, d.Month, d.Day, lessonDay.EndsAt.Hours, lessonDay.EndsAt.Minutes, 0)
+                            };
 
-                            return Page();
+                            LessonTimetableDto createdTimetable = _lessonTimetableService.CreateLessonTimetable(timetableToCreate);
+
+                            if (createdTimetable is null)
+                            {
+                                _logger.LogError("Timetable for day {0} at date {1} couldn't be created!",
+                                    timetableToCreate.StartsAt.DayOfWeek.ToString(), timetableToCreate.StartsAt.ToString("dd-MM-yyyy"));
+                            }
                         }
 
                         return RedirectToPage("/Index", new { area = "Teachers" });
