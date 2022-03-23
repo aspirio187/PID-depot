@@ -106,10 +106,6 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                     return Page();
                 }
 
-                // Etape 1 : Mettre à jours la description de la leçon - V
-                // Etape 2 : Supprimer tous les horaires à partir de maintenant - V
-                // Etape 3 : Recréer tous les horaires à partir de maintenant selon les jours définit jusqu'à la date de fin + 1 jour - V
-
                 LessonDto lessonFromRepo = _lessonService.GetLesson(LessonUpdate.Id);
                 if (lessonFromRepo is null)
                 {
@@ -171,6 +167,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         {
             if (_lessonService.DeleteLesson(LessonUpdate.Id))
             {
+                TempData.Clear();
                 return RedirectToPage("/Index", new { Area = "Teachers" });
             }
 
