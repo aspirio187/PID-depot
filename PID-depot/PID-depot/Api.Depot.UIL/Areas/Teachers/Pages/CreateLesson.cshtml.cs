@@ -62,6 +62,12 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
         public IActionResult OnPost()
         {
+            if (!LessonDays.Any(ld => ld.IsSelected))
+            {
+                ModelState.AddModelError("No timespan", "Vous devez choisir au moins un jour de cours avec un horaire définis!");
+                return Page();
+            }
+
             if (ModelState.IsValid)
             {
                 try
