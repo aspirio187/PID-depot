@@ -100,7 +100,60 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                     return Page();
                 }
 
+                // Etape 1 : Mettre à jours la description de la leçon - V
+                // Etape 2 : Supprimer tous les horaires à partir de maintenant - V
+                // Etape 3 : Recréer tous les horaires à partir de maintenant selon les jours définit jusqu'à la date de fin + 1 jour
 
+                LessonDto lessonFromRepo = _lessonService.GetLesson(LessonUpdate.Id);
+                if (lessonFromRepo is null)
+                {
+                    ModelState.AddModelError("Lesson ID", "Une erreur est survenue lors de la modification de la description");
+                    _logger.LogError("There is no lesson with ID : {0}", LessonUpdate.Id);
+                    return Page();
+                }
+
+                lessonFromRepo.Description = LessonUpdate.Description;
+
+                LessonDto updatedLesson = _lessonService.UpdateLesson(lessonFromRepo);
+
+                if (updatedLesson is null)
+                {
+                    ModelState.AddModelError("Lesson Update", "Une erreur est survenue lors de la modification de la leçon");
+                    _logger.LogError("The lesson with ID : {0} couldn't be updated!", LessonUpdate.Id);
+                    return Page();
+                }
+
+                IEnumerable<LessonTimetableDto> lessonTimetableFromRepo = _lessonTimetableService.GetLessonTimetables(LessonUpdate.Id)
+                                                                                                    .Where(lt => lt.StartsAt >= DateTime.Now);
+
+                foreach (LessonTimetableDto timetable in lessonTimetableFromRepo)
+                {
+                    if (!_lessonTimetableService.DeleteLessonTimetable(timetable.Id))
+                    {
+                        _logger.LogError("Timetable with ID : {0} couldn't be deleted!", timetable.Id);
+                    }
+                }
+
+                for (DateTime d = DateTime.Now; d <= LessonUpdate.EndsAt.AddDays(1); d = d.AddDays(1))
+                {
+                    LessonDayForm lessonDay = LessonDays.SingleOrDefault(ld => ld.IsSelected && ld.Day == (int)d.DayOfWeek);
+                    if (lessonDay is null) continue;
+
+                    LessonTimetableCreationDto timetableToCreate = new LessonTimetableCreationDto()
+                    {
+                        LessonId = LessonUpdate.Id,
+                        StartsAt = new DateTime(d.Year, d.Month, d.Day, lessonDay.StartsAt.Hours, lessonDay.StartsAt.Minutes, 0),
+                        EndsAt = new DateTime(d.Year, d.Month, d.Day, lessonDay.EndsAt.Hours, lessonDay.EndsAt.Minutes, 0)
+                    };
+
+                    LessonTimetableDto createdTimetable = _lessonTimetableService.CreateLessonTimetable(timetableToCreate);
+
+                    if (createdTimetable is null)
+                    {
+                        _logger.LogError("Timetable for day {0} at date {1} couldn't be created!",
+                            timetableToCreate.StartsAt.DayOfWeek.ToString(), timetableToCreate.StartsAt.ToString("dd-MM-yyyy"));
+                    }
+                }
 
                 TempData.Clear();
                 return RedirectToPage("/Index", new { Area = "Teachers" });
