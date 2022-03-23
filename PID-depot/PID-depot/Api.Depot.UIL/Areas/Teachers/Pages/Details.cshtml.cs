@@ -1,6 +1,8 @@
 using Api.Depot.BLL.Dtos.LessonDtos;
+using Api.Depot.BLL.Dtos.LessonTimetableDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.BLL.IServices;
+using Api.Depot.UIL.Helpers;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
 using Microsoft.AspNetCore.Mvc;
@@ -38,21 +40,40 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                 throw new ArgumentNullException(nameof(userService));
         }
 
-        public void OnGet(int id)
+        public IActionResult OnGet(int id)
         {
             LessonDto lessonFromRepo = _lessonService.GetLesson(id);
             UserDto user = _userService.GetUser(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
-            if (lessonFromRepo is not null && user is not null)
+            if (lessonFromRepo is null || user is null) return RedirectToPage("/Index", new { area = "Teachers" });
+
+            Lesson = lessonFromRepo.MapFromBLL(user);
+
+            IEnumerable<LessonTimetableDto> timetablesFromRepo = _lessonTimetableService.GetLessonTimetables(id).Take(7);
+
+            foreach (LessonTimetableDto timetable in timetablesFromRepo)
             {
-                Lesson = lessonFromRepo.MapFromBLL(user);
+                LessonDayForm ld = LessonDays.FirstOrDefault(d => d.Day == (int)timetable.StartsAt.DayOfWeek);
+                if (ld is not null)
+                {
+                    throw new NullReferenceException($"There must be at least one day in {nameof(LessonDays)} " +
+                        $"that matches the day {timetable.StartsAt.DayOfWeek}");
+                }
 
-                var timetablesFromRepo = _lessonTimetableService.GetLessonTimetables(id).Take(7);
-                var firstTimetable = timetablesFromRepo.FirstOrDefault();
-                timetablesFromRepo = timetablesFromRepo.Where(lt => lt.EndsAt <= firstTimetable.EndsAt.AddDays(7));
+                if (ld.IsSelected == true && ld.StartsAt == timetable.StartsAt.TimeOfDay && ld.EndsAt == timetable.EndsAt.TimeOfDay)
+                {
+                    break;
+                }
 
-
+                ld.IsSelected = true;
+                ld.StartsAt = timetable.StartsAt.TimeOfDay;
+                ld.EndsAt = timetable.EndsAt.TimeOfDay;
+                ld.DayName = DateTimeHelper.DayOfWeekToFrench(timetable.StartsAt.DayOfWeek);
             }
+
+            timetablesFromRepo = null;
+
+            return Page();
         }
 
         public IActionResult OnPost()
