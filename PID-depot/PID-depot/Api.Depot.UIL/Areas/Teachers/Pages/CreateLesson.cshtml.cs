@@ -80,20 +80,14 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                         LessonDto createdLesson = _lessonService.CreateLesson(Lesson.MapToBLL());
                         if (createdLesson is null)
                         {
-                            // If the lesson couldn't be created, just returning a ModelState error
                             ModelState.AddModelError("Lesson creation", "La création du cours a échoué");
                             return Page();
                         }
 
                         if (!_lessonService.AddLessonUser(createdLesson.Id, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))))
                         {
-                            // If the user couldn't be added to the lesson we delete the lesson. If the lesson could not be deleted we log an error
                             ModelState.AddModelError("Add user", "Vous n'avez pas pu être ajouté comme professeur pour ce cours");
-                            if (!_lessonService.DeleteLesson(createdLesson.Id))
-                            {
-                                _logger.LogError("Couldn't delete lesson with id : {0}", createdLesson.Id);
-                            }
-                            return Page();
+                            return DeleteLesson(createdLesson.Id);
                         }
 
                         for (DateTime d = Lesson.StartsAt; d <= Lesson.EndsAt.AddDays(1); d = d.AddDays(1))
@@ -112,9 +106,10 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
                             if (createdTimetable is null)
                             {
-                                // TODO : Si un horaire n'a pas pu être créer, supprimer tous les horaires relatifs, les liaisons avec les professeur et le cours
                                 _logger.LogError("Timetable for day {0} at date {1} couldn't be created!",
                                     timetableToCreate.StartsAt.DayOfWeek.ToString(), timetableToCreate.StartsAt.ToString("dd-MM-yyyy"));
+
+                                return DeleteLesson(createdLesson.Id);
                             }
                         }
 
@@ -126,6 +121,20 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                     _logger.LogError(e.Message);
                     return Page();
                 }
+            }
+            return Page();
+        }
+
+        /// <summary>
+        /// Try to delete the lesson with id <paramref name="lessonId"/>. If it fails, an error is logged.
+        /// </summary>
+        /// <param name="lessonId">Lesson to delete id</param>
+        /// <returns>Whatever happens, return this page</returns>
+        private IActionResult DeleteLesson(int lessonId)
+        {
+            if (!_lessonService.DeleteLesson(lessonId))
+            {
+                _logger.LogError("Couldn't delete lesson with ID : {0}", lessonId);
             }
             return Page();
         }
