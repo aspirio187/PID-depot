@@ -105,6 +105,8 @@ namespace Api.Depot.UIL
                 options.DefaultPolicy = multiSchemePolicy;
             });
 
+            services.AddSession();
+
             ///////////////////////////
             /* Dependency injections */
             ///////////////////////////
@@ -120,7 +122,8 @@ namespace Api.Depot.UIL
             ///////////////////////////////
 
             services.AddRazorPages()
-                .AddRazorRuntimeCompilation();
+                .AddRazorRuntimeCompilation()
+                .AddSessionStateTempDataProvider();
             services.AddControllers();
 
             ///////////////////////////
@@ -183,6 +186,8 @@ namespace Api.Depot.UIL
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

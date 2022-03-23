@@ -24,12 +24,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         private readonly IUserService _userService;
 
         [BindProperty]
-        public LessonModel Lesson { get; set; }
-
-        public DateTime StartsAt { get; set; }
-
-        [BindProperty]
-        public DateTime EndsAt { get; set; }
+        public LessonUpdateForm LessonUpdate { get; set; } = new();
 
         [BindProperty]
         public List<LessonDayForm> LessonDays { get; set; } = LessonDaysData.LoadLessonDays().ToList();
@@ -53,7 +48,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
             if (lessonFromRepo is null || user is null) return RedirectToPage("/Index", new { area = "Teachers" });
 
-            Lesson = lessonFromRepo.MapFromBLL(user);
+            var lesson = lessonFromRepo.MapFromBLL(user);
 
             IEnumerable<LessonTimetableDto> timetablesFromRepo = _lessonTimetableService.GetLessonTimetables(id);
 
@@ -77,9 +72,19 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                 ld.DayName = DateTimeHelper.DayOfWeekToFrench(timetable.StartsAt.DayOfWeek);
             }
 
-            StartsAt = timetablesFromRepo.First().StartsAt;
-            EndsAt = timetablesFromRepo.Last().EndsAt;
+            LessonUpdate.Description = lesson.Description;
+            LessonUpdate.EndsAt = timetablesFromRepo.Last().EndsAt;
+            LessonUpdate.Id = lesson.Id;
 
+            TempData["LessonName"] = lesson.Name;
+            TempData["LessonTeacher"] = lesson.TeacherName;
+            TempData["LessonTeacherNumber"] = lesson.TeacherRegistrationNumber;
+            TempData["LessonStartsAt"] = timetablesFromRepo.First().StartsAt;
+
+            TempData.Keep();
+
+            user = null;
+            lesson = null;
             timetablesFromRepo = null;
 
             return Page();
@@ -89,9 +94,17 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         {
             if (ModelState.IsValid)
             {
-                return RedirectToPage("/Index", new { area = "Teachers" });
-            }
+                if (!LessonDays.Any(ld => ld.IsSelected == true))
+                {
+                    ModelState.AddModelError("Lesson days", "Vous devez choisir au moins un jour de cours avec une plage d'horaire");
+                    return Page();
+                }
 
+
+
+                TempData.Clear();
+                return RedirectToPage("/Index", new { Area = "Teachers" });
+            }
             return Page();
         }
     }
