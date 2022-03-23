@@ -16,11 +16,11 @@ namespace Api.Depot.UIL.Models.Forms
         public string Description { get; set; }
 
         [Required]
-        public DateTime StartsAt { get; set; }
+        public DateTime StartsAt { get; set; } = DateTime.Now;
 
         [Required]
-        [DateTimeComparison("StartsAt")]
-        public DateTime EndsAt { get; set; }
+        [DateTimeComparison(nameof(StartsAt))]
+        public DateTime EndsAt { get; set; } = DateTime.Now;
 
         [Required]
         public Guid UserId { get; set; }
