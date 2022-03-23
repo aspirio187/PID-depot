@@ -100,9 +100,15 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                     return Page();
                 }
 
+                if (LessonUpdate.EndsAt <= (DateTime)TempData["LessonStartsAt"])
+                {
+                    ModelState.AddModelError("Lesson End", "La date de fin ne peut pas précéder ou égaler la date de début");
+                    return Page();
+                }
+
                 // Etape 1 : Mettre à jours la description de la leçon - V
                 // Etape 2 : Supprimer tous les horaires à partir de maintenant - V
-                // Etape 3 : Recréer tous les horaires à partir de maintenant selon les jours définit jusqu'à la date de fin + 1 jour
+                // Etape 3 : Recréer tous les horaires à partir de maintenant selon les jours définit jusqu'à la date de fin + 1 jour - V
 
                 LessonDto lessonFromRepo = _lessonService.GetLesson(LessonUpdate.Id);
                 if (lessonFromRepo is null)
@@ -134,7 +140,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                     }
                 }
 
-                for (DateTime d = DateTime.Now; d <= LessonUpdate.EndsAt.AddDays(1); d = d.AddDays(1))
+                for (DateTime d = DateTime.Now.AddDays(1); d <= LessonUpdate.EndsAt.AddDays(1); d = d.AddDays(1))
                 {
                     LessonDayForm lessonDay = LessonDays.SingleOrDefault(ld => ld.IsSelected && ld.Day == (int)d.DayOfWeek);
                     if (lessonDay is null) continue;
