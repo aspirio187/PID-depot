@@ -39,18 +39,6 @@
 		@{
 			for(int i = 0; i < Model.LessonDays.Count; i++)
 			{
-				//<div class="mr-10 ml-10" id="@Model.LessonDays[i].DayName">
-				//	<h2>@Model.LessonDays[i].DayName</h2>
-				//	<br />
-				//	<label>Sélectionner</label>
-				//	<input asp-for="@Model.LessonDays[i].IsSelected" value="@Model.LessonDays[i].IsSelected" onclick="makeAvailable(@Model.LessonDays[i].DayName)" type="checkbox" placeholder="Date sélectionnée" />
-				//	<br />
-				//	<label asp-for="@Model.LessonDays[i].StartsAt">Début</label>
-				//	<input asp-for="@Model.LessonDays[i].StartsAt" type="time" class="form-control" disabled placeholder="Début du cours" />
-				//	<label asp-for="@Model.LessonDays[i].EndsAt">Fin</label>
-				//	<input asp-for="@Model.LessonDays[i].EndsAt" type="time" class="form-control" disabled placeholder="Fin du cours" />
-				//</div>
-
 				<div class="mr-10 ml-10" id="@Model.LessonDays[i].DayName">
 					<h2>@Model.LessonDays[i].DayName</h2>
 					<input asp-for="@Model.LessonDays[i].Day" name="LessonDays[@i].Day" disabled hidden />
