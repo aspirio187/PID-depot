@@ -6,12 +6,27 @@ namespace Api.Depot.UIL.ValidationAttributes
 {
     public class TimeSpanDelimitationAttribute : ValidationAttribute
     {
-        public int MinimumHours { get; set; }
-        public int MinimumMinutes { get; set; }
-        public int MaximumHours { get; set; }
-        public int MaximumMinutes { get; set; }
-        public string IsSelectedPropertyName { get; set; }
+        public int MinimumHours { get; private set; }
+        public int MinimumMinutes { get; private set; }
+        public int MaximumHours { get; private set; }
+        public int MaximumMinutes { get; private set; }
+        public string IsSelectedPropertyName { get; private set; }
 
+        /// <summary>
+        /// Create a delimitation between two TimeSpan values defined by the minimum/maximum-hours and minutes values.
+        /// </summary>
+        /// <param name="minimumHours">Minimum TimeSpan hours</param>
+        /// <param name="minimumMinutes">Minimum TimeSpan minutes</param>
+        /// <param name="maximumHours">Maximum TimeSpan Hours</param>
+        /// <param name="maximumMinutes">Maximum TimeSpan minutes</param>
+        /// <param name="isSelectedPropertyName">Optional property to avoid the validation if this param is false</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if minimum/maximum-hours are smaller than 0 or greater than 24 and if minimum/maximum-hours are smaller
+        /// than 0 or greater than 60
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="isSelectedPropertyName"/> is not null but is an empty string
+        /// </exception>
         public TimeSpanDelimitationAttribute(int minimumHours, int minimumMinutes, int maximumHours, int maximumMinutes,
             string isSelectedPropertyName = null)
         {
@@ -38,6 +53,14 @@ namespace Api.Depot.UIL.ValidationAttributes
             MaximumMinutes = maximumMinutes;
         }
 
+        /// <summary>
+        /// Verify if the minimum and maximum TimeSpan delimitation are correct. If <see cref="IsSelectedPropertyName"/> is not nulll it will retrieve
+        /// its value and check : if IsSelected property is true the validation will go on, otherwise it will validate whatever the minimum/maximum are.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="validationContext"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (IsSelectedPropertyName is not null)
