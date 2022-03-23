@@ -103,6 +103,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
                             if (createdTimetable is null)
                             {
+                                // TODO : Si un horaire n'a pas pu être créer, supprimer tous les horaires relatifs, les liaisons avec les professeur et le cours
                                 _logger.LogError("Timetable for day {0} at date {1} couldn't be created!",
                                     timetableToCreate.StartsAt.DayOfWeek.ToString(), timetableToCreate.StartsAt.ToString("dd-MM-yyyy"));
                             }
