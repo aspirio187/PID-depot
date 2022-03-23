@@ -90,7 +90,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
             return Page();
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPostModify()
         {
             if (ModelState.IsValid)
             {
@@ -158,6 +158,17 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                 TempData.Clear();
                 return RedirectToPage("/Index", new { Area = "Teachers" });
             }
+            return Page();
+        }
+
+        public IActionResult OnPostDelete()
+        {
+            if (_lessonService.DeleteLesson(LessonUpdate.Id))
+            {
+                return RedirectToPage("/Index", new { Area = "Teachers" });
+            }
+
+            ModelState.AddModelError("Delete", "La suppression a échouée");
             return Page();
         }
     }
