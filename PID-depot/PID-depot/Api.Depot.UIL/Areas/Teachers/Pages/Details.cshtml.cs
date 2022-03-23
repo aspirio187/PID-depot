@@ -26,6 +26,11 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         [BindProperty]
         public LessonModel Lesson { get; set; }
 
+        public DateTime StartsAt { get; set; }
+
+        [BindProperty]
+        public DateTime EndsAt { get; set; }
+
         [BindProperty]
         public List<LessonDayForm> LessonDays { get; set; } = LessonDaysData.LoadLessonDays().ToList();
 
@@ -50,7 +55,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
             Lesson = lessonFromRepo.MapFromBLL(user);
 
-            IEnumerable<LessonTimetableDto> timetablesFromRepo = _lessonTimetableService.GetLessonTimetables(id).Take(7);
+            IEnumerable<LessonTimetableDto> timetablesFromRepo = _lessonTimetableService.GetLessonTimetables(id);
 
             foreach (LessonTimetableDto timetable in timetablesFromRepo)
             {
@@ -71,6 +76,9 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                 ld.EndsAt = timetable.EndsAt.TimeOfDay;
                 ld.DayName = DateTimeHelper.DayOfWeekToFrench(timetable.StartsAt.DayOfWeek);
             }
+
+            StartsAt = timetablesFromRepo.First().StartsAt;
+            EndsAt = timetablesFromRepo.Last().EndsAt;
 
             timetablesFromRepo = null;
 
