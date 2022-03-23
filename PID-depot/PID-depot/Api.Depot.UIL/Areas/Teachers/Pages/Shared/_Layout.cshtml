@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
 		  integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link href="~/lib/fullcalendar/main.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -66,7 +67,19 @@
 	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 	<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/notify.min.js" asp-append-version="true"></script>
+	<script src="~/lib/fullcalendar/main.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var calendarEl = document.getElementById('calendar');
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView: 'dayGridMonth'
+			});
+			calendar.render();
+		});
+	</script>
+
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
