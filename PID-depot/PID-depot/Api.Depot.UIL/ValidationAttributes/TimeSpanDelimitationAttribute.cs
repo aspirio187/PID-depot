@@ -68,7 +68,7 @@ namespace Api.Depot.UIL.ValidationAttributes
                 PropertyInfo isSelectedPropertyInfo = validationContext.ObjectType.GetProperty(IsSelectedPropertyName);
                 if (isSelectedPropertyInfo is null) throw new NullReferenceException($"{nameof(IsSelectedPropertyName)} doesn't exist!");
 
-                bool isSelected = (bool)isSelectedPropertyInfo.GetValue(value, null);
+                bool isSelected = (bool)isSelectedPropertyInfo.GetValue(validationContext.ObjectInstance, null);
 
                 if (isSelected == false) return ValidationResult.Success;
             }
