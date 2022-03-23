@@ -30,7 +30,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         public LessonSiteForm Lesson { get; set; }
 
         [BindProperty]
-        public List<LessonDayForm> LessonDays { get; set; }
+        public List<LessonDayForm> LessonDays { get; set; } = LessonDaysData.LoadLessonDays().ToList();
 
         public CreateLessonModel(ILogger<CreateLessonModel> logger, ILessonService lessonService, ILessonTimetableService lessonTimetableService)
         {
@@ -48,19 +48,6 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
             {
                 UserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))
             };
-
-            LessonDays = new List<LessonDayForm>();
-            foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
-            {
-                if (day != DayOfWeek.Sunday)
-                {
-                    LessonDays.Add(new LessonDayForm()
-                    {
-                        Day = (int)day,
-                        DayName = DateTimeHelper.DayOfWeekToFrench(day),
-                    });
-                }
-            }
         }
 
         public IActionResult OnPost()

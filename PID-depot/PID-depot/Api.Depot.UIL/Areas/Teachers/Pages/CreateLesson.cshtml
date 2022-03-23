@@ -35,22 +35,22 @@
 		</div>
 	</div>
 
-	<div class="d-flex justify-content-lg-between">
+	<div class="d-flex justify-content-lg-between" id="daysOfWeek">
 		@{
-			for(int i = 0; i < Model.LessonDays.Count; i++)
+			for (int i = 0; i < Model.LessonDays.Count; i++)
 			{
 				<div class="mr-10 ml-10" id="@Model.LessonDays[i].DayName">
 					<h2>@Model.LessonDays[i].DayName</h2>
-					<input asp-for="@Model.LessonDays[i].Day" name="LessonDays[@i].Day" disabled hidden />
-					<input asp-for="@Model.LessonDays[i].DayName" name="LessonDays[@i].DayName" type="text" disabled hidden />
+					<input asp-for="@Model.LessonDays[i].Day" name="LessonDays[@i].Day" hidden />
+					<input asp-for="@Model.LessonDays[i].DayName" name="LessonDays[@i].DayName" type="text" hidden />
 					<br />
 					<label>Sélectionner</label>
 					<input asp-for="@Model.LessonDays[i].IsSelected" name="LessonDays[@i].IsSelected" onclick="makeAvailable(@Model.LessonDays[i].DayName)" type="checkbox" placeholder="Date sélectionnée" />
 					<br />
 					<label value="@Model.LessonDays[i].StartsAt">Début</label>
-					<input value="@Model.LessonDays[i].StartsAt" name="LessonDays[@i].StartsAt" type="time" class="form-control" disabled placeholder="Début du cours" />
+					<input value="@Model.LessonDays[i].StartsAt" name="LessonDays[@i].StartsAt" type="time" class="form-control" @(Model.LessonDays[i].IsSelected ? "" : "disabled") placeholder="Début du cours" />
 					<label value="@Model.LessonDays[i].EndsAt">Fin</label>
-					<input value="@Model.LessonDays[i].EndsAt" name="LessonDays[@i].EndsAt" type="time" class="form-control" disabled placeholder="Fin du cours" />
+					<input value="@Model.LessonDays[i].EndsAt" name="LessonDays[@i].EndsAt" type="time" class="form-control" @(Model.LessonDays[i].IsSelected ? "" : "disabled") placeholder="Fin du cours" />
 				</div>
 			}
 		}
@@ -62,13 +62,14 @@
 <script>
 
 	function makeAvailable(day) {
-		console.log(day);
 
 		$('#' + day.id + ' > input').each(function() {
 
-			console.log(this);
+			if($(this).is('input[type="checkbox"]') && $(this).is(':checked')){
+				console.log("is checked");
+			}
 
-			if(!$(this).is('input[type="checkbox"]') ) {
+			if(!$(this).is('input[type="checkbox"]') && $(this).attr('name').indexOf('.Day') < 0) {
 
 				if($(this).prop('disabled')) {
 					$(this).prop('disabled', false);
@@ -82,5 +83,5 @@
 </script>
 
 @section Scripts{
-	<partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
 }
