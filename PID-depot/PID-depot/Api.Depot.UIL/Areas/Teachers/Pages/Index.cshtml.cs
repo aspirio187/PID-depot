@@ -1,6 +1,8 @@
 using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
+using Api.Depot.UIL.Static_Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,7 +14,7 @@ using System.Security.Claims;
 
 namespace Api.Depot.UIL.Areas.Teachers.Pages
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = RolesData.AUTH_TEACHER_ROLE)]
     public class IndexModel : PageModel
     {
         private readonly ILogger _logger;
