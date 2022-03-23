@@ -12,6 +12,25 @@
 	<link href="~/lib/fullcalendar/main.css" rel="stylesheet" />
 </head>
 <body>
+	@*<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>*@
+	<script src="~/js/jquery-3.6.0.min.js"></script>
+	<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/notify.min.js" asp-append-version="true"></script>
+	<script src="~/js/moment.js"></script>
+	<script src="~/lib/fullcalendar/main.min.js"></script>
+	<script src="~/lib/fullcalendar/locales/fr.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var calendarEl = document.getElementById('calendar');
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView: 'dayGridMonth',
+				locale: 'fr'
+			});
+			calendar.render();
+		});
+	</script>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-md">
@@ -63,22 +82,6 @@
 			<p>&copy; 2019 - Dépot</p>
 		</div>
 	</footer>
-
-	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-	<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/notify.min.js" asp-append-version="true"></script>
-	<script src="~/lib/fullcalendar/main.min.js"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
-
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			var calendarEl = document.getElementById('calendar');
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-				initialView: 'dayGridMonth'
-			});
-			calendar.render();
-		});
-	</script>
 
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
