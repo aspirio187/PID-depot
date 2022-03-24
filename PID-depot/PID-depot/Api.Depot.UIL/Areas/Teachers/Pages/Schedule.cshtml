@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Security.Claims
 @model Api.Depot.UIL.Areas.Teachers.Pages.ScheduleModel
 @{
 }
@@ -10,29 +11,71 @@
 
 
 <script>
+	// TODO : Ajouter des couleurs différentes pour chaque cours
 	let calendar;
-	let events = [];
+	let calendarEvents;
 
 	document.addEventListener('DOMContentLoaded', function() {
-
-		$.ajax({
-			url:""
-		})
 
 		var calendarEl = document.getElementById('calendar');
 		calendar = new FullCalendar.Calendar(calendarEl, {
 			initialView: 'dayGridMonth',
 			locale: 'fr',
 			selectable: true,
-			events: 
+			events: function(info, successCallback, failureCallback) {
+				
+				let lessons = [];
+				let events = [];
+
+				$.ajax({
+					url: "/api/lesson/user/" + '@(User.FindFirst(ClaimTypes.NameIdentifier).Value)',
+					method: 'GET',
+					dataType: 'JSON',
+					success: function(response) {
+
+						lessons = response;
+
+					},
+					error: function(xhr) {
+						$.notify(xhr.responseText, "error");
+					},
+					async: false
+				});
+
+				for(const lesson of lessons) {
+					let timetables = [];
+
+
+					$.ajax({
+						url: '/api/lesson/' + lesson.id + '/timetables',
+						method: 'GET',
+						dataType: 'JSON',
+						success: function(response) {
+
+							timetables = response;
+						},
+						error : function(xhr) {
+							$.notify(xhr.responseText, "error");
+						},
+						async: false
+					});
+
+
+					for(const timetable of timetables) {
+						events.push({
+							id: timetable.id,
+							title: lesson.name,
+							start: timetable.startsAt,
+							end: timetable.endsAt,
+							allDay: false
+						});
+					}
+				}
+
+				successCallback(events);
+			},
+			eventDisplay: 'block'
 		});
 		calendar.render();
 	});
-
-	function loadLessons() {
-
-		$.ajax({
-			url:""
-		})
-	}
 </script>
