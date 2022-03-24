@@ -1,11 +1,14 @@
+using Api.Depot.BLL.Dtos.LessonDetailDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
+using Api.Depot.UIL.Static_Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Api.Depot.UIL.Areas.Teachers.Pages
@@ -58,8 +61,20 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
         public IActionResult OnPostUpdate(List<IFormFile> postedFiles)
         {
+            if (!ModelState.IsValid) return Page();
 
-            return Page();
+            LessonDetailDto updatedLessonDetails = _lessonDetailService.UpdateLessonDetail(LessonDetails.MapToBLL());
+            if (updatedLessonDetails is null)
+            {
+                ModelState.AddModelError("Lesson details update", "La mise à jours des détails du cours a échoué");
+                return Page();
+            }
+
+            string directoryPath = $"{Path.GetFullPath(FilesData.FILE_DIRECTORY_PATH)}\\{updatedLessonDetails.Title}\\";
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
         }
 
         public IActionResult OnPostDelete()

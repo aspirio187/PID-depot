@@ -64,50 +64,32 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
             string directoryFullPath = $"{Path.GetFullPath(FilesData.FILE_DIRECTORY_PATH)}\\{createdLessonDetails.Title}\\";
 
-            if (!Directory.Exists(directoryFullPath))
-            {
-                Directory.CreateDirectory(directoryFullPath);
-            }
-
-            List<LessonFileDto> createdFiles = new List<LessonFileDto>();
-
             foreach (IFormFile file in postedFiles)
             {
                 string fileName = Path.GetFileName(file.FileName);
-                using (FileStream stream = new FileStream(Path.Combine(directoryFullPath, fileName), FileMode.Create))
+
+                LessonFileDto fileToCreate = _lessonFileService.CreateLessonFile(new LessonFileCreationDto()
                 {
-                    try
-                    {
-                        LessonFileDto fileToCreate = _lessonFileService.CreateLessonFile(new LessonFileCreationDto()
-                        {
-                            FilePath = Path.Combine(directoryFullPath, LessonDetail.Title, fileName),
-                            LessonDetailId = createdLessonDetails.Id
-                        });
+                    FilePath = Path.Combine(directoryFullPath, fileName),
+                    LessonDetailId = createdLessonDetails.Id
+                });
 
-                        if (fileToCreate is null)
-                        {
-                            ModelState.AddModelError("File Save", $"La sauvegarde du fichier {file.Name} a échouée");
-                            _logger.LogError("File save failed for file {0}", file.Name);
-                            return Page();
-                        }
+                if (fileToCreate is null)
+                {
+                    ModelState.AddModelError("File Save", $"La sauvegarde du fichier {file.Name} a échouée");
+                    _logger.LogError("File save failed for file {0}", file.Name);
+                    return Page();
+                }
 
-                        createdFiles.Add(fileToCreate);
-
-                        file.CopyTo(stream);
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.LogError(e.Message);
-
-                        foreach (LessonFileDto lessonFile in createdFiles)
-                        {
-                            if (!_lessonFileService.DeleteLessonFile(lessonFile.Id))
-                            {
-                                _logger.LogError("Couldn't delete file with ID : {0}", lessonFile.Id);
-                            }
-                        }
-                        return Page();
-                    }
+                try
+                {
+                    FilesData.SaveFilesToFolder(file, directoryFullPath);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    _lessonFileService.DeleteLessonFile(fileToCreate.Id);
+                    return Page();
                 }
             }
 
