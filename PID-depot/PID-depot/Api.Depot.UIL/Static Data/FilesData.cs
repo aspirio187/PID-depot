@@ -61,5 +61,22 @@ namespace Api.Depot.UIL.Static_Data
 
             return true;
         }
+
+        public static bool DeleteFilesFromFolder(string folderPath)
+        {
+            if (string.IsNullOrEmpty(folderPath)) return false;
+            if (!Directory.Exists(folderPath)) return false;
+
+            string[] filesToDelete = Directory.GetFiles(folderPath);
+
+            for (int i = 0; i < filesToDelete.Length; i++)
+            {
+                File.Delete(filesToDelete[i]);
+            }
+
+            Directory.Delete(folderPath);
+
+            return true;
+        }
     }
 }
