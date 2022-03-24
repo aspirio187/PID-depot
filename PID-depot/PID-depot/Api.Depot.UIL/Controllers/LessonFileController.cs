@@ -47,5 +47,27 @@ namespace Api.Depot.UIL.Controllers
 
             return Ok(createdFile.MapFromBLL());
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteFile(int id)
+        {
+            if (id == 0) return BadRequest(nameof(id));
+
+            LessonFileDto fileFromRepo = _lessonFileService.GetFile(id);
+            if (fileFromRepo is null) return NotFound(nameof(id));
+
+            System.IO.File.Delete(fileFromRepo.FilePath);
+            if (System.IO.File.Exists(fileFromRepo.FilePath))
+            {
+                return BadRequest(fileFromRepo.FilePath);
+            }
+
+            if (!_lessonFileService.DeleteLessonFile(id))
+            {
+                return BadRequest(nameof(id));
+            }
+
+            return Ok();
+        }
     }
 }
