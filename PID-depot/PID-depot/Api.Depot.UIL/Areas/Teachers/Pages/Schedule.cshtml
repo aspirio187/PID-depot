@@ -8,14 +8,26 @@
 <div id="calendar">
 </div>
 
-	
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			var calendarEl = document.getElementById('calendar');
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-				initialView: 'dayGridMonth',
-				locale: 'fr'
-			});
-			calendar.render();
+
+<script>
+	let calendar;
+
+	document.addEventListener('DOMContentLoaded', function() {
+
+		let events = [];
+
+		$.ajax({
+			url:""
+		})
+
+		var calendarEl = document.getElementById('calendar');
+		calendar = new FullCalendar.Calendar(calendarEl, {
+			initialView: 'dayGridMonth',
+			locale: 'fr',
+			selectable: true,
+			events: 
 		});
-	</script>
+		calendar.render();
+	});
+
+</script>

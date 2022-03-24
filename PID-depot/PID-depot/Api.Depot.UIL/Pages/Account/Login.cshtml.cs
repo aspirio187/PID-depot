@@ -29,12 +29,12 @@ namespace Api.Depot.UIL.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        public void OnGet(string returnUl = null)
+        public void OnGet(string returnUrl = null)
         {
-            if (returnUl is not null) ReturnUrl = returnUl;
+            if (returnUrl is not null) ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             if (ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace Api.Depot.UIL.Pages.Account
                 {
                     if (await _authManager.LogInAsync(Login.Email, Login.Password, Login.RememberMe))
                     {
-                        if (string.IsNullOrEmpty(ReturnUrl))
+                        if (string.IsNullOrEmpty(returnUrl))
                         {
                             return RedirectToPage("/Index");
                         }

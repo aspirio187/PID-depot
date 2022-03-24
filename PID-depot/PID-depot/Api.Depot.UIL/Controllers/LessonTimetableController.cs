@@ -41,7 +41,7 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpGet("{id}/details")]
-        public IActionResult GetLessonDetails(int id)
+        public IActionResult GetTimetableDetails(int id)
         {
             if (id == 0) return BadRequest(nameof(id));
             var detailsFromRepo = _lessonDetailService.GetLessonDetails(id);
