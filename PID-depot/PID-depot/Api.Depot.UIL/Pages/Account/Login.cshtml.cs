@@ -48,7 +48,7 @@ namespace Api.Depot.UIL.Pages.Account
                         }
                         else
                         {
-                            return Redirect($"~/{ReturnUrl}");
+                            return Redirect($"~/{returnUrl}");
                         }
                     }
                     else
