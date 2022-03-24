@@ -25,7 +25,6 @@ namespace Api.Depot.UIL.Pages
         public int ActualPage { get; set; }
         public bool HasPrevious { get; set; } = false;
         public bool HasNext { get; set; } = false;
-        public bool HasThird { get; set; } = false;
 
         public LessonsModel(ILogger<LessonsModel> logger, ILessonService lessonService, IUserService userService, IRoleService roleService)
         {
@@ -50,7 +49,6 @@ namespace Api.Depot.UIL.Pages
             IEnumerable<LessonDto> lessons = _lessonService.GetLessons();
 
             if (p * ElementsPerPage < lessons.Count()) HasNext = true;
-            if (p == 1 && p * 2 * ElementsPerPage < lessons.Count()) HasThird = true;
 
             Lessons = lessons.Skip(p - 1 * ElementsPerPage).Take(10).Select(l => l.MapFromBLL(_userService.GetUserLesson(l.Id, teacherRole.Id)));
 

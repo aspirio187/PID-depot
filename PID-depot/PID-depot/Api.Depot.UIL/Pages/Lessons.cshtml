@@ -1,9 +1,11 @@
 ﻿@page
+@using System.Security.Claims
 @model Api.Depot.UIL.Pages.LessonsModel
 @{
 }
 
 <div class="container mt-3 mb-3">
+	<span id="userId" hidden>@User.FindFirst(ClaimTypes.NameIdentifier).Value</span>
 	<h1 class="text-center">Cours disponible</h1>
 
 	@{
@@ -11,7 +13,7 @@
 		{
 			<div class="row" id="lesson_@lesson.Id">
 				<h2>
-					<a href="#" class="primary-link">@lesson.Name</a>
+					<a href="#" id="lesson_id_title" onclick="onLessonModalShow(@lesson.Id)" class="primary-link">@lesson.Name</a>
 				</h2>
 				<div class="d-inline-block mt-1 mb-1">
 					<span class="fw-bold fs-5">Professeur : </span><span class="ms-1">Mr/Mme  @lesson.TeacherName</span>
@@ -28,5 +30,108 @@
 		}
 	}
 
+	<div class="row">
+		<nav aria-label="Navigation des utilisateurs">
+			<ul class="pagination justify-content-center">
 
+				@if (Model.HasPrevious == true)
+				{
+					<li class="page-item">
+						<a class="page-link" asp-page="/Lessons" asp-route-p="@(Model.ActualPage - 1)">Précédent</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" asp-page="/Lessons" asp-route-p="@(Model.ActualPage - 1)">@(Model.ActualPage - 1)</a>
+					</li>
+				}
+				else
+				{
+					<li class="page-item disabled">
+						<span class="page-link">Précédent</span>
+					</li>
+				}
+
+				<li class="page-item active" aria-current="page">
+					<span class="page-link">@Model.ActualPage</span>
+				</li>
+
+				@if (Model.HasNext == true)
+				{
+					<li class="page-item">
+						<a class="page-link" asp-page="/Lessons" asp-route-p="@(Model.ActualPage + 1)">@(Model.ActualPage + 1)</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" asp-page="/Lessons" asp-route-p="@(Model.ActualPage + 1)">Next</a>
+					</li>
+				}
+				else
+				{
+					<li class="page-item disabled">
+						<span class="page-link">Suivant</span>
+					</li>
+				}
+			</ul>
+		</nav>
+	</div>
 </div>
+
+<div class="modal fade" id="lessonDetailsModal" tabindex="-1" aria-labelledby="lessonDetailsModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="lessonDetailsModalTitle">Horaires de + TITRE DU COURS </h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row inline-block">
+					<span class="fw-bold fs-5">Premier cours:</span>
+					<span class="ms-1" id="lessonDetailsModalFirstLesson"></span>
+				</div>
+				<div class="row inline-block">
+					<span class="fw-bold fs-5">Premier cours:</span>
+					<span class="ms-1" id="lessonDetailsModalLastLesson"></span>
+				</div>
+			</div>
+
+			<span id="lessonModalId" hidden></span>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" onclick="onLessonSubscribe()" id="lessonDetailsModalSubscribeBtn" class="btn btn-primary">S'inscrire</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+	function onLessonModalShow(lessonId) {
+		/* Charger les horaires du cours. Si l'horaire est dépassé, bloquer le bouton s'inscrire */
+
+		$('#lessonDetailsModalTitle').text("Horaires de :" + $('#lesson_' + lessonId + '_title').text());
+		$('#lessonModalId').text(id);
+
+		$.ajax({
+			url: 'api/lesson/' + lessonId + '/timetables',
+			type: 'GET',
+			dataType: 'JSON',
+			success: function(response) {
+				let firstDate = response[0];
+				let lastDate = response[response.length - 1];
+
+				$('#lessonDetailsModalFirstLesson').text(firstDate);
+				$('#lessonDetailsModalLastLesson').text(lastDate);
+
+				if(date.now() > new Date(lastDate)) {
+					$('#lessonDetailsModalSubscribeBtn').attr('disabled');
+				}
+			},
+			error: function(xhr) {
+				$.notify(xhr.responseText, "error");
+			}
+		});
+	}
+
+	function onLessonSubscribe() {
+		console.log('Subscribed');
+	}
+
+</script>
