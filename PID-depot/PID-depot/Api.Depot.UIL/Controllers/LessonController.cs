@@ -125,6 +125,10 @@ namespace Api.Depot.UIL.Controllers
             if (userFromRepo is null) return NotFound(userId);
             if (userFromRepo.MapFromBLL(_roleService.GetUserRoles(userId)).Roles.Any(r => r.Name.Equals(RolesData.TEACHER_ROLE)))
                 return BadRequest("The user is a teacher!");
+
+            if (_lessonService.GetUserLessons(userId).Any(l => l.Id == id))
+                return BadRequest($"The user is already subscribed to lesson : {lessonFromRepo.Name}");
+
             return Ok(_lessonService.AddLessonUser(id, userId));
         }
 
