@@ -1,5 +1,6 @@
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -42,6 +43,17 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
             LessonFiles = _lessonFileService.GetLessonDetailFiles(LessonDetails.Id).Select(ld => ld.MapFromBLL()).ToList();
 
+            return Page();
+        }
+
+        public IActionResult OnPostUpdate(List<IFormFile> postedFiles)
+        {
+
+            return Page();
+        }
+
+        public IActionResult OnPostDelete(int id)
+        {
             return Page();
         }
     }
