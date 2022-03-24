@@ -127,6 +127,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
         public IActionResult OnPostDelete()
         {
+            if (_lessonDetailService.DeleteLessonDetail(LessonDetails.Id)) return RedirectToPage("/Index", new { Area = "Teachers" });
             return Page();
         }
     }
