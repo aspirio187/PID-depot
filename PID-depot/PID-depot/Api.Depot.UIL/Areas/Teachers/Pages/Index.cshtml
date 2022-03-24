@@ -4,19 +4,16 @@
 }
 
 <div class="container">
-	<h1>Mes cours</h1>
-
 	@{
 		foreach (var lesson in Model.Lessons)
 		{
-			<div class="row mt-1">
-				<h2>@lesson.Name</h2>
-				<hr />
+			<div class="row">
+				<h2>
+					<a asp-page="/Details" asp-area="Teachers" asp-route-id="@lesson.Id" class="primary-link">@lesson.Name</a>
+				</h2>
 				<p>@lesson.Description</p>
-				<hr />
-				<a class="btn btn-outline-primary" asp-page="/Details" asp-area="Teachers" asp-route-id="@lesson.Id">Détails</a>
 			</div>
+			<hr />
 		}
 	}
-
 </div>
