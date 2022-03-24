@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Api.Depot.UIL.Areas.Teachers.Pages
 {
@@ -35,6 +36,11 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         public IActionResult OnGet(int id)
         {
             if (id == 0) return RedirectToPage("Index", new { Area = "Teachers" });
+
+            if (_lessonDetailService.GetDetails().Any(ld => ld.LessonTimetableId == id))
+            {
+                return RedirectToPage("DetailsUpdate", new { Area = "Teachers", id = id });
+            }
 
             LessonDetail = new LessonDetailForm()
             {
