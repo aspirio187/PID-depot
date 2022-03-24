@@ -11,21 +11,23 @@
 		  integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+	<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/notify.min.js" asp-append-version="true"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
 
 	<partial name="_NavigationPartial" />
 
 	<div class="container body-content">
 		@RenderBody()
-		<hr />
-		<footer>
-			<p>&copy; 2019 - Dépot</p>
-		</footer>
 	</div>
 
-	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-	<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/notify.min.js" asp-append-version="true"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
+	<footer class="footer fixed-bottom mt-auto py-3 bg-light">
+		<div class="container-md">
+			<p>&copy; 2019 - Dépot</p>
+		</div>
+	</footer>
+	
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
