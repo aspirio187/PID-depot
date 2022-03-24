@@ -4,6 +4,7 @@
 }
 
 <form method="POST" enctype="multipart/form-data">
+	<input asp-for="LessonDetails.Id" type="text" hidden />
 	<input asp-for="LessonDetails.LessonTimetableId" type="text" hidden />
 	<div class="form-group">
 		<label asp-for="LessonDetails.Title" class="form-label">Titre du cours</label>
@@ -13,7 +14,7 @@
 
 	<div class="form-group">
 		<label asp-for="LessonDetails.Details" class="form-label">Détails</label>
-		<textarea asp-for="LessonDetails.Details" value="@Model.LessonDetails.Title" name="LessonDetail.Details" class="form-control" style="min-width:100%;"></textarea>
+		<textarea name="LessonDetails.Details" value="@Model.LessonDetails.Details" class="form-control" style="min-width:100%;">@Model.LessonDetails.Details</textarea>
 		<span asp-validation-for="LessonDetails.Details" class="text-danger"></span>
 	</div>
 
@@ -22,9 +23,9 @@
 	@{
 		for (int i = 0; i < Model.LessonFiles.Count; i++)
 		{
-			<div class="input-group mb-3">
-				<input name="Model.LessonFiles[@i].FilePath" value="@Model.LessonFiles[i].FilePath.Split('\\').Last()" type="text" class="form-control" style="min-width:50%;" disabled />
-				<button asp-page-handler="Delete" asp-route-id="@Model.LessonFiles[i].Id" type="submit" class="btn btn-outline-danger">X</button>
+			<div class="input-group mb-3" id="lesson_@Model.LessonFiles[i].Id">
+				<span class="form-control" style="min-width:50%;">@Model.LessonFiles[i].FilePath.Split('\\').Last()</span>
+				<a class="btn btn-outline-danger" onclick="deleteLessonFile(@Model.LessonFiles[i].Id)">X</a>
 			</div>
 		}
 	}
@@ -38,6 +39,31 @@
 	<hr />
 	<button type="submit" asp-page-handler="Update" class="btn btn-primary" style="width:150px;">Enregistrer</button>
 </form>
+
+<script>
+
+	function deleteLessonFile(id) {
+		$.ajax({
+			url: '/api/lessonfiles/' + id,
+			type: 'DELETE',
+			success: function(data, status, xhr) {
+				if(status == "200") {
+					$.notify(xhr.responseText, "success");
+
+					$('#lesson_' + id).remove();
+
+				} else {
+					$.notify(xhr.responseText, "error");
+				}
+			},
+			error: function(xhr) {
+				$.notify(xhr.responseText, "error");
+				console.log(xhr.responseText);
+			}
+		})
+	}
+
+</script>
 
 @section Scripts{
 <partial name="_ValidationScriptsPartial" />

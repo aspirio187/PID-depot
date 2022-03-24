@@ -20,8 +20,21 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         [BindProperty]
         public LessonDetailModel LessonDetails { get; set; }
 
+        private List<LessonFileModel> _lessonFiles;
+
         [BindProperty]
-        public List<LessonFileModel> LessonFiles { get; set; }
+        public List<LessonFileModel> LessonFiles
+        {
+            get
+            {
+                if (_lessonFileService is not null && LessonDetails is not null)
+                {
+                    _lessonFiles = _lessonFileService.GetLessonDetailFiles(LessonDetails.Id).Select(lf => lf.MapFromBLL()).ToList();
+                }
+                return _lessonFiles;
+            }
+        }
+
 
         public DetailsUpdateModel(ILogger<DetailsUpdateModel> logger, ILessonDetailService lessonDetailService, ILessonFileService lessonFileService)
         {
@@ -40,8 +53,6 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
             LessonDetails = _lessonDetailService.GetLessonDetail(id).MapFromBLL();
 
             if (LessonDetails is null) return RedirectToPage("/Index", new { Area = "Teachers" });
-
-            LessonFiles = _lessonFileService.GetLessonDetailFiles(LessonDetails.Id).Select(ld => ld.MapFromBLL()).ToList();
 
             return Page();
         }
