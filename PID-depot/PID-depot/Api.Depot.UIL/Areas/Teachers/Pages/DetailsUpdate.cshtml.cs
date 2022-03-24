@@ -1,4 +1,5 @@
 using Api.Depot.BLL.Dtos.LessonDetailDtos;
+using Api.Depot.BLL.Dtos.LessonFileDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Static_Data;
@@ -70,11 +71,58 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                 return Page();
             }
 
+            // Etape 1 : Déplacer les fichiers existant
+            // Etape 2 : Sauvegarder les nouveaux fichiers en écrasant les fichiers existant
+
             string directoryPath = $"{Path.GetFullPath(FilesData.FILE_DIRECTORY_PATH)}\\{updatedLessonDetails.Title}\\";
-            if (!Directory.Exists(directoryPath))
+            string oldDirectoryPath = Path.GetDirectoryName(LessonFiles.First().FilePath);
+
+            if (!directoryPath.Equals(oldDirectoryPath))
             {
-                Directory.CreateDirectory(directoryPath);
+                foreach (LessonFileModel lessonFile in LessonFiles)
+                {
+                    lessonFile.FilePath = Path.Combine(directoryPath, Path.GetFileName(lessonFile.FilePath));
+                    LessonFileDto updatedLessonFile = _lessonFileService.UpdateLessonFile(lessonFile.MapToBLL());
+                    if (updatedLessonFile is null)
+                    {
+                        _logger.LogError("Couldn't update lesson file with ID : {0}", lessonFile.Id);
+                        return Page();
+                    }
+                }
+
+                FilesData.MoveFilesFromFolder(oldDirectoryPath, directoryPath);
             }
+
+            foreach (IFormFile file in postedFiles)
+            {
+                string fileName = Path.GetFileName(file.FileName);
+
+                LessonFileDto fileToCreate = _lessonFileService.CreateLessonFile(new LessonFileCreationDto()
+                {
+                    FilePath = Path.Combine(directoryPath, fileName),
+                    LessonDetailId = updatedLessonDetails.Id
+                });
+
+                if (fileToCreate is null)
+                {
+                    ModelState.AddModelError("File Save", $"La sauvegarde du fichier {file.Name} a échouée");
+                    _logger.LogError("File save failed for file {0}", file.Name);
+                    return Page();
+                }
+
+                try
+                {
+                    FilesData.SaveFilesToFolder(file, directoryPath);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    _lessonFileService.DeleteLessonFile(fileToCreate.Id);
+                    return Page();
+                }
+            }
+
+            return Page();
         }
 
         public IActionResult OnPostDelete()
