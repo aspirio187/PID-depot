@@ -13,7 +13,7 @@
 
 	<div class="form-group">
 		<label asp-for="LessonDetail.Details" class="form-label">Détails</label>
-		<textarea asp-for="LessonDetail.Details" name="LessonDetail.Details" class="form-control" style="width:100%"></textarea>
+		<textarea asp-for="LessonDetail.Details" name="LessonDetail.Details" class="form-control" style="min-width:100%"></textarea>
 		<span asp-validation-for="LessonDetail.Details" class="text-danger"></span>
 	</div>
 
@@ -24,3 +24,7 @@
 
 	<button type="submit" class="btn btn-primary">Enregistrer</button>
 </form>
+
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+}
