@@ -22,7 +22,6 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
         private List<LessonFileModel> _lessonFiles;
 
-        [BindProperty]
         public IEnumerable<LessonFileModel> LessonFiles
         {
             get
