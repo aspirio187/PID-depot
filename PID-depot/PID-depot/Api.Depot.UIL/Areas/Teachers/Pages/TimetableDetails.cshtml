@@ -4,7 +4,7 @@
 }
 
 <form method="POST" enctype="multipart/form-data">
-	<input asp-for="LessonDetail.LessonTimetableId" hidden />
+	<input asp-for="LessonDetail.LessonTimetableId" type="text" hidden />
 	<div class="form-group">
 		<label asp-for="LessonDetail.Title" class="form-label">Titre du cours</label>
 		<input asp-for="LessonDetail.Title" type="text" class="form-control" style="min-width:100%;"/>
@@ -21,8 +21,8 @@
 		<label class="form-label">Fichiers</label>
 		<input name="postedFiles" type="file" class="form-control" style="min-width:100%;" multiple />
 	</div>
-
-	<button type="submit" class="btn btn-primary">Enregistrer</button>
+	<hr />
+	<button type="submit" class="btn btn-primary" style="width:150px;">Enregistrer</button>
 </form>
 
 @section Scripts{
