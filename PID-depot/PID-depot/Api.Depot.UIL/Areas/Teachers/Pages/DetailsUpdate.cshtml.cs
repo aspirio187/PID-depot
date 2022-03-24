@@ -23,7 +23,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         private List<LessonFileModel> _lessonFiles;
 
         [BindProperty]
-        public List<LessonFileModel> LessonFiles
+        public IEnumerable<LessonFileModel> LessonFiles
         {
             get
             {
@@ -63,7 +63,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
             return Page();
         }
 
-        public IActionResult OnPostDelete(int id)
+        public IActionResult OnPostDelete()
         {
             return Page();
         }

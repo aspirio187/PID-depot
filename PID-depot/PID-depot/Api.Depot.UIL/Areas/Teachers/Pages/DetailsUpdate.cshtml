@@ -21,11 +21,11 @@
 	<hr />
 
 	@{
-		for (int i = 0; i < Model.LessonFiles.Count; i++)
+		foreach (var file in Model.LessonFiles)
 		{
-			<div class="input-group mb-3" id="lesson_@Model.LessonFiles[i].Id">
-				<span class="form-control" style="min-width:50%;">@Model.LessonFiles[i].FilePath.Split('\\').Last()</span>
-				<a class="btn btn-outline-danger" onclick="deleteLessonFile(@Model.LessonFiles[i].Id)">X</a>
+			<div class="input-group mb-3" id="lesson_@file.Id">
+				<span class="form-control" style="min-width:50%;">@file.FilePath.Split('\\').Last()</span>
+				<a class="btn btn-outline-danger" onclick="deleteLessonFile(@file.Id)">X</a>
 			</div>
 		}
 	}
@@ -37,7 +37,10 @@
 		<input name="postedFiles" type="file" class="form-control" style="min-width:100%;" multiple />
 	</div>
 	<hr />
-	<button type="submit" asp-page-handler="Update" class="btn btn-primary" style="width:150px;">Enregistrer</button>
+	<div class="btn-group">
+		<button type="submit" asp-page-handler="Delete" class="btn btn-danger" style="min-width:150px;">Supprimer</button>
+		<button type="submit" asp-page-handler="Update" class="btn btn-primary" style="min-width:150px;">Enregistrer</button>
+	</div>
 </form>
 
 <script>
