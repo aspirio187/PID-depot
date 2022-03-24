@@ -1,4 +1,5 @@
 using Api.Depot.BLL.Dtos.LessonDetailDtos;
+using Api.Depot.BLL.Dtos.LessonFileDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models.Forms;
 using Api.Depot.UIL.Static_Data;
@@ -31,8 +32,6 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         [BindProperty]
         public LessonDetailForm LessonDetail { get; set; }
 
-        public List<LessonFileForm> LessonFile { get; set; }
-
         public IActionResult OnGet(int id)
         {
             if (id == 0) return RedirectToPage("Index", new { Area = "Teachers" });
@@ -47,25 +46,66 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
         public IActionResult OnPost(List<IFormFile> postedFiles)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return Page();
+
+            LessonDetailDto createdLessonDetails = _lessonDetailService.CreateLessonDetail(LessonDetail.MapToBLL());
+            if (createdLessonDetails is null)
             {
-                //LessonDetailDto createdLessonDetails = _lessonDetailService.CreateLessonDetail(LessonDetail.MapToBLL());
-                //if (createdLessonDetails is null)
-                //{
-                //    ModelState.AddModelError("Lesson Details Creation", "La création des détails du cours a echouée");
-                //    _logger.LogError("Lesson details creation failed");
-                //    return Page();
-                //}
+                ModelState.AddModelError("Lesson Details Creation", "La création des détails du cours a echouée");
+                _logger.LogError("Lesson details creation failed");
+                return Page();
+            }
 
-                var v = Path.GetFullPath(FilesData.FILE_DIRECTORY_PATH);
+            string directoryFullPath = Path.GetFullPath(FilesData.FILE_DIRECTORY_PATH);
 
-                foreach (var file in postedFiles)
+            if (!Directory.Exists(directoryFullPath))
+            {
+                Directory.CreateDirectory(directoryFullPath);
+            }
+
+            List<LessonFileDto> createdFiles = new List<LessonFileDto>();
+
+            foreach (IFormFile file in postedFiles)
+            {
+                string fileName = file.Name;
+                using (FileStream stream = new FileStream(Path.Combine(directoryFullPath, LessonDetail.Title, fileName), FileMode.Create))
                 {
+                    try
+                    {
+                        LessonFileDto fileToCreate = _lessonFileService.CreateLessonFile(new LessonFileCreationDto()
+                        {
+                            FilePath = Path.Combine(directoryFullPath, LessonDetail.Title, fileName),
+                            LessonDetailId = createdLessonDetails.Id
+                        });
 
+                        if (fileToCreate is null)
+                        {
+                            ModelState.AddModelError("File Save", $"La sauvegarde du fichier {file.Name} a échouée");
+                            _logger.LogError("File save failed for file {0}", file.Name);
+                            return Page();
+                        }
+
+                        createdFiles.Add(fileToCreate);
+
+                        file.CopyTo(stream);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError(e.Message);
+
+                        foreach (LessonFileDto lessonFile in createdFiles)
+                        {
+                            if (!_lessonFileService.DeleteLessonFile(lessonFile.Id))
+                            {
+                                _logger.LogError("Couldn't delete file with ID : {0}", lessonFile.Id);
+                            }
+                        }
+                        return Page();
+                    }
                 }
             }
 
-            return Page();
+            return RedirectToPage("Schedule", new { Area = "Teachers" });
         }
     }
 }
