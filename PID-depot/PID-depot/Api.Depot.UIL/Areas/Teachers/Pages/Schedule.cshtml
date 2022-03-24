@@ -11,10 +11,9 @@
 
 <script>
 	let calendar;
+	let events = [];
 
 	document.addEventListener('DOMContentLoaded', function() {
-
-		let events = [];
 
 		$.ajax({
 			url:""
@@ -30,4 +29,10 @@
 		calendar.render();
 	});
 
+	function loadLessons() {
+
+		$.ajax({
+			url:""
+		})
+	}
 </script>

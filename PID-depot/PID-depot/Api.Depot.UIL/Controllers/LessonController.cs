@@ -68,6 +68,17 @@ namespace Api.Depot.UIL.Controllers
             return Ok(users.Select(u => u.MapFromBLL()));
         }
 
+        [HttpGet("user/{userId}")]
+        public IActionResult GetUserLessons(Guid userId)
+        {
+            if (userId == Guid.Empty) return BadRequest($"{nameof(userId)} : {userId}");
+
+            UserDto user = _userService.GetUser(userId);
+            if (user is null) return NotFound(nameof(userId));
+            IEnumerable<LessonDto> userLessons = _lessonService.GetUserLessons(userId);
+            return Ok(userLessons.Select(u => u.MapFromBLL(user)));
+        }
+
         [HttpPost]
         public IActionResult CreateLesson([FromBody] LessonForm lesson)
         {
