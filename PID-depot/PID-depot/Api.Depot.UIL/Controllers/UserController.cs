@@ -1,8 +1,10 @@
 ﻿using Api.Depot.BLL.Dtos;
+using Api.Depot.BLL.Dtos.RoleDtos;
 using Api.Depot.BLL.Dtos.UserDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
+using Api.Depot.UIL.Static_Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -61,6 +63,15 @@ namespace Api.Depot.UIL.Controllers
         [HttpPost("{id}/{roleId}")]
         public IActionResult AddUserRole(Guid id, Guid roleId)
         {
+            RoleDto role = _roleService.GetRole(roleId);
+            IEnumerable<RoleDto> userRoles = _roleService.GetUserRoles(id);
+
+            if ((userRoles.Any(ur => ur.Name.Equals(RolesData.STUDENT_ROLE)) && role.Name.Equals(RolesData.TEACHER_ROLE)) ||
+                (userRoles.Any(ur => ur.Name.Equals(RolesData.TEACHER_ROLE)) && role.Name.Equals(RolesData.STUDENT_ROLE)))
+            {
+                return BadRequest(role.Name);
+            }
+
             return Ok(_userService.AddUserRole(id, roleId));
         }
 
