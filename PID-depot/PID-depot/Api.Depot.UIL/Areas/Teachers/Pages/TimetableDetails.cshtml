@@ -7,19 +7,19 @@
 	<input asp-for="LessonDetail.LessonTimetableId" hidden />
 	<div class="form-group">
 		<label asp-for="LessonDetail.Title" class="form-label">Titre du cours</label>
-		<input asp-for="LessonDetail.Title" type="text" class="form-control" />
+		<input asp-for="LessonDetail.Title" type="text" class="form-control" style="min-width:100%;"/>
 		<span asp-validation-for="LessonDetail.Title" class="text-danger"></span>
 	</div>
 
 	<div class="form-group">
 		<label asp-for="LessonDetail.Details" class="form-label">Détails</label>
-		<textarea asp-for="LessonDetail.Details" name="LessonDetail.Details" class="form-control" style="min-width:100%"></textarea>
+		<textarea asp-for="LessonDetail.Details" name="LessonDetail.Details" class="form-control" style="min-width:100%;"></textarea>
 		<span asp-validation-for="LessonDetail.Details" class="text-danger"></span>
 	</div>
 
 	<div class="form-group">
 		<label class="form-label">Fichiers</label>
-		<input name="postedFiles" type="file" class="form-control" multiple />
+		<input name="postedFiles" type="file" class="form-control" style="min-width:100%;" multiple />
 	</div>
 
 	<button type="submit" class="btn btn-primary">Enregistrer</button>
