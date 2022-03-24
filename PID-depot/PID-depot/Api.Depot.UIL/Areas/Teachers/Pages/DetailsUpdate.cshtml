@@ -1,0 +1,40 @@
+﻿@page
+@model Api.Depot.UIL.Areas.Teachers.Pages.DetailsUpdateModel
+@{
+}
+
+<form method="POST" enctype="multipart/form-data">
+	<input asp-for="LessonDetails.LessonTimetableId" type="text" hidden />
+	<div class="form-group">
+		<label asp-for="LessonDetails.Title" class="form-label">Titre du cours</label>
+		<input asp-for="LessonDetails.Title" value="@Model.LessonDetails.Title" type="text" class="form-control" style="min-width:100%;" />
+		<span asp-validation-for="LessonDetails.Title" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="LessonDetails.Details" class="form-label">Détails</label>
+		<textarea asp-for="LessonDetails.Details" value="@Model.LessonDetails.Title" name="LessonDetail.Details" class="form-control" style="min-width:100%;"></textarea>
+		<span asp-validation-for="LessonDetails.Details" class="text-danger"></span>
+	</div>
+
+	@{
+		for (int i = 0; i < Model.LessonFiles.Count; i++)
+		{
+			<div class="input-group mb-3">
+				<input name="Model.LessonFiles[@i].FilePath" value="Model.LessonFiles[i].FilePath" type="text" class="form-control" disabled />
+				<button asp-page-handler="Delete" asp-route-id="@Model.LessonFiles[i].Id" type="submit" class="btn btn-outline-danger"></button>
+			</div>
+		}
+	}
+
+	<div class="form-group">
+		<label class="form-label">Fichiers</label>
+		<input name="postedFiles" type="file" class="form-control" style="min-width:100%;" multiple />
+	</div>
+	<hr />
+	<button type="submit" class="btn btn-primary" style="width:150px;">Enregistrer</button>
+</form>
+
+@section Scripts{
+<partial name="_ValidationScriptsPartial" />
+}
