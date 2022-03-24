@@ -21,17 +21,6 @@
 	<script src="~/lib/fullcalendar/locales/fr.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			var calendarEl = document.getElementById('calendar');
-			var calendar = new FullCalendar.Calendar(calendarEl, {
-				initialView: 'dayGridMonth',
-				locale: 'fr'
-			});
-			calendar.render();
-		});
-	</script>
-
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-md">
 			<a asp-page="/Index" class="navbar-brand"> Dépot </a>
