@@ -44,10 +44,10 @@
 
 	function deleteLessonFile(id) {
 		$.ajax({
-			url: '/api/lessonfiles/' + id,
+			url: '/api/lessonfile/' + id,
 			type: 'DELETE',
 			success: function(data, status, xhr) {
-				if(status == "200") {
+				if(status == "success") {
 					$.notify(xhr.responseText, "success");
 
 					$('#lesson_' + id).remove();
