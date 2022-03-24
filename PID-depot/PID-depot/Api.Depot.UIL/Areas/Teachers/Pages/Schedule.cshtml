@@ -9,6 +9,25 @@
 <div id="calendar">
 </div>
 
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="eventModalTitle"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					Date de <span id="eventModalStartsAt" class="fw-bold"></span> à <span id="eventModalEndsAt" class="fw-bold"></span>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a id="eventModalScheduleDetails" class="btn btn-primary">Détails</a>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <script>
 	// TODO : Ajouter des couleurs différentes pour chaque cours
@@ -23,7 +42,7 @@
 			locale: 'fr',
 			selectable: true,
 			events: function(info, successCallback, failureCallback) {
-				
+
 				let lessons = [];
 				let events = [];
 
@@ -74,8 +93,25 @@
 
 				successCallback(events);
 			},
-			eventDisplay: 'block'
+			eventDisplay: 'block',
+			eventClick: function(info) {
+				onShowEventModal(info.event);
+			}
 		});
 		calendar.render();
 	});
+
+	function onShowEventModal(info) {
+
+		console.log(info);
+
+		$('#eventModalTitle').text(info.title);
+		$('#eventModalStartsAt').text(info.start);
+		$('#eventModalEndsAt').text(info.end);
+
+		$('#eventModalScheduleDetails').attr("href","timetable?=id" + info.id);
+
+
+		$('#eventModal').modal("show");
+	}
 </script>
