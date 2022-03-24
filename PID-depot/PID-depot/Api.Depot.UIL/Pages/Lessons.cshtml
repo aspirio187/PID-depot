@@ -3,17 +3,30 @@
 @{
 }
 
-<div class="container">
+<div class="container mt-3 mb-3">
+	<h1 class="text-center">Cours disponible</h1>
+
 	@{
 		foreach (var lesson in Model.Lessons)
 		{
-			<div class="row">
+			<div class="row" id="lesson_@lesson.Id">
 				<h2>
-					<a asp-page="/Details" asp-area="Teachers" asp-route-id="@lesson.Id" class="primary-link">@lesson.Name</a>
+					<a href="#" class="primary-link">@lesson.Name</a>
 				</h2>
-				<p>@lesson.Description</p>
+				<div class="d-inline-block mt-1 mb-1">
+					<span class="fw-bold fs-5">Professeur : </span><span class="ms-1">Mr/Mme  @lesson.TeacherName</span>
+				</div>
+				<div class="d-inline-block mt-1 mb-1">
+					<span class="fw-bold fs-5">Numéro de matricule :</span> <span class="ms-1">@lesson.TeacherRegistrationNumber</span>
+				</div>
+				<div class="row mt-1 mb-1">
+					<span class="fw-bold fs-5">Description</span>
+					<p>@lesson.Description</p>
+				</div>
 			</div>
 			<hr />
 		}
 	}
+
+
 </div>

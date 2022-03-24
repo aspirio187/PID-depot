@@ -56,10 +56,5 @@ namespace Api.Depot.UIL.Pages
 
             return Page();
         }
-
-        private List<LessonModel> LoadAllLessons()
-        {
-
-        }
     }
 }
