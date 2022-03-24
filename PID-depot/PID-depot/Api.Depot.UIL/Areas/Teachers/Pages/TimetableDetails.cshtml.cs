@@ -56,7 +56,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
                 return Page();
             }
 
-            string directoryFullPath = Path.GetFullPath(FilesData.FILE_DIRECTORY_PATH);
+            string directoryFullPath = $"{Path.GetFullPath(FilesData.FILE_DIRECTORY_PATH)}\\{createdLessonDetails.Title}\\";
 
             if (!Directory.Exists(directoryFullPath))
             {
@@ -67,8 +67,8 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
 
             foreach (IFormFile file in postedFiles)
             {
-                string fileName = file.Name;
-                using (FileStream stream = new FileStream(Path.Combine(directoryFullPath, LessonDetail.Title, fileName), FileMode.Create))
+                string fileName = Path.GetFileName(file.FileName);
+                using (FileStream stream = new FileStream(Path.Combine(directoryFullPath, fileName), FileMode.Create))
                 {
                     try
                     {
