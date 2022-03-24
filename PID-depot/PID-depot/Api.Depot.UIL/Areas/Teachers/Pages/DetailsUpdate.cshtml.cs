@@ -129,8 +129,8 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         {
             if (_lessonDetailService.DeleteLessonDetail(LessonDetails.Id))
             {
-
-
+                string directory = Path.GetDirectoryName(LessonFiles.FirstOrDefault()?.FilePath);
+                FilesData.DeleteFilesFromFolder(directory);
                 return RedirectToPage("/Index", new { Area = "Teachers" });
             }
             return Page();
