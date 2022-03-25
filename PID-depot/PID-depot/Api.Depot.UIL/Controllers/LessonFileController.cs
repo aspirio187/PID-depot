@@ -3,6 +3,9 @@ using Api.Depot.BLL.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
+using System.Linq;
+using System.Net.Mime;
 
 namespace Api.Depot.UIL.Controllers
 {
@@ -68,6 +71,26 @@ namespace Api.Depot.UIL.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult DownloadFile(int id)
+        {
+            if (id == 0) return BadRequest();
+
+            LessonFileDto fileFromRepo = _lessonFileService.GetFile(id);
+
+            if (fileFromRepo is null) return NotFound(nameof(id));
+
+            string contentType = MediaTypeNames.Application.Octet;
+            if (contentType is null) contentType = "file";
+
+            bool fileExist = System.IO.File.Exists(fileFromRepo.FilePath);
+            if (fileExist == false) return NotFound(fileFromRepo.FilePath.Split('\\').Last());
+
+            FileStream fs = System.IO.File.OpenRead(fileFromRepo.FilePath);
+
+            return File(fs, contentType, fileFromRepo.FilePath.Split('\\').Last());
         }
     }
 }
