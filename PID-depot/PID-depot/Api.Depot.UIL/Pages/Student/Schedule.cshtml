@@ -4,25 +4,23 @@
 @{
 }
 
-
-
-// TODO : Terminer l'horaire des étudiants
-
 <h1 class="text-center">Horaire</h1>
 
-<div id="calendar">
-</div>
+<div class="row" id="calendar"></div>
 
 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="eventModalTitle"></h5>
+				<h4 class="modal-title" id="eventModalTitle"></h4>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					Date de <span id="eventModalStartsAt" class="fw-bold"></span> à <span id="eventModalEndsAt" class="fw-bold"></span>
+					<span class="fw-bold fs-5" id="eventModalStartsAtDate">A partir du</span>
+				</div>
+				<div class="row">
+					<div class="inline-block">De <span id="eventModalStartsAtTime"></span> à <span id="eventModalEndsAtTime"></span></div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -44,6 +42,7 @@
 		calendar = new FullCalendar.Calendar(calendarEl, {
 			initialView: 'dayGridMonth',
 			locale: 'fr',
+			height: 800,
 			selectable: true,
 			events: function(info, successCallback, failureCallback) {
 
@@ -110,10 +109,18 @@
 		console.log(info);
 
 		$('#eventModalTitle').text(info.title);
-		$('#eventModalStartsAt').text(info.start);
-		$('#eventModalEndsAt').text(info.end);
 
-		$('#eventModalScheduleDetails').attr("href","timetabledetails?id=" + info.id);
+		let startDate = new Date(info.start);
+		let endDate = new Date(info.end);
+
+		let optionsDate = { year: 'numeric', month: 'long', weekday: 'long', day:'numeric'};
+		let optionsTime = { hour: 'numeric', minute: 'numeric'};
+
+		$('#eventModalStartsAtDate').text(startDate.toLocaleDateString(undefined,optionsDate));
+		$('#eventModalStartsAtTime').text(startDate.toLocaleTimeString(undefined, optionsTime));
+		$('#eventModalEndsAtTime').text(info.end.toLocaleTimeString(undefined, optionsTime));
+
+		$('#eventModalScheduleDetails').attr("href","lessondetails?id=" + info.id);
 
 
 		$('#eventModal').modal("show");
