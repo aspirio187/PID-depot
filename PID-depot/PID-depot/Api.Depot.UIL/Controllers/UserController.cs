@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace Api.Depot.UIL.Controllers
 {
@@ -53,8 +54,14 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpPut]
+        [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult UpdateUser([FromBody] UserForm user)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!userId.Equals(user.Id.ToString()) && !User.IsInRole(RolesData.ADMIN_ROLE)) return Unauthorized();
+
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             UserDto updatedUser = _userService.UpdateUser(user.MapToBLL());
@@ -62,8 +69,10 @@ namespace Api.Depot.UIL.Controllers
             return Ok(updatedUser.MapFromBLL(_roleService.GetUserRoles(updatedUser.Id)));
         }
 
-        // N'autoriser l'accès qu'aux administrateur
         [HttpPost("{id}/{roleId}")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesData.ADMIN_ROLE)]
         public IActionResult AddUserRole(Guid id, Guid roleId)
         {
             RoleDto role = _roleService.GetRole(roleId);
@@ -80,7 +89,9 @@ namespace Api.Depot.UIL.Controllers
 
         // N'autoriser l'accès qu'aux administrateurs
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesData.ADMIN_ROLE)]
         public IActionResult DeleteUser(Guid id)
         {
             UserDto userFromRepo = _userService.GetUser(id);
@@ -97,8 +108,14 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpPost("Password")]
+        [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult UpdatePassword([FromBody] PasswordForm password)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!User.Equals(password.Id) && !User.IsInRole(RolesData.ADMIN_ROLE)) return Unauthorized();
+
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             if (!_userService.UpdatePassword(password.Id, password.OldPassword, password.NewPassword))
