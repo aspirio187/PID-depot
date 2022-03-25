@@ -3,6 +3,9 @@ using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models;
 using Api.Depot.UIL.Models.Forms;
 using Api.Depot.UIL.Static_Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +14,9 @@ using System.Linq;
 
 namespace Api.Depot.UIL.Controllers
 {
+    [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(RolesData.TEACHER_ROLE)]
     [Route("api/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase
@@ -39,33 +45,6 @@ namespace Api.Depot.UIL.Controllers
             RoleDto roleFromRepo = _roleService.GetRole(id);
             if (roleFromRepo is null) return NotFound(id);
             return Ok(roleFromRepo.MapFromBLL());
-        }
-
-        //[HttpPost]
-        //public IActionResult CreateRole([FromBody] RoleForm role)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
-        //    RoleDto createdRole = _roleService.CreateRole(role.MapToBLL());
-        //    if (createdRole is null) return BadRequest(role);
-
-        //    return Ok(createdRole.MapFromBLL());
-        //}
-
-        //[HttpPut()]
-        //public IActionResult UpdateRole([FromBody] RoleModel role)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
-        //    RoleDto updatedRole = _roleService.UpdateRole(role.MapToBLL());
-        //    if (updatedRole is null) return BadRequest(role);
-
-        //    return Ok(updatedRole.MapFromBLL());
-        //}
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteRole(Guid id)
-        {
-            if (id == Guid.Empty) return BadRequest("Role ID cannot be null!");
-            return Ok(_roleService.DeleteRole(id));
         }
 
         private bool InitilizeRoles()
