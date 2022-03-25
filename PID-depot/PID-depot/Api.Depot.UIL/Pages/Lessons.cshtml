@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-3 mb-3">
-	<span id="userId" hidden>@User?.FindFirst(ClaimTypes.NameIdentifier).Value</span>
+	<span id="userId" hidden>@User?.FindFirst(ClaimTypes.NameIdentifier)?.Value</span>
 	<h1 class="text-center">Cours disponible</h1>
 
 	@{

@@ -4,6 +4,8 @@
 @{
 }
 
+
+
 // TODO : Terminer l'horaire des étudiants
 
 <h1 class="text-center">Horaire</h1>
@@ -49,7 +51,7 @@
 				let events = [];
 
 				$.ajax({
-					url: "/api/lesson/user/" + '@(User.FindFirst(ClaimTypes.NameIdentifier).Value)',
+					url: "/api/lesson/user/" + '@(User?.FindFirst(ClaimTypes.NameIdentifier).Value)',
 					method: 'GET',
 					dataType: 'JSON',
 					success: function(response) {
