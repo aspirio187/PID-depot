@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace Api.Depot.UIL.Areas.Teachers.Pages
 {
-    [Authorize(CookieAuthenticationDefaults.AuthenticationScheme, Roles = RolesData.AUTH_TEACHER_ROLE)]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = RolesData.AUTH_TEACHER_ROLE)]
     public class TimetableDetailsModel : PageModel
     {
         private readonly ILogger _logger;
