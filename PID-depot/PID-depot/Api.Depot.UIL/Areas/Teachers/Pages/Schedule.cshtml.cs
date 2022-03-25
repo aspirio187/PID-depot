@@ -1,4 +1,7 @@
 using Api.Depot.BLL.IServices;
+using Api.Depot.UIL.Static_Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -6,6 +9,7 @@ using System;
 
 namespace Api.Depot.UIL.Areas.Teachers.Pages
 {
+    [Authorize(CookieAuthenticationDefaults.AuthenticationScheme, Roles = RolesData.AUTH_TEACHER_ROLE)]
     public class ScheduleModel : PageModel
     {
         private readonly ILogger _logger;
@@ -13,7 +17,7 @@ namespace Api.Depot.UIL.Areas.Teachers.Pages
         private readonly ILessonService _lessonService;
         private readonly ILessonTimetableService _lessonTimetable;
 
-		public ScheduleModel(ILogger<ScheduleModel> logger, IUserService userService, ILessonService lessonService, ILessonTimetableService lessonTimetable)
+        public ScheduleModel(ILogger<ScheduleModel> logger, IUserService userService, ILessonService lessonService, ILessonTimetableService lessonTimetable)
         {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));

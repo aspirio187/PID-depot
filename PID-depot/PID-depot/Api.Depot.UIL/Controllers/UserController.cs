@@ -43,6 +43,9 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpGet]
+        [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesData.ADMIN_ROLE)]
         public IActionResult GetUsers()
         {
             IEnumerable<UserDto> usersFromService = _userService.GetUsers();
