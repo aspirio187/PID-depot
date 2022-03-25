@@ -1,0 +1,120 @@
+﻿@page
+@using System.Security.Claims
+@model Api.Depot.UIL.Pages.Student.ScheduleModel
+@{
+}
+
+// TODO : Terminer l'horaire des étudiants
+
+<h1 class="text-center">Horaire</h1>
+
+<div id="calendar">
+</div>
+
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="eventModalTitle"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					Date de <span id="eventModalStartsAt" class="fw-bold"></span> à <span id="eventModalEndsAt" class="fw-bold"></span>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a id="eventModalScheduleDetails" class="btn btn-primary">Détails</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+	let calendar;
+	let calendarEvents;
+
+	document.addEventListener('DOMContentLoaded', function() {
+
+		var calendarEl = document.getElementById('calendar');
+		calendar = new FullCalendar.Calendar(calendarEl, {
+			initialView: 'dayGridMonth',
+			locale: 'fr',
+			selectable: true,
+			events: function(info, successCallback, failureCallback) {
+
+				let lessons = [];
+				let events = [];
+
+				$.ajax({
+					url: "/api/lesson/user/" + '@(User.FindFirst(ClaimTypes.NameIdentifier).Value)',
+					method: 'GET',
+					dataType: 'JSON',
+					success: function(response) {
+
+						lessons = response;
+
+					},
+					error: function(xhr) {
+						$.notify(xhr.responseText, "error");
+					},
+					async: false
+				});
+
+				for(const lesson of lessons) {
+					let timetables = [];
+
+
+					$.ajax({
+						url: '/api/lesson/' + lesson.id + '/timetables',
+						method: 'GET',
+						dataType: 'JSON',
+						success: function(response) {
+
+							timetables = response;
+						},
+						error : function(xhr) {
+							$.notify(xhr.responseText, "error");
+						},
+						async: false
+					});
+
+
+					for(const timetable of timetables) {
+						events.push({
+							id: timetable.id,
+							title: lesson.name,
+							start: timetable.startsAt,
+							end: timetable.endsAt,
+							allDay: false
+						});
+					}
+				}
+
+				successCallback(events);
+			},
+			eventDisplay: 'block',
+			eventClick: function(info) {
+				onShowEventModal(info.event);
+			}
+		});
+		calendar.render();
+	});
+
+	function onShowEventModal(info) {
+
+		console.log(info);
+
+		$('#eventModalTitle').text(info.title);
+		$('#eventModalStartsAt').text(info.start);
+		$('#eventModalEndsAt').text(info.end);
+
+		$('#eventModalScheduleDetails').attr("href","timetabledetails?id=" + info.id);
+
+
+		$('#eventModal').modal("show");
+	}
+</script>
+
