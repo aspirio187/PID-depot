@@ -13,7 +13,7 @@ namespace Api.Depot.UIL.Extensions
             string[] acceptedPage = (page ?? currentPage ?? "").Split(',');
             string[] acceptedArea = (area ?? currentArea ?? "").Split(',');
 
-            return acceptedPage.Contains(currentPage) && acceptedArea.Contains(currentArea)
+            return (acceptedPage.Contains(currentPage) && (string.IsNullOrEmpty(area) ? true : acceptedArea.Contains(currentArea)))
                 ? cssClass
                 : "";
         }
