@@ -28,10 +28,17 @@
 				</li>
 			</ul>
 			<div class="d-flex">
-				<a class="btn btn-outline-success">Rechercher</a>
-				<input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search">
+				<a class="btn btn-outline-success" onclick="onSearchClick()">Rechercher</a>
+				<input id="searchInput" class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search">
 			</div>
 			<partial name="_LoginPartial" />
 		</div>
 	</div>
 </nav>
+
+<script>
+	function onSearchClick() {
+		let query = $('#searchInput').val();
+		window.location.href = "search?q=" + query;
+	}
+</script>
