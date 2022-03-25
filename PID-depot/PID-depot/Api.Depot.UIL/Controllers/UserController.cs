@@ -44,8 +44,8 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpGet]
-        [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
-        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesData.ADMIN_ROLE)]
         public IActionResult GetUsers()
         {
@@ -54,8 +54,8 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpPut]
-        [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
-        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult UpdateUser([FromBody] UserForm user)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -71,7 +71,7 @@ namespace Api.Depot.UIL.Controllers
 
         [HttpPost("{id}/{roleId}")]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesData.ADMIN_ROLE)]
         public IActionResult AddUserRole(Guid id, Guid roleId)
         {
@@ -89,8 +89,8 @@ namespace Api.Depot.UIL.Controllers
 
         // N'autoriser l'accès qu'aux administrateurs
         [HttpDelete("{id}")]
-        [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
-        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesData.ADMIN_ROLE)]
         public IActionResult DeleteUser(Guid id)
         {
@@ -108,8 +108,8 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpPost("Password")]
-        [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
-        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult UpdatePassword([FromBody] PasswordForm password)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

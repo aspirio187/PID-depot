@@ -14,9 +14,9 @@ using System.Linq;
 
 namespace Api.Depot.UIL.Controllers
 {
-    [Authorize(CookieAuthenticationDefaults.AuthenticationScheme)]
-    [Authorize(JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(RolesData.TEACHER_ROLE)]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = RolesData.TEACHER_ROLE)]
     [Route("api/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase

@@ -6,6 +6,8 @@ using Api.Depot.BLL.Dtos.UserLessonDtos;
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models.Forms;
 using Api.Depot.UIL.Static_Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -133,6 +135,9 @@ namespace Api.Depot.UIL.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesData.ADMIN_ROLE)]
         public IActionResult DeleteLesson(int id)
         {
             if (id == 0) return BadRequest(nameof(id));
