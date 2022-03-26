@@ -1,13 +1,18 @@
 using Api.Depot.BLL.IServices;
 using Api.Depot.UIL.Models.Forms;
+using Api.Depot.UIL.Static_Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 using System.Security.Claims;
 
 namespace Api.Depot.UIL.Pages.Account
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class PasswordModel : PageModel
     {
         private readonly ILogger _logger;

@@ -16,7 +16,7 @@ namespace Api.Depot.UIL.Controllers
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Roles = RolesData.TEACHER_ROLE)]
+    [Authorize(Roles = RolesData.ADMIN_ROLE)]
     [Route("api/[controller]")]
     [ApiController]
     public class RoleController : ControllerBase
