@@ -13,6 +13,7 @@ namespace Api.Depot.UIL.Pages.Account
         private readonly ILogger _logger;
         private readonly IUserService _userService;
 
+        [BindProperty]
         public PasswordForm Password { get; set; }
 
         public PasswordModel(ILogger<PasswordModel> logger, IUserService userService)
@@ -47,8 +48,7 @@ namespace Api.Depot.UIL.Pages.Account
                 return Page();
             }
 
-            ModelState.AddModelError("Update", "Une erreur est survenue lors de la mise à jours, veuillez " +
-                "réessayer!");
+            ModelState.AddModelError("Update", "Votre mot de passe actuel est incorrect, veuillez réessayer!");
 
             return Page();
         }
