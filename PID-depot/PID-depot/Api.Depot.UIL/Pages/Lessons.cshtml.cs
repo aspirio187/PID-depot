@@ -41,7 +41,7 @@ namespace Api.Depot.UIL.Pages
         public IActionResult OnGet(int p = 1)
         {
             RoleDto teacherRole = _roleService.GetRole(RolesData.TEACHER_ROLE);
-            if (teacherRole is null) return RedirectToPage("/Error");
+            if (teacherRole is null) return RedirectToPage("./Error");
 
             ActualPage = p;
             if (p != 1) HasPrevious = true;

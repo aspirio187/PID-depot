@@ -16,7 +16,10 @@ namespace Api.Depot.DAL
     {
         public static IServiceCollection InjectDAL(this IServiceCollection services, string connectionString)
         {
-            services.AddSingleton(sp => new Connection(connectionString, MySqlConnectorFactory.Instance));
+            var connection = new Connection(connectionString, MySqlConnectorFactory.Instance);
+            services.AddSingleton(sp => connection);
+
+            InitializeRoles(connection);
 
             services.AddScoped<ILessonDetailRepository, LessonDetailRepository>();
             services.AddScoped<ILessonFileRepository, LessonFileRepository>();
@@ -27,6 +30,40 @@ namespace Api.Depot.DAL
             services.AddScoped<IUserTokenRepository, UserTokenRepository>();
 
             return services;
+        }
+
+        public static void InitializeRoles(Connection connection)
+        {
+            IRoleRepository roleRepository = new RoleRepository(connection);
+
+            var adminRole = roleRepository.GetRole("Admin");
+            if (adminRole is null)
+            {
+                var adminRoleId = roleRepository.Create(new Entities.RoleEntity() { Name = "Admin" });
+                if (adminRoleId == Guid.Empty) throw new Exception("Admin role couldn't be created!");
+            }
+            var userRole = roleRepository.GetRole("User");
+            if (userRole is null)
+            {
+                var userRoleId = roleRepository.Create(new Entities.RoleEntity() { Name = "User" });
+                if (userRoleId == Guid.Empty) throw new Exception("User role couldn't be created!");
+            }
+
+            var studentRole = roleRepository.GetRole("Student");
+            if (studentRole is null)
+            {
+                var studentRoleId = roleRepository.Create(new Entities.RoleEntity() { Name = "Student" });
+                if (studentRoleId == Guid.Empty) throw new Exception("Student role couldn't be created!");
+            }
+
+            var teacherRole = roleRepository.GetRole("Teacher");
+            if (teacherRole is null)
+            {
+                var teacherRoleId = roleRepository.Create(new Entities.RoleEntity() { Name = "Teacher" });
+                if (teacherRoleId == Guid.Empty) throw new Exception("Teacher role couldn't be created!");
+            }
+
+            roleRepository = null;
         }
     }
 }
