@@ -42,14 +42,14 @@ namespace Api.Depot.UIL.Pages
 
         public void OnGet(string q, int p = 1)
         {
-            Query = q;
+            Query = q is null ? string.Empty : q;
             ActualPage = p;
 
             RoleDto teacherRole = _roleService.GetRole(RolesData.TEACHER_ROLE);
 
             IEnumerable<LessonDto> result = _lessonService.GetLessons()
-                            .Where(l => l.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
-                                        l.Description.Contains(q, StringComparison.InvariantCultureIgnoreCase));
+                            .Where(l => l.Name.Contains(Query, StringComparison.InvariantCultureIgnoreCase) ||
+                                        l.Description.Contains(Query, StringComparison.InvariantCultureIgnoreCase));
 
             if (ActualPage > 1) HasPrevious = true;
             if (p * ElementsPerPage < result.Count()) HasNext = true;
