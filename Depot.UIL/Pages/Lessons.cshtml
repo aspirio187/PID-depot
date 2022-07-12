@@ -1,0 +1,158 @@
+﻿@page
+@using System.Security.Claims
+@model Depot.UIL.Pages.LessonsModel
+@{
+}
+
+<div class="container mt-3 mb-3">
+	<span id="userId" hidden>@User?.FindFirst(ClaimTypes.NameIdentifier)?.Value</span>
+	<h1 class="text-center">Cours disponible</h1>
+
+	@{
+		foreach (var lesson in Model.Lessons)
+		{
+			<div class="row" id="lesson_@lesson.Id">
+				<h2>
+					<a href="#" id="lesson_id_title" onclick="onLessonModalShow(@lesson.Id)" class="primary-link">@lesson.Name</a>
+				</h2>
+				<div class="d-inline-block mt-1 mb-1">
+					<span class="fw-bold fs-5">Professeur : </span><span class="ms-1">Mr/Mme  @lesson.TeacherName</span>
+				</div>
+				<div class="d-inline-block mt-1 mb-1">
+					<span class="fw-bold fs-5">Numéro de matricule :</span> <span class="ms-1">@lesson.TeacherRegistrationNumber</span>
+				</div>
+				<div class="row mt-1 mb-1">
+					<span class="fw-bold fs-5">Description</span>
+					<p>@lesson.Description</p>
+				</div>
+			</div>
+			<hr />
+		}
+	}
+
+	<div class="row">
+		<nav aria-label="Navigation des utilisateurs">
+			<ul class="pagination justify-content-center">
+
+				@if (Model.HasPrevious == true)
+				{
+					<li class="page-item">
+						<a class="page-link" asp-page="/Lessons" asp-route-p="@(Model.ActualPage - 1)">Précédent</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" asp-page="/Lessons" asp-route-p="@(Model.ActualPage - 1)">@(Model.ActualPage - 1)</a>
+					</li>
+				}
+				else
+				{
+					<li class="page-item disabled">
+						<span class="page-link">Précédent</span>
+					</li>
+				}
+
+				<li class="page-item active" aria-current="page">
+					<span class="page-link">@Model.ActualPage</span>
+				</li>
+
+				@if (Model.HasNext == true)
+				{
+					<li class="page-item">
+						<a class="page-link" asp-page="/Lessons" asp-route-p="@(Model.ActualPage + 1)">@(Model.ActualPage + 1)</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" asp-page="/Lessons" asp-route-p="@(Model.ActualPage + 1)">Next</a>
+					</li>
+				}
+				else
+				{
+					<li class="page-item disabled">
+						<span class="page-link">Suivant</span>
+					</li>
+				}
+			</ul>
+		</nav>
+	</div>
+</div>
+
+<div class="modal fade" id="lessonDetailsModal" tabindex="-1" aria-labelledby="lessonDetailsModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="lessonDetailsModalTitle">Horaires de + TITRE DU COURS </h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row inline-block">
+					<span class="fw-bold fs-5">Premier cours:</span>
+					<span class="ms-1" id="lessonDetailsModalFirstLesson"></span>
+				</div>
+				<div class="row inline-block">
+					<span class="fw-bold fs-5">Dernier cours:</span>
+					<span class="ms-1" id="lessonDetailsModalLastLesson"></span>
+				</div>
+			</div>
+
+			<span id="lessonModalId" hidden></span>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" onclick="onLessonSubscribe()" id="lessonDetailsModalSubscribeBtn" class="btn btn-primary">S'inscrire</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+	function onLessonModalShow(lessonId) {
+		/* Charger les horaires du cours. Si l'horaire est dépassé, bloquer le bouton s'inscrire */
+
+		$('#lessonDetailsModalTitle').text("Horaires de :" + $('#lesson_' + lessonId + '_title').text());
+		$('#lessonModalId').text(lessonId);
+
+		$.ajax({
+			url: 'api/lesson/' + lessonId + '/timetables',
+			type: 'GET',
+			dataType: 'JSON',
+			success: function(response) {
+				let firstDate = new Date(response[0].startsAt);
+				let lastDate = new Date(response[response.length - 1].startsAt);
+
+				const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'2-digit', minute:'2-digit' };
+
+				$('#lessonDetailsModalFirstLesson').text(firstDate.toLocaleDateString(undefined, options));
+				$('#lessonDetailsModalLastLesson').text(lastDate.toLocaleDateString(undefined, options));
+
+				if(Date.now() > lastDate) {
+					$('#lessonDetailsModalSubscribeBtn').attr('disabled', true);
+				}
+			},
+			error: function(xhr) {
+				$.notify(xhr.responseText, "error");
+			}
+		});
+
+		$('#lessonDetailsModal').modal("show");
+	}
+
+	function onLessonSubscribe() {
+		let userId = $('#userId').text();
+		let lessonId = $('#lessonModalId').text();
+
+		$.ajax({
+			url: 'api/lesson/' + lessonId + '/' + userId,
+			type: 'POST',
+			success: function(info, successCallback, failureCallback) {
+				if(successCallback === 'success') {
+					$.notify("Vous avez été inscris au cours", "success");
+					$('#lessonDetailsModal').modal("hide");
+				} else {
+					$.notify("Votre inscription a échoué" + info.responseText, "error");
+				}
+			},
+			error: function(xhr) {
+				$.notify("Une erreur est survenue lors de la tentative d'inscription", "error");
+			}
+		})
+	}
+
+</script>
